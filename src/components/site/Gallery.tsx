@@ -23,7 +23,7 @@ export function Gallery() {
         {shots.map((shot, i) => (
           <div
             key={shot.src}
-            className={`relative aspect-[4/3] overflow-hidden rounded-[4px] md:aspect-auto md:h-[240px] xl:h-[305px] ${shot.cls} ${
+            className={`group relative aspect-[4/3] overflow-hidden rounded-[4px] md:aspect-auto md:h-[240px] xl:h-[305px] ${shot.cls} ${
               i >= 3 ? "xl:h-[407px]" : ""
             }`}
           >
@@ -32,7 +32,7 @@ export function Gallery() {
               alt=""
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-              className="object-cover"
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
             />
           </div>
         ))}

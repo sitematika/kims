@@ -37,9 +37,10 @@ export function Header() {
                 <a
                   key={item.id}
                   href={`#${item.id}`}
-                  className="text-[14px] whitespace-nowrap text-ink transition-colors hover:text-accent"
+                  className="group relative text-[14px] whitespace-nowrap text-ink transition-colors hover:text-accent"
                 >
                   {t(`nav.${item.key}`)}
+                  <span className="absolute -bottom-[4px] left-0 h-px w-full origin-center scale-x-0 bg-accent transition-transform duration-300 group-hover:scale-x-100" />
                 </a>
               ))}
             </nav>
@@ -108,7 +109,7 @@ export function Header() {
                   key={item.id}
                   href={`#${item.id}`}
                   onClick={() => setMenuOpen(false)}
-                  className="text-[18px] text-ink transition-colors hover:text-accent md:text-[20px]"
+                  className="inline-block text-[18px] text-ink transition-all duration-300 hover:translate-x-[4px] hover:text-accent md:text-[20px]"
                 >
                   {t(`nav.${item.key}`)}
                 </a>

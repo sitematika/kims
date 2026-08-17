@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/Badge";
+import { CountUp } from "@/components/ui/CountUp";
 
 type Figure = { value: string; text: string };
 type Pillar = { title: string; text: string };
@@ -35,7 +36,7 @@ export function Market() {
           {figures.map((f) => (
             <div key={f.value} className="flex flex-col gap-[16px]">
               <p className="text-[36px] leading-none font-light text-blush-300 md:text-[42px] xl:text-[48px]">
-                {f.value}
+                <CountUp>{f.value}</CountUp>
               </p>
               <p className="text-[13px] leading-[1.35] text-white/70 md:text-[14px]">
                 {f.text}
@@ -56,7 +57,7 @@ export function Market() {
           {pillars.map((p, i) => (
             <article
               key={p.title}
-              className="flex flex-col gap-[24px] rounded-[2px] border border-white/20 px-[24px] py-[28px] md:px-[32px] md:py-[36px]"
+              className="flex flex-col gap-[24px] rounded-[2px] border border-white/20 px-[24px] py-[28px] transition-colors duration-300 hover:border-white/45 hover:bg-white/[0.03] md:px-[32px] md:py-[36px]"
             >
               <p className="text-[28px] leading-none font-light text-white/60 md:text-[32px]">
                 {String(i + 1).padStart(2, "0")}

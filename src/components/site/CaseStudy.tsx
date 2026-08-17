@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Badge } from "@/components/ui/Badge";
+import { CountUp } from "@/components/ui/CountUp";
 
 type Year = { year: string; value: string; share: number };
 
@@ -14,6 +15,25 @@ export function CaseStudy() {
   const years = t.raw("years") as Year[];
   const slides = t.raw("slides") as string[];
   const [active, setActive] = useState(0);
+  const [barsIn, setBarsIn] = useState(false);
+  const barsRef = useRef<HTMLDivElement>(null);
+
+  // Полосы выручки заполняются, когда блок доходит до экрана
+  useEffect(() => {
+    const node = barsRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setBarsIn(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "0px 0px -15% 0px" },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   const go = (dir: -1 | 1) =>
     setActive((i) => (i + dir + slides.length) % slides.length);
@@ -34,7 +54,7 @@ export function CaseStudy() {
             {t("subtitle")}
           </p>
 
-          <div className="mt-[24px] flex flex-col xl:mt-[32px]">
+          <div ref={barsRef} className="mt-[24px] flex flex-col xl:mt-[32px]">
             {years.map((y) => (
               <div
                 key={y.year}
@@ -45,12 +65,12 @@ export function CaseStudy() {
                 </span>
                 <span className="h-[10px] flex-1 rounded-full bg-blush-50">
                   <span
-                    className="block h-full rounded-full bg-blush-300"
-                    style={{ width: `${y.share}%` }}
+                    className="block h-full rounded-full bg-blush-300 transition-[width] duration-1000 ease-out"
+                    style={{ width: barsIn ? `${y.share}%` : "0%" }}
                   />
                 </span>
                 <span className="shrink-0 text-[18px] font-light md:text-[24px]">
-                  {y.value}
+                  <CountUp>{y.value}</CountUp>
                 </span>
               </div>
             ))}
@@ -61,7 +81,9 @@ export function CaseStudy() {
               <p className="text-[20px] md:text-[24px]">{t("city")}</p>
               <p className="mt-[8px] text-[14px] md:text-[16px]">
                 {t("growthStart")}{" "}
-                <span className="text-accent">{t("growthValue")}</span>{" "}
+                <span className="text-accent">
+                  <CountUp>{t("growthValue")}</CountUp>
+                </span>{" "}
                 {t("growthEnd")}
               </p>
             </div>
@@ -71,7 +93,9 @@ export function CaseStudy() {
                 [t("points"), t("pointsUnit")],
               ].map(([value, unit]) => (
                 <p key={unit} className="flex items-baseline gap-[8px]">
-                  <span className="text-[24px] font-light">{value}</span>
+                  <span className="text-[24px] font-light">
+                    <CountUp>{value}</CountUp>
+                  </span>
                   <span className="text-[13px] text-ink/60">{unit}</span>
                 </p>
               ))}

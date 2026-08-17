@@ -40,7 +40,7 @@ export function Developers() {
           {points.map((point) => (
             <li
               key={point}
-              className="flex items-center gap-[24px] border-b border-white/20 py-[20px] md:gap-[32px] md:py-[24px]"
+              className="flex items-center gap-[24px] border-b border-white/20 py-[20px] transition-colors duration-300 hover:border-white/45 md:gap-[32px] md:py-[24px]"
             >
               <span className="relative h-[36px] w-[36px] shrink-0 md:h-[44px] md:w-[44px]">
                 <Image

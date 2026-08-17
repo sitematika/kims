@@ -60,10 +60,10 @@ export function Steps() {
                   )}
 
                   <span
-                    className={`relative z-10 flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-full border bg-white text-[16px] transition-colors duration-300 ${
+                    className={`relative z-10 flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-full border bg-white text-[16px] transition-all duration-500 ${
                       on
-                        ? "border-accent text-accent"
-                        : "border-ink/15 text-ink/30"
+                        ? "scale-105 border-accent text-accent"
+                        : "scale-100 border-ink/15 text-ink/30"
                     }`}
                   >
                     {i + 1}

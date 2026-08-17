@@ -4,7 +4,7 @@ import type { ComponentProps, ReactNode } from "react";
 type Variant = "dark" | "blush" | "accent";
 
 const base =
-  "inline-flex items-center justify-center rounded-[4px] text-center font-medium whitespace-nowrap transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink";
+  "inline-flex items-center justify-center rounded-[4px] text-center font-medium whitespace-nowrap transition-all duration-300 hover:-translate-y-[2px] hover:shadow-[0_10px_24px_rgba(30,30,30,0.16)] active:translate-y-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink";
 
 const variants: Record<Variant, string> = {
   dark: "bg-ink text-white hover:bg-ink-soft",

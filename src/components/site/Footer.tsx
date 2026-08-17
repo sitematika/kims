@@ -31,7 +31,7 @@ export function Footer() {
                   <li key={link}>
                     <a
                       href="#"
-                      className="text-[14px] transition-colors hover:text-accent md:text-[16px]"
+                      className="inline-block text-[14px] transition-all duration-300 hover:translate-x-[4px] hover:text-accent md:text-[16px]"
                     >
                       {link}
                     </a>

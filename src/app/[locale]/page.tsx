@@ -1,4 +1,5 @@
 import { setRequestLocale } from "next-intl/server";
+import { Preloader } from "@/components/site/Preloader";
 import { Header } from "@/components/site/Header";
 import { Hero } from "@/components/site/Hero";
 import { Stats } from "@/components/site/Stats";
@@ -25,6 +26,7 @@ export default async function HomePage({
 
   return (
     <div id="top">
+      <Preloader />
       <Header />
       <main>
         <Hero />

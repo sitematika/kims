@@ -1,6 +1,16 @@
 import { useTranslations } from "next-intl";
+import { CountUp } from "@/components/ui/CountUp";
 
-/** Ячейка с одним крупным числом */
+/**
+ * Ячейки одинаковой высоты, подпись занимает фиксированные две строки,
+ * а числа прижаты к низу — тогда строка цифр выравнивается одинаково
+ * на всех языках, даже когда перевод подписи длиннее украинского.
+ */
+const cell =
+  "flex flex-col border border-ink/20 px-[24px] py-[20px] transition-colors duration-300 hover:bg-blush-50/60 md:px-[32px] md:py-[24px]";
+const caption =
+  "min-h-[2.4em] text-[14px] leading-[1.2] font-light text-ink/60 md:text-[16px]";
+
 function Single({
   label,
   value,
@@ -13,16 +23,12 @@ function Single({
   className?: string;
 }) {
   return (
-    <div
-      className={`flex flex-col gap-[32px] border border-ink/20 px-[24px] py-[16px] md:gap-[52px] md:px-[32px] ${className}`}
-    >
-      <p className="text-[14px] leading-[1.2] font-light text-ink/60 md:text-[16px]">
-        {label}
-      </p>
-      <p className="text-[48px] leading-none font-medium tracking-[-1.28px] md:text-[56px] xl:text-[64px]">
-        {value}
+    <div className={`${cell} ${className}`}>
+      <p className={caption}>{label}</p>
+      <p className="mt-[32px] flex items-baseline gap-[8px] text-[48px] leading-none font-medium tracking-[-1.28px] md:mt-[52px] md:text-[56px] xl:text-[64px]">
+        <CountUp>{value}</CountUp>
         {unit ? (
-          <span className="ml-[8px] text-[20px] font-medium tracking-normal md:text-[24px]">
+          <span className="text-[20px] font-medium tracking-normal md:text-[24px]">
             {unit}
           </span>
         ) : null}
@@ -31,7 +37,6 @@ function Single({
   );
 }
 
-/** Ячейка с парой «цехи / пункты» */
 function Pair({
   label,
   a,
@@ -48,22 +53,22 @@ function Pair({
   className?: string;
 }) {
   return (
-    <div
-      className={`flex flex-col gap-[32px] border border-ink/20 px-[24px] py-[16px] md:gap-[52px] md:px-[32px] ${className}`}
-    >
-      <p className="text-[14px] leading-[1.2] font-light text-ink/60 md:text-[16px]">
-        {label}
-      </p>
-      <div className="flex flex-wrap items-baseline gap-x-[40px] gap-y-[8px]">
+    <div className={`${cell} ${className}`}>
+      <p className={caption}>{label}</p>
+      {/* Всегда две колонки: длинные переводы единиц переносятся внутри
+          своей колонки, а не роняют вторую цифру на строку ниже */}
+      <div className="mt-[32px] grid grid-cols-2 gap-x-[16px] md:mt-[52px] md:gap-x-[24px]">
         {[
           [a, aUnit],
           [b, bUnit],
         ].map(([value, unit]) => (
           <p key={unit} className="flex items-baseline gap-[8px]">
             <span className="text-[40px] leading-none font-medium tracking-[-0.8px] md:text-[48px]">
-              {value}
+              <CountUp>{value}</CountUp>
             </span>
-            <span className="text-[16px] md:text-[18px]">{unit}</span>
+            <span className="text-[15px] leading-[1.2] md:text-[18px]">
+              {unit}
+            </span>
           </p>
         ))}
       </div>
@@ -76,9 +81,8 @@ export function Stats() {
 
   return (
     <section className="shell pt-[48px] md:pt-[64px] xl:pt-[80px]">
-      {/* На десктопе 3×2, на планшете 2×3, на мобильном одна колонка —
-          сетка склеивает соседние рамки, поэтому используем отрицательные отступы */}
-      <div className="grid grid-cols-1 [&>*]:-mr-px [&>*]:-mb-px md:grid-cols-2 xl:grid-cols-3">
+      {/* auto-rows-fr держит ячейки одной строки одинаковыми по высоте */}
+      <div className="grid auto-rows-fr grid-cols-1 [&>*]:-mr-px [&>*]:-mb-px md:grid-cols-2 xl:grid-cols-3">
         <Single
           label={t("network.label")}
           value={t("network.value")}

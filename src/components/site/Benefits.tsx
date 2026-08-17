@@ -26,7 +26,11 @@ export function Benefits() {
         {items.map((item, i) => (
           <div
             key={item.title}
-            className={i % 2 === 0 ? "bg-blush-50" : "bg-white"}
+            className={`transition-colors duration-300 ${
+              i % 2 === 0
+                ? "bg-blush-50 hover:bg-blush-200/70"
+                : "bg-white hover:bg-blush-50/60"
+            }`}
           >
             <div className="shell grid grid-cols-[auto_1fr] items-start gap-x-[20px] gap-y-[8px] py-[24px] md:gap-x-[32px] md:py-[28px] xl:grid-cols-[80px_1fr_1fr] xl:items-center xl:gap-x-[40px] xl:py-[36px]">
               <span className="text-[28px] leading-none font-light text-accent/60 md:text-[32px]">

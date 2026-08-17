@@ -33,7 +33,7 @@ export function Formats() {
           return (
             <article
               key={item.name}
-              className={`flex flex-col rounded-[4px] px-[24px] py-[32px] md:px-[48px] md:py-[56px] ${
+              className={`group flex flex-col rounded-[4px] px-[24px] py-[32px] transition-shadow duration-300 hover:shadow-[0_18px_40px_rgba(30,30,30,0.10)] md:px-[48px] md:py-[56px] ${
                 dark ? "bg-ink text-white" : "bg-blush-50 text-ink"
               }`}
             >
@@ -49,8 +49,10 @@ export function Formats() {
                 {item.name}
               </h3>
 
+              {/* flex-1 прижимает разделитель и теги к низу карточки, поэтому
+                  в обеих карточках они на одной линии при любой длине текста */}
               <p
-                className={`mt-[20px] text-[14px] leading-[1.4] md:mt-[28px] md:text-[15px] ${
+                className={`mt-[20px] flex-1 text-[14px] leading-[1.4] md:mt-[28px] md:text-[15px] ${
                   dark ? "text-white/80" : "text-ink/80"
                 }`}
               >
@@ -77,7 +79,12 @@ export function Formats() {
                 className="mt-[28px] inline-flex w-fit items-center gap-[12px] text-[14px] underline underline-offset-[6px] transition-opacity hover:opacity-70 md:mt-[40px] md:text-[16px]"
               >
                 {tCta("more")}
-                <span aria-hidden>→</span>
+                <span
+                  aria-hidden
+                  className="transition-transform duration-300 group-hover:translate-x-[6px]"
+                >
+                  →
+                </span>
               </a>
             </article>
           );
