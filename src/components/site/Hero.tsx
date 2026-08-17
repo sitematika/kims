@@ -52,13 +52,13 @@ export function Hero() {
           </div>
 
           <div className="flex flex-col gap-[16px] md:max-w-[320px] xl:max-w-none xl:flex-row xl:items-center xl:gap-[32px]">
-            <Button href="#lead" variant="dark" className="w-full xl:w-[287px]">
+            <Button href="#lead" variant="dark" className="w-full xl:w-auto xl:min-w-[287px]">
               {tCta("franchise")}
             </Button>
             <Button
               href="#formats"
               variant="blush"
-              className="w-full xl:w-[286px]"
+              className="w-full xl:w-auto xl:min-w-[286px]"
             >
               {tCta("formats")}
             </Button>

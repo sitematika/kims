@@ -21,12 +21,249 @@
     "franchise": "Learn about the franchise",
     "formats": "View formats",
     "presentation": "Get the presentation",
-    "more": "Learn more"
+    "more": "Learn more",
+    "go": "Watch"
   },
   "hero": {
     "badge": "Franchise of a premium wardrobe care service",
     "title": "KIMS. Not just a service. A new culture of consumption.",
     "lead": "This is not a dry cleaner. This is a space of total wardrobe care.",
     "text": "We don't compete with local players — we create a new market by combining a technological monopoly, true craftsmanship and an aesthetic client experience. Open a KIMS location in your city with a model already proven in Ukraine and Europe."
+  },
+  "stats": {
+    "network": { "label": "Locations across Ukraine and Europe", "value": "119" },
+    "clients": { "label": "Clients have trusted us with their wardrobe", "value": "1", "unit": "m +" },
+    "years": { "label": "Years on the market", "value": "29" },
+    "ownUa": {
+      "label": "Owned in Ukraine",
+      "a": "4", "aUnit": "plants",
+      "b": "58", "bUnit": "drop-off points"
+    },
+    "franchiseUa": {
+      "label": "Franchised in Ukraine",
+      "a": "7", "aUnit": "plants",
+      "b": "42", "bUnit": "drop-off points"
+    },
+    "ownEu": {
+      "label": "Owned in Europe",
+      "a": "1", "aUnit": "plant",
+      "b": "7", "bUnit": "drop-off points"
+    }
+  },
+  "gallery": {
+    "titleStart": "This is how",
+    "titleAccent": "KIMS",
+    "titleEnd": "looks in every city"
+  },
+  "invest": {
+    "label": "Investment",
+    "value": "from € 200,000",
+    "paybackLabel": "Payback period —",
+    "paybackValue": "from 1.5 – 2 years"
+  },
+  "founder": {
+    "badge": "From the founder",
+    "name": "Oleksandr Kohan",
+    "role": "Founder of KIMS",
+    "p1Strong": "KIMS started as a family business — one plant in Odesa, 1997.",
+    "p1": "Today it is the number one dry cleaning and laundry company in Ukraine, and a network that already operates in Europe.",
+    "p2Strong": "Over 29 years we have built a system:",
+    "p2": "standards, processes, a team, a culture of service. When the time came to enter the international market, we didn't simply transfer the Ukrainian model — we adapted it to new conditions.",
+    "p3Strong": "The KIMS franchise is the result of that work.",
+    "p3": "A partner in Lviv, Barcelona or Tashkent gets more than a name and a logo on the façade — they get a system proven in two markets.",
+    "quoteStart": "We have already proven that",
+    "quoteStrong1": "we know how to build a leader.",
+    "quoteMid": "Now we are building an international network —",
+    "quoteStrong2": "and looking for partners who think the same way.",
+    "youtube": "More about KIMS — on our",
+    "youtubeLink": "YouTube channel"
+  },
+  "market": {
+    "badge": "The brand and the market",
+    "title": "The market is growing. But we play in our own league.",
+    "lead": "European dry cleaners are about basic cleaning. KIMS is about care, emotion and trust.",
+    "text": "In most countries the dry cleaning segment remains fragmented: local services with low standards, no strong brands and a weak client experience. Europe today has no brand that combines luxury-level service, flawless craft and emotional value. KIMS does not divide the existing market — we are shaping an entirely new niche in which you become the leader.",
+    "figures": [
+      { "value": "$25.2 bn", "text": "Size of the professional garment care market in Europe in 2025." },
+      { "value": "$27.4 bn", "text": "Size of the professional garment care market in the Asia-Pacific region in 2024." },
+      { "value": "+6.5%", "text": "Average annual growth of the European market." },
+      { "value": "+9.1%", "text": "Average annual growth of the Asia-Pacific market." }
+    ],
+    "pillarsTitleStrong": "Three pillars",
+    "pillarsTitle": "of the KIMS standard",
+    "pillars": [
+      {
+        "title": "The only ones who guarantee the result",
+        "text": "KIMS officially guarantees cleaning quality. Our expertise with fabrics and stains has been built over years of practice."
+      },
+      {
+        "title": "In-house R&D and proprietary algorithms",
+        "text": "Our proprietary technology charts and expertise in removing the most difficult stains have no equivalent. This is closed know-how, shared exclusively with network partners."
+      },
+      {
+        "title": "The exclusive trust of global luxury",
+        "text": "We know how to work with the most complex material combinations, designer leather and cashmere — which is why owners of Hermès, Dior, Zegna and Louis Vuitton pieces choose us to care for their wardrobe."
+      }
+    ],
+    "source": "*Market Data Forecast, Europe Dry Cleaning Market, 2026, Market.us, Dry Cleaning and Laundry Services Market, 2024, Grand View Research, Dry-Cleaning and Laundry Services Market, 2025"
+  },
+  "benefits": {
+    "badge": "Why partners choose KIMS",
+    "title": "What you get",
+    "subtitle": "The advantages of partnering with the brand that sets the standard",
+    "items": [
+      {
+        "title": "A business in a new category, with no competitors",
+        "text": "You invest in a format where competition is absent and demand for a premium approach is already formed."
+      },
+      {
+        "title": "The KIMS technology code",
+        "text": "Access to the closed KIMS knowledge base and unique methods for complex cases: from stain removal to the full restoration of garments."
+      },
+      {
+        "title": "Exclusive supply",
+        "text": "For 25 years KIMS has been the exclusive distributor of equipment, chemicals and technologies for the network's locations."
+      },
+      {
+        "title": "Training that protects the standard",
+        "text": "Training before opening, regular seminars for technologists, staff certification."
+      },
+      {
+        "title": "Marketing handled for you",
+        "text": "An annual marketing strategy, ready-made templates and recommendations for advertising campaigns."
+      },
+      {
+        "title": "A personal manager",
+        "text": "One person who knows your location and is always in touch."
+      },
+      {
+        "title": "A network that strengthens everyone",
+        "text": "A single loyalty programme where a KIMS client stays a KIMS client in any city."
+      }
+    ]
+  },
+  "formats": {
+    "badge": "Formats and financial terms",
+    "title": "A business model proven in Ukraine and Europe",
+    "subtitle": "Two franchise formats for your scale",
+    "items": [
+      {
+        "label": "Format 01",
+        "name": "Premium HUB",
+        "text": "A boutique format with its own plant in a single location (100–150 m², a team of up to 10 people). Designed for a premium audience and a high average check. The optimal choice for a fast entry into a new market",
+        "tagA": "100–150 m²",
+        "tagB": "up to 10 people"
+      },
+      {
+        "label": "Format 02",
+        "name": "Flagship",
+        "text": "An extended format with a central plant and a network of drop-off points. Greater scale, a larger team, higher revenue. For partners ready to build an infrastructure network of locations and dominate their region",
+        "tagA": "Plant + network of points",
+        "tagB": "Regional coverage"
+      }
+    ]
+  },
+  "developers": {
+    "badge": "Special offer",
+    "titleStrong": "KIMS as",
+    "title": "an infrastructure solution",
+    "text": "A separate offer for developers. Integrating a premium laundry and dry cleaning service into new residential complexes, upscale gated communities, hotel complexes and SPAs",
+    "points": [
+      "Raises the status and capitalisation of the complex",
+      "Covers a basic need of affluent residents for quality service",
+      "Works in the Zero Personnel format (automated model) or as a classic one",
+      "Generates stable, high rental or operating income"
+    ]
+  },
+  "package": {
+    "badge": "What the package includes",
+    "title": "Every element of the package shortens the path from signing to your first client",
+    "subtitle": "Everything you need for the launch is already included",
+    "beforeTitle": "Before opening",
+    "before": [
+      "Brand, trademark licence and brand book",
+      "A standard design project adapted to your location",
+      "A five-year financial model",
+      "Location search and assessment",
+      "Team training before opening",
+      "A launch marketing plan",
+      "Legal setup for the franchisee's country",
+      "A personal manager from signing to opening"
+    ],
+    "afterTitle": "After opening",
+    "after": [
+      "Guaranteed supply of chemicals and consumables",
+      "Templates and recommendations for social media and advertising",
+      "An annual marketing strategy",
+      "Ongoing team training and seminars for technologists",
+      "Monitoring of key metrics and operational support"
+    ]
+  },
+  "case": {
+    "badge": "Success story",
+    "titleStart": "From zero to",
+    "titleAccent": "€ 1.1 m",
+    "titleEnd": "in turnover in two years",
+    "subtitle": "A model that works",
+    "years": [
+      { "year": "2023", "value": "€300,000", "share": 27 },
+      { "year": "2024", "value": "€600,000", "share": 55 },
+      { "year": "2025", "value": "€1,100,000", "share": 100 }
+    ],
+    "city": "Riga · Latvia",
+    "growthStart": "Growth of",
+    "growthValue": "263%",
+    "growthEnd": "in two years.",
+    "workshops": "1",
+    "workshopsUnit": "plant",
+    "points": "7",
+    "pointsUnit": "drop-off points",
+    "slides": ["Before opening"]
+  },
+  "steps": {
+    "badge": "How it works",
+    "titleStart": "From the first contact to the",
+    "titleStrong": "opening",
+    "items": [
+      { "title": "Request", "text": "You leave your contact. A manager gets in touch within 24 hours" },
+      { "title": "Online introduction", "text": "We walk you through the brand, the format and the terms. You ask all the uncomfortable questions right away" },
+      { "title": "Offline meeting", "text": "You come to us: the team, an operating location, the plant. You see what the standard looks like in practice" },
+      { "title": "Financial model", "text": "A calculation for your format and market. You study it before signing anything" },
+      { "title": "Signing", "text": "Signing the agreement, approving the premises, documents, delivery of equipment and chemicals. Full support up to the launch" },
+      { "title": "Opening", "text": "A launch team, staff training, the official opening of the location and ongoing operational support" }
+    ]
+  },
+  "lead": {
+    "badge": "Become a partner",
+    "titleAccent": "Open a KIMS location",
+    "title": "in your city",
+    "text": "The niche is open to those ready to act",
+    "contact": "Yelizaveta Yehorova, Commercial Director",
+    "phone": "+380 50 776 48 47",
+    "email": "egorova@kims.com.ua",
+    "nameLabel": "Your name",
+    "namePlaceholder": "First and last name",
+    "phoneLabel": "Phone number",
+    "phonePlaceholder": "+380",
+    "cityLabel": "City where you plan to open",
+    "cityPlaceholder": "City and country",
+    "note": "We reply within 24 hours.",
+    "sending": "Sending…",
+    "successTitle": "Thank you, we've got your request",
+    "successText": "A manager will contact you within 24 hours.",
+    "errorRequired": "Please fill in this field",
+    "errorPhone": "Please enter a valid phone number",
+    "errorServer": "The request could not be sent. Please try again or email us."
+  },
+  "footer": {
+    "tagline": "We love people. People love life",
+    "columns": [
+      { "title": "Instagram", "links": ["Ukraine", "West", "Latvia"] },
+      { "title": "Facebook", "links": ["Ukraine", "Europe"] },
+      { "title": "TikTok", "links": ["West", "Kyiv, Odesa", "Latvia"] },
+      { "title": "YouTube", "links": ["KIMS"] }
+    ],
+    "signature": "KIMS. We love people. People love life.",
+    "copyright": "© 2026 KIMS. All rights reserved."
   }
 }

@@ -1,0 +1,120 @@
+"use client";
+
+import Image from "next/image";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { Badge } from "@/components/ui/Badge";
+
+type Year = { year: string; value: string; share: number };
+
+const slideImages = ["/img/case-riga.webp"];
+
+export function CaseStudy() {
+  const t = useTranslations("case");
+  const years = t.raw("years") as Year[];
+  const slides = t.raw("slides") as string[];
+  const [active, setActive] = useState(0);
+
+  const go = (dir: -1 | 1) =>
+    setActive((i) => (i + dir + slides.length) % slides.length);
+
+  return (
+    <section id="case" className="shell pt-[56px] md:pt-[80px] xl:pt-[110px]">
+      <Badge>{t("badge")}</Badge>
+
+      <div className="mt-[24px] grid grid-cols-1 gap-[32px] xl:mt-[32px] xl:grid-cols-2 xl:gap-[40px]">
+        <div className="flex flex-col">
+          <h2 className="text-[22px] leading-[1.2] tracking-[-0.5px] uppercase md:text-[28px] xl:text-[32px]">
+            {t("titleStart")}{" "}
+            <strong className="font-medium">{t("titleAccent")}</strong>
+            <br />
+            {t("titleEnd")}
+          </h2>
+          <p className="mt-[12px] text-[13px] text-ink/60 md:text-[14px]">
+            {t("subtitle")}
+          </p>
+
+          <div className="mt-[24px] flex flex-col xl:mt-[32px]">
+            {years.map((y) => (
+              <div
+                key={y.year}
+                className="flex items-center gap-[16px] border-t border-ink/10 py-[20px] last:border-b md:gap-[24px] md:py-[24px]"
+              >
+                <span className="w-[44px] shrink-0 text-[14px] text-ink/50 md:text-[16px]">
+                  {y.year}
+                </span>
+                <span className="h-[10px] flex-1 rounded-full bg-blush-50">
+                  <span
+                    className="block h-full rounded-full bg-blush-300"
+                    style={{ width: `${y.share}%` }}
+                  />
+                </span>
+                <span className="shrink-0 text-[18px] font-light md:text-[24px]">
+                  {y.value}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-[24px] grid grid-cols-1 gap-px overflow-hidden rounded-[4px] sm:grid-cols-[1fr_auto]">
+            <div className="bg-blush-50 px-[24px] py-[24px] md:px-[32px] md:py-[28px]">
+              <p className="text-[20px] md:text-[24px]">{t("city")}</p>
+              <p className="mt-[8px] text-[14px] md:text-[16px]">
+                {t("growthStart")}{" "}
+                <span className="text-accent">{t("growthValue")}</span>{" "}
+                {t("growthEnd")}
+              </p>
+            </div>
+            <div className="flex gap-[32px] bg-blush-200 px-[24px] py-[24px] sm:flex-col sm:gap-[8px] md:px-[32px]">
+              {[
+                [t("workshops"), t("workshopsUnit")],
+                [t("points"), t("pointsUnit")],
+              ].map(([value, unit]) => (
+                <p key={unit} className="flex items-baseline gap-[8px]">
+                  <span className="text-[24px] font-light">{value}</span>
+                  <span className="text-[13px] text-ink/60">{unit}</span>
+                </p>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="relative overflow-hidden rounded-[4px]">
+          <div className="relative aspect-[4/3] xl:aspect-auto xl:h-full xl:min-h-[520px]">
+            <Image
+              src={slideImages[active] ?? slideImages[0]}
+              alt={slides[active]}
+              fill
+              sizes="(max-width: 1280px) 100vw, 50vw"
+              className="object-cover"
+            />
+          </div>
+
+          <div className="absolute right-[12px] bottom-[12px] left-[12px] flex items-center justify-between gap-[16px] rounded-[4px] bg-white px-[20px] py-[14px] xl:right-[20px] xl:bottom-[20px] xl:left-[20px]">
+            <p className="text-[14px] md:text-[16px]">{slides[active]}</p>
+            <div className="flex items-center gap-[20px]">
+              <button
+                type="button"
+                onClick={() => go(-1)}
+                disabled={slides.length < 2}
+                aria-label="←"
+                className="text-[18px] transition-opacity disabled:opacity-30"
+              >
+                ←
+              </button>
+              <button
+                type="button"
+                onClick={() => go(1)}
+                disabled={slides.length < 2}
+                aria-label="→"
+                className="text-[18px] transition-opacity disabled:opacity-30"
+              >
+                →
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

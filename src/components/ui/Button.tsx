@@ -4,14 +4,14 @@ import type { ComponentProps, ReactNode } from "react";
 type Variant = "dark" | "blush" | "accent";
 
 const base =
-  "inline-flex items-center justify-center rounded-[4px] text-center font-medium transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink";
+  "inline-flex items-center justify-center rounded-[4px] text-center font-medium whitespace-nowrap transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink";
 
 const variants: Record<Variant, string> = {
   dark: "bg-ink text-white hover:bg-ink-soft",
   blush: "bg-blush-50 text-ink hover:bg-blush-200 backdrop-blur-[4px]",
   // Розовая кнопка с мраморной текстурой из макета
   accent:
-    "relative text-white bg-blush-300 hover:bg-accent bg-[url('/img/texture-marble.webp')] bg-cover bg-center bg-blend-soft-light",
+    "relative text-white bg-blush-300 hover:bg-accent bg-[url('/img/button-texture.webp')] bg-cover bg-center",
 };
 
 const sizes = {
