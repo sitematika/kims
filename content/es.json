@@ -260,15 +260,15 @@
     "pointsUnit": "puntos",
     "slides": {
       "riga-before": "Antes de la apertura",
-      "case-02-spray": "La producción por dentro",
-      "case-03-chemistry": "La producción por dentro",
-      "case-04-machines": "La producción por dentro",
-      "case-05-bottles": "La producción por dentro",
-      "case-06-coat": "La producción por dentro",
-      "case-07-workshop": "La producción por dentro",
-      "case-08-steam": "La producción por dentro",
-      "case-09-team": "La producción por dentro",
-      "case-10-ironing": "La producción por dentro"
+      "case-02-spray": "Limpieza localizada a presión",
+      "case-03-chemistry": "Eliminación de manchas con vapor",
+      "case-04-machines": "Línea de máquinas profesionales",
+      "case-05-bottles": "Química elegida según el tejido",
+      "case-06-coat": "Tratamiento de prendas de abrigo",
+      "case-07-workshop": "La planta en funcionamiento",
+      "case-08-steam": "Planchado a mano de tejidos delicados",
+      "case-09-team": "Control de calidad en cada etapa",
+      "case-10-ironing": "Acabado final antes de la entrega"
     }
   },
   "steps": {

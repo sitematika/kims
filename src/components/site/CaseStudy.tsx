@@ -45,6 +45,21 @@ export function CaseStudy({ slides: source }: { slides: Slide[] }) {
 
   const current = slides[active] ?? slides[0];
 
+  // В DOM держим только текущий кадр и соседние: остальные подгружаются
+  // по мере листания, чтобы первый экран не тянул все фото сразу
+  const [mounted, setMounted] = useState(() => new Set([0]));
+  useEffect(() => {
+    const n = slides.length;
+    if (!n) return;
+    setMounted((prev) => {
+      const next = new Set(prev);
+      [active, (active + 1) % n, (active - 1 + n) % n].forEach((i) =>
+        next.add(i),
+      );
+      return next.size === prev.size ? prev : next;
+    });
+  }, [active, slides.length]);
+
   return (
     <section id="case" className="shell pt-[56px] md:pt-[80px] xl:pt-[110px]">
       <Badge>{t("badge")}</Badge>
@@ -111,20 +126,36 @@ export function CaseStudy({ slides: source }: { slides: Slide[] }) {
         </div>
 
         <div className="relative overflow-hidden rounded-[4px]">
-          <div className="relative aspect-[4/3] xl:aspect-auto xl:h-full xl:min-h-[520px]">
-            <Image
-              key={current?.image}
-              src={current?.image ?? "/img/case-riga.webp"}
-              alt={current?.caption ?? ""}
-              fill
-              sizes="(max-width: 1280px) 100vw, 50vw"
-              className="object-cover"
-            />
+          <div className="relative aspect-[4/3] bg-blush-50 xl:aspect-auto xl:h-full xl:min-h-[520px]">
+            {/* Кадры лежат стопкой и переключаются прозрачностью, поэтому
+                смены мгновенные: соседние слайды уже загружены */}
+            {slides.map((slide, i) =>
+              mounted.has(i) ? (
+                <Image
+                  key={slide.id}
+                  src={slide.image}
+                  alt={slide.caption}
+                  fill
+                  priority={i === 0}
+                  sizes="(max-width: 1280px) 100vw, 50vw"
+                  className={`object-cover transition-[opacity,transform] duration-500 ease-out ${
+                    i === active
+                      ? "scale-100 opacity-100"
+                      : "scale-[1.02] opacity-0"
+                  }`}
+                />
+              ) : null,
+            )}
           </div>
 
           <div className="absolute right-[12px] bottom-[12px] left-[12px] flex items-center justify-between gap-[16px] rounded-[4px] bg-white px-[20px] py-[14px] xl:right-[20px] xl:bottom-[20px] xl:left-[20px]">
-            <p className="text-[14px] md:text-[16px]">{current?.caption}</p>
-            <div className="flex items-center gap-[20px]">
+            <p
+              key={current?.id}
+              className="animate-[rise_0.4s_ease-out] text-[14px] md:text-[16px]"
+            >
+              {current?.caption}
+            </p>
+            <div className="flex items-center gap-[12px]">
               {slides.length > 1 && (
                 <span className="text-[13px] text-ink/40">
                   {active + 1}/{slides.length}
@@ -135,7 +166,7 @@ export function CaseStudy({ slides: source }: { slides: Slide[] }) {
                 onClick={() => go(-1)}
                 disabled={slides.length < 2}
                 aria-label="←"
-                className="text-[18px] transition-opacity disabled:opacity-30"
+                className="flex h-[32px] w-[32px] items-center justify-center rounded-full text-[18px] transition-colors duration-200 hover:bg-blush-50 disabled:opacity-30 disabled:hover:bg-transparent"
               >
                 ←
               </button>
@@ -144,7 +175,7 @@ export function CaseStudy({ slides: source }: { slides: Slide[] }) {
                 onClick={() => go(1)}
                 disabled={slides.length < 2}
                 aria-label="→"
-                className="text-[18px] transition-opacity disabled:opacity-30"
+                className="flex h-[32px] w-[32px] items-center justify-center rounded-full text-[18px] transition-colors duration-200 hover:bg-blush-50 disabled:opacity-30 disabled:hover:bg-transparent"
               >
                 →
               </button>

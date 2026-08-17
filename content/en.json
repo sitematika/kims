@@ -260,15 +260,15 @@
     "pointsUnit": "drop-off points",
     "slides": {
       "riga-before": "Before opening",
-      "case-02-spray": "Inside our production",
-      "case-03-chemistry": "Inside our production",
-      "case-04-machines": "Inside our production",
-      "case-05-bottles": "Inside our production",
-      "case-06-coat": "Inside our production",
-      "case-07-workshop": "Inside our production",
-      "case-08-steam": "Inside our production",
-      "case-09-team": "Inside our production",
-      "case-10-ironing": "Inside our production"
+      "case-02-spray": "Pressure spot cleaning",
+      "case-03-chemistry": "Steam stain removal",
+      "case-04-machines": "A line of professional machines",
+      "case-05-bottles": "Chemistry matched to the fabric",
+      "case-06-coat": "Outerwear treatment",
+      "case-07-workshop": "The plant at work",
+      "case-08-steam": "Hand ironing of delicate fabrics",
+      "case-09-team": "Quality control at every stage",
+      "case-10-ironing": "Final finishing before handover"
     }
   },
   "steps": {
