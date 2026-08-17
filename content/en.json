@@ -258,9 +258,9 @@
     "workshopsUnit": "plant",
     "points": "7",
     "pointsUnit": "drop-off points",
-    "slides": [
-      "Before opening"
-    ]
+    "slides": {
+      "riga-before": "Before opening"
+    }
   },
   "steps": {
     "badge": "How it works",

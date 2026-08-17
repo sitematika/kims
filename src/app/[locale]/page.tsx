@@ -1,4 +1,5 @@
 import { setRequestLocale } from "next-intl/server";
+import { getMedia } from "@/lib/media";
 import { Preloader } from "@/components/site/Preloader";
 import { Header } from "@/components/site/Header";
 import { Hero } from "@/components/site/Hero";
@@ -24,6 +25,8 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
 
+  const media = await getMedia();
+
   return (
     <div id="top">
       <Preloader />
@@ -40,7 +43,7 @@ export default async function HomePage({
         <InvestBand className="pt-[56px] md:pt-[80px] xl:pt-[110px]" />
         <Developers />
         <PackageSection />
-        <CaseStudy />
+        <CaseStudy slides={media.caseSlides} />
         <InvestBand className="pt-[56px] md:pt-[80px] xl:pt-[110px]" />
         <Steps />
         <LeadForm />

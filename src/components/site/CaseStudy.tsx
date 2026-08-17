@@ -7,13 +7,18 @@ import { Badge } from "@/components/ui/Badge";
 import { CountUp } from "@/components/ui/CountUp";
 
 type Year = { year: string; value: string; share: number };
+type Slide = { id: string; image: string };
 
-const slideImages = ["/img/case-riga.webp"];
-
-export function CaseStudy() {
+export function CaseStudy({ slides: source }: { slides: Slide[] }) {
   const t = useTranslations("case");
   const years = t.raw("years") as Year[];
-  const slides = t.raw("slides") as string[];
+  const captions = t.raw("slides") as Record<string, string>;
+
+  // подписи живут в переводах, фото — в реестре медиа: собираем вместе
+  const slides = source.map((slide) => ({
+    ...slide,
+    caption: captions?.[slide.id] ?? "",
+  }));
   const [active, setActive] = useState(0);
   const [barsIn, setBarsIn] = useState(false);
   const barsRef = useRef<HTMLDivElement>(null);
@@ -37,6 +42,8 @@ export function CaseStudy() {
 
   const go = (dir: -1 | 1) =>
     setActive((i) => (i + dir + slides.length) % slides.length);
+
+  const current = slides[active] ?? slides[0];
 
   return (
     <section id="case" className="shell pt-[56px] md:pt-[80px] xl:pt-[110px]">
@@ -106,8 +113,9 @@ export function CaseStudy() {
         <div className="relative overflow-hidden rounded-[4px]">
           <div className="relative aspect-[4/3] xl:aspect-auto xl:h-full xl:min-h-[520px]">
             <Image
-              src={slideImages[active] ?? slideImages[0]}
-              alt={slides[active]}
+              key={current?.image}
+              src={current?.image ?? "/img/case-riga.webp"}
+              alt={current?.caption ?? ""}
               fill
               sizes="(max-width: 1280px) 100vw, 50vw"
               className="object-cover"
@@ -115,8 +123,13 @@ export function CaseStudy() {
           </div>
 
           <div className="absolute right-[12px] bottom-[12px] left-[12px] flex items-center justify-between gap-[16px] rounded-[4px] bg-white px-[20px] py-[14px] xl:right-[20px] xl:bottom-[20px] xl:left-[20px]">
-            <p className="text-[14px] md:text-[16px]">{slides[active]}</p>
+            <p className="text-[14px] md:text-[16px]">{current?.caption}</p>
             <div className="flex items-center gap-[20px]">
+              {slides.length > 1 && (
+                <span className="text-[13px] text-ink/40">
+                  {active + 1}/{slides.length}
+                </span>
+              )}
               <button
                 type="button"
                 onClick={() => go(-1)}

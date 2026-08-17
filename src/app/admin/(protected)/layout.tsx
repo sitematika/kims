@@ -41,8 +41,14 @@ export default async function ProtectedLayout({
           ))}
 
           <Link
+            href="/admin/case-slides"
+            className="mt-[8px] rounded-[4px] px-[12px] py-[10px] text-[14px] transition-colors hover:bg-blush-50"
+          >
+            Слайдер кейса
+          </Link>
+          <Link
             href="/admin/leads"
-            className="mt-[8px] rounded-[4px] bg-blush-50 px-[12px] py-[10px] text-[14px] transition-colors hover:bg-blush-200"
+            className="rounded-[4px] bg-blush-50 px-[12px] py-[10px] text-[14px] transition-colors hover:bg-blush-200"
           >
             Заявки
           </Link>

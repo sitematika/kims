@@ -258,9 +258,9 @@
     "workshopsUnit": "цех",
     "points": "7",
     "pointsUnit": "пунктов",
-    "slides": [
-      "Перед открытием"
-    ]
+    "slides": {
+      "riga-before": "Перед открытием"
+    }
   },
   "steps": {
     "badge": "Как это происходит",
