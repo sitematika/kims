@@ -259,7 +259,16 @@
     "points": "7",
     "pointsUnit": "drop-off points",
     "slides": {
-      "riga-before": "Before opening"
+      "riga-before": "Before opening",
+      "case-02-spray": "Inside our production",
+      "case-03-chemistry": "Inside our production",
+      "case-04-machines": "Inside our production",
+      "case-05-bottles": "Inside our production",
+      "case-06-coat": "Inside our production",
+      "case-07-workshop": "Inside our production",
+      "case-08-steam": "Inside our production",
+      "case-09-team": "Inside our production",
+      "case-10-ironing": "Inside our production"
     }
   },
   "steps": {

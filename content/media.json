@@ -3,6 +3,42 @@
     {
       "id": "riga-before",
       "image": "/img/case-riga.webp"
+    },
+    {
+      "id": "case-02-spray",
+      "image": "/img/case-02-spray.webp"
+    },
+    {
+      "id": "case-03-chemistry",
+      "image": "/img/case-03-chemistry.webp"
+    },
+    {
+      "id": "case-04-machines",
+      "image": "/img/case-04-machines.webp"
+    },
+    {
+      "id": "case-05-bottles",
+      "image": "/img/case-05-bottles.webp"
+    },
+    {
+      "id": "case-06-coat",
+      "image": "/img/case-06-coat.webp"
+    },
+    {
+      "id": "case-07-workshop",
+      "image": "/img/case-07-workshop.webp"
+    },
+    {
+      "id": "case-08-steam",
+      "image": "/img/case-08-steam.webp"
+    },
+    {
+      "id": "case-09-team",
+      "image": "/img/case-09-team.webp"
+    },
+    {
+      "id": "case-10-ironing",
+      "image": "/img/case-10-ironing.webp"
     }
   ]
 }
