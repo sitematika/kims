@@ -1,0 +1,32 @@
+{
+  "meta": {
+    "title": "KIMS — franquicia del servicio premium de cuidado del vestuario",
+    "description": "No es solo un servicio: es una nueva cultura de consumo. Abra un establecimiento KIMS en su ciudad con un modelo que ya funciona en Ucrania y Europa."
+  },
+  "nav": {
+    "kims": "KIMS",
+    "brand": "Sobre la marca",
+    "benefits": "Ventajas",
+    "formats": "Formatos",
+    "developers": "Para promotores",
+    "package": "Paquete del socio",
+    "case": "Caso real",
+    "steps": "Etapas",
+    "open": "Navegación",
+    "close": "Cerrar menú",
+    "tagline": "KIMS. We love people. People love life."
+  },
+  "cta": {
+    "lead": "Dejar una solicitud",
+    "franchise": "Conocer la franquicia",
+    "formats": "Ver los formatos",
+    "presentation": "Obtener la presentación",
+    "more": "Saber más"
+  },
+  "hero": {
+    "badge": "Franquicia del servicio premium de cuidado del vestuario",
+    "title": "KIMS. No es solo un servicio. Es una nueva cultura de consumo.",
+    "lead": "No es una tintorería. Es un espacio de cuidado total del vestuario.",
+    "text": "No competimos con los actores locales: creamos un mercado nuevo uniendo el monopolio tecnológico, el oficio artesanal y una experiencia de cliente estética. Abra un establecimiento KIMS en su ciudad con un modelo que ya funciona en Ucrania y Europa."
+  }
+}

@@ -1,26 +1,67 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: var(--font-onest), ui-sans-serif, system-ui, sans-serif;
+
+  /* Тёмная гамма */
+  --color-ink: #1e1e1e;
+  --color-ink-deep: #0f0f0f;
+  --color-ink-soft: #2f2f2f;
+  --color-ink-line: #454545;
+  --color-ink-warm: #2c2621;
+  --color-ink-warm-deep: #141210;
+
+  /* Розовая гамма / акцент */
+  --color-blush-50: #f6ebe9;
+  --color-blush-100: #f0ece7;
+  --color-blush-200: #e8d9d6;
+  --color-blush-300: #dcc0ba;
+  --color-blush-400: #e1bfb9;
+  --color-accent: #c99a90;
+
+  /* Нейтральные */
+  --color-line: #d0d0d0;
+  --color-line-soft: #f2f2f2;
+  --color-paper: #f5f5f5;
+  --color-muted: #979797;
+  --color-muted-warm: #b6afa8;
+  --color-muted-dark: #8b8b8b;
+
+  /* Контейнер по макетам: 1440/1240, 768/660, 375/335 */
+  --container-shell: 1240px;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --shell-pad: 20px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@media (min-width: 768px) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --shell-pad: 54px;
   }
 }
 
+@media (min-width: 1280px) {
+  :root {
+    --shell-pad: 100px;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  /* высота липкой шапки, чтобы якоря не уезжали под неё */
+  scroll-padding-top: 80px;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+@utility shell {
+  width: 100%;
+  max-width: calc(var(--container-shell) + var(--shell-pad) * 2);
+  margin-inline: auto;
+  padding-inline: var(--shell-pad);
 }
