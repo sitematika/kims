@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# KIMS — лендинг франшизы
 
-## Getting Started
+Next.js 16 (App Router) + Tailwind v4 + next-intl. Четыре языка: `uk` (основной), `en`, `es`, `ru`.
 
-First, run the development server:
+## Запуск
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # заполнить ADMIN_PASSWORD
+npm run dev                  # http://localhost:3003
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Структура
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `src/app/[locale]/` — сам лендинг, страница собирается из секций в `src/components/site/`
+- `src/app/admin/` — админка (`/admin`, пароль из `ADMIN_PASSWORD`)
+- `content/{uk,en,es,ru}.json` — **весь текст сайта**, источник правды. Это то,
+  что правит админка; при сохранении страницы пересобираются
+- `src/lib/content.ts` — доступ к контенту. Сейчас читает и пишет JSON-файлы:
+  работает локально и на VPS. Для serverless (Vercel) файловая система только на
+  чтение — там надо заменить реализацию этого модуля на таблицу в Postgres,
+  остальной код не меняется
+- `public/img/` — оптимизированные фото (WebP), `design-assets/` — исходники из
+  Figma, в сборку не попадают
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Заявки
 
-## Learn More
+`POST /api/lead` — валидация и отправка. Адресат настраивается окружением:
 
-To learn more about Next.js, take a look at the following resources:
+- `LEADS_WEBHOOK_URL` — любой вебхук, принимающий JSON (Telegram-бот, CRM, Make)
+- `LEADS_SAVE_LOCAL=1` — дублировать в `data/leads.jsonl`, чтобы видеть заявки
+  в админке на `/admin/leads` и выгружать CSV
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Макет
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Figma `iHk4C7BgqDB8ChoMsilhyT`: десктоп `414:5`, планшет `733:1753`, мобильный `733:1752`.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Шрифт в макете — TT Norms Pro (коммерческий). Заменён на **Onest**: полная
+кириллица, Google Fonts. Замена обратно — одна строка в `src/app/[locale]/layout.tsx`
+и токен `--font-sans` в `globals.css`.

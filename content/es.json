@@ -31,23 +31,39 @@
     "text": "No competimos con los actores locales: creamos un mercado nuevo uniendo el monopolio tecnológico, el oficio artesanal y una experiencia de cliente estética. Abra un establecimiento KIMS en su ciudad con un modelo que ya funciona en Ucrania y Europa."
   },
   "stats": {
-    "network": { "label": "Establecimientos de la red en Ucrania y Europa", "value": "119" },
-    "clients": { "label": "Clientes nos han confiado su vestuario", "value": "1", "unit": "M +" },
-    "years": { "label": "Años en el mercado", "value": "29" },
+    "network": {
+      "label": "Establecimientos de la red en Ucrania y Europa",
+      "value": "119"
+    },
+    "clients": {
+      "label": "Clientes nos han confiado su vestuario",
+      "value": "1",
+      "unit": "M +"
+    },
+    "years": {
+      "label": "Años en el mercado",
+      "value": "29"
+    },
     "ownUa": {
       "label": "Propios en Ucrania",
-      "a": "4", "aUnit": "plantas",
-      "b": "58", "bUnit": "puntos de recogida"
+      "a": "4",
+      "aUnit": "plantas",
+      "b": "58",
+      "bUnit": "puntos de recogida"
     },
     "franchiseUa": {
       "label": "Franquicias en Ucrania",
-      "a": "7", "aUnit": "plantas",
-      "b": "42", "bUnit": "puntos de recogida"
+      "a": "7",
+      "aUnit": "plantas",
+      "b": "42",
+      "bUnit": "puntos de recogida"
     },
     "ownEu": {
       "label": "Propios en Europa",
-      "a": "1", "aUnit": "planta",
-      "b": "7", "bUnit": "puntos de recogida"
+      "a": "1",
+      "aUnit": "planta",
+      "b": "7",
+      "bUnit": "puntos de recogida"
     }
   },
   "gallery": {
@@ -84,10 +100,22 @@
     "lead": "Las tintorerías europeas hacen limpieza básica. KIMS es cuidado, emoción y confianza.",
     "text": "En la mayoría de los países el segmento de la tintorería sigue fragmentado: servicios locales con estándares bajos, ausencia de marcas fuertes y una experiencia de cliente débil. Hoy en Europa no existe una marca que combine un servicio de nivel lujo, un oficio impecable y valor emocional. KIMS no se reparte el mercado existente: creamos un nicho completamente nuevo en el que usted se convierte en líder.",
     "figures": [
-      { "value": "25 200 M$", "text": "Volumen del mercado del cuidado profesional de la ropa en Europa en 2025." },
-      { "value": "27 400 M$", "text": "Volumen del mercado del cuidado profesional de la ropa en la región Asia-Pacífico en 2024." },
-      { "value": "+6,5 %", "text": "Crecimiento medio anual del mercado europeo." },
-      { "value": "+9,1 %", "text": "Crecimiento medio anual del mercado de Asia-Pacífico." }
+      {
+        "value": "25 200 M$",
+        "text": "Volumen del mercado del cuidado profesional de la ropa en Europa en 2025."
+      },
+      {
+        "value": "27 400 M$",
+        "text": "Volumen del mercado del cuidado profesional de la ropa en la región Asia-Pacífico en 2024."
+      },
+      {
+        "value": "+6,5 %",
+        "text": "Crecimiento medio anual del mercado europeo."
+      },
+      {
+        "value": "+9,1 %",
+        "text": "Crecimiento medio anual del mercado de Asia-Pacífico."
+      }
     ],
     "pillarsTitleStrong": "Tres pilares",
     "pillarsTitle": "del estándar KIMS",
@@ -206,9 +234,21 @@
     "titleEnd": "de facturación en dos años",
     "subtitle": "Un modelo que funciona",
     "years": [
-      { "year": "2023", "value": "300 000 €", "share": 27 },
-      { "year": "2024", "value": "600 000 €", "share": 55 },
-      { "year": "2025", "value": "1 100 000 €", "share": 100 }
+      {
+        "year": "2023",
+        "value": "300 000 €",
+        "share": 27
+      },
+      {
+        "year": "2024",
+        "value": "600 000 €",
+        "share": 55
+      },
+      {
+        "year": "2025",
+        "value": "1 100 000 €",
+        "share": 100
+      }
     ],
     "city": "Riga · Letonia",
     "growthStart": "Crecimiento del",
@@ -218,19 +258,39 @@
     "workshopsUnit": "planta",
     "points": "7",
     "pointsUnit": "puntos",
-    "slides": ["Antes de la apertura"]
+    "slides": [
+      "Antes de la apertura"
+    ]
   },
   "steps": {
     "badge": "Cómo funciona",
     "titleStart": "Del primer contacto a la",
     "titleStrong": "apertura",
     "items": [
-      { "title": "Solicitud", "text": "Deja su contacto. Un gestor se pone en contacto con usted en 24 horas" },
-      { "title": "Presentación online", "text": "Le contamos la marca, el formato y las condiciones. Usted plantea todas las preguntas incómodas desde el principio" },
-      { "title": "Encuentro presencial", "text": "Viene a vernos: el equipo, un establecimiento en funcionamiento, la planta. Comprueba cómo se ve el estándar en la práctica" },
-      { "title": "Modelo financiero", "text": "Cálculo para su formato y su mercado. Lo estudia antes de firmar" },
-      { "title": "Firma", "text": "Firma del contrato, aprobación del local, documentación, suministro de equipos y productos químicos. Acompañamiento completo hasta el arranque" },
-      { "title": "Apertura", "text": "Equipo de lanzamiento, formación del personal, apertura oficial del establecimiento y soporte operativo posterior" }
+      {
+        "title": "Solicitud",
+        "text": "Deja su contacto. Un gestor se pone en contacto con usted en 24 horas"
+      },
+      {
+        "title": "Presentación online",
+        "text": "Le contamos la marca, el formato y las condiciones. Usted plantea todas las preguntas incómodas desde el principio"
+      },
+      {
+        "title": "Encuentro presencial",
+        "text": "Viene a vernos: el equipo, un establecimiento en funcionamiento, la planta. Comprueba cómo se ve el estándar en la práctica"
+      },
+      {
+        "title": "Modelo financiero",
+        "text": "Cálculo para su formato y su mercado. Lo estudia antes de firmar"
+      },
+      {
+        "title": "Firma",
+        "text": "Firma del contrato, aprobación del local, documentación, suministro de equipos y productos químicos. Acompañamiento completo hasta el arranque"
+      },
+      {
+        "title": "Apertura",
+        "text": "Equipo de lanzamiento, formación del personal, apertura oficial del establecimiento y soporte operativo posterior"
+      }
     ]
   },
   "lead": {
@@ -258,10 +318,35 @@
   "footer": {
     "tagline": "We love people. People love life",
     "columns": [
-      { "title": "Instagram", "links": ["Ucrania", "Oeste", "Letonia"] },
-      { "title": "Facebook", "links": ["Ucrania", "Europa"] },
-      { "title": "TikTok", "links": ["Oeste", "Kiev, Odesa", "Letonia"] },
-      { "title": "YouTube", "links": ["KIMS"] }
+      {
+        "title": "Instagram",
+        "links": [
+          "Ucrania",
+          "Oeste",
+          "Letonia"
+        ]
+      },
+      {
+        "title": "Facebook",
+        "links": [
+          "Ucrania",
+          "Europa"
+        ]
+      },
+      {
+        "title": "TikTok",
+        "links": [
+          "Oeste",
+          "Kiev, Odesa",
+          "Letonia"
+        ]
+      },
+      {
+        "title": "YouTube",
+        "links": [
+          "KIMS"
+        ]
+      }
     ],
     "signature": "KIMS. We love people. People love life.",
     "copyright": "© 2026 KIMS. Todos los derechos reservados."
