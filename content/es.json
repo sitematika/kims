@@ -322,7 +322,8 @@
     "successText": "Un gestor se pondrá en contacto con usted en 24 horas.",
     "errorRequired": "Complete este campo",
     "errorPhone": "Indique un número de teléfono válido",
-    "errorServer": "No se ha podido enviar la solicitud. Inténtelo de nuevo o escríbanos por correo."
+    "errorServer": "No se ha podido enviar la solicitud. Inténtelo de nuevo o escríbanos por correo.",
+    "download": "Descargar la presentación"
   },
   "footer": {
     "tagline": "We love people. People love life",

@@ -9,15 +9,27 @@ import path from "node:path";
  */
 
 export type Slide = { id: string; image: string };
-export type Media = { caseSlides: Slide[] };
+
+export type Presentation = {
+  file: string;
+  name: string;
+  size: number;
+  updatedAt: string;
+};
+
+export type Media = {
+  caseSlides: Slide[];
+  presentation?: Presentation | null;
+};
 
 const file = path.join(process.cwd(), "content", "media.json");
 
 export async function getMedia(): Promise<Media> {
   try {
-    return JSON.parse(await readFile(file, "utf8")) as Media;
+    const media = JSON.parse(await readFile(file, "utf8")) as Media;
+    return { caseSlides: media.caseSlides ?? [], presentation: media.presentation ?? null };
   } catch {
-    return { caseSlides: [] };
+    return { caseSlides: [], presentation: null };
   }
 }
 

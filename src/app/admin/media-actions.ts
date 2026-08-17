@@ -114,3 +114,55 @@ export async function moveSlide(formData: FormData) {
 
   revalidatePath("/", "layout");
 }
+
+export async function uploadPresentation(
+  _state: string | null,
+  formData: FormData,
+): Promise<string | null> {
+  if (!(await isAuthorized())) return "Сессия истекла, войдите заново";
+
+  const file = formData.get("file");
+  if (!(file instanceof File) || file.size === 0) return "Выберите файл";
+  if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
+    return "Нужен файл PDF";
+  }
+  if (file.size > 35 * 1024 * 1024) return "Файл больше 35 МБ";
+
+  const media = await getMedia();
+
+  try {
+    await mkdir(uploadsDir, { recursive: true });
+    const buffer = Buffer.from(await file.arrayBuffer());
+    // имя фиксированное: ссылка на презентацию не меняется при перезаливке
+    await writeFile(path.join(uploadsDir, "presentation.pdf"), buffer);
+  } catch {
+    return "Не удалось сохранить файл";
+  }
+
+  media.presentation = {
+    file: "/uploads/presentation.pdf",
+    name: file.name,
+    size: file.size,
+    updatedAt: new Date().toISOString(),
+  };
+  await saveMedia(media);
+
+  revalidatePath("/", "layout");
+  return "Презентация обновлена";
+}
+
+export async function removePresentation() {
+  if (!(await isAuthorized())) return;
+
+  const media = await getMedia();
+  media.presentation = null;
+  await saveMedia(media);
+
+  try {
+    await unlink(path.join(uploadsDir, "presentation.pdf"));
+  } catch {
+    // файла может уже не быть
+  }
+
+  revalidatePath("/", "layout");
+}

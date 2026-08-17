@@ -7,7 +7,7 @@ import { buttonClasses } from "@/components/ui/Button";
 
 type Errors = Partial<Record<"name" | "phone" | "city" | "form", string>>;
 
-export function LeadForm() {
+export function LeadForm({ presentationUrl }: { presentationUrl?: string | null }) {
   const t = useTranslations("lead");
   const tCta = useTranslations("cta");
   const locale = useLocale();
@@ -84,6 +84,16 @@ export function LeadForm() {
               <p className="text-[14px] text-ink/70 md:text-[16px]">
                 {t("successText")}
               </p>
+
+              {presentationUrl && (
+                <a
+                  href={presentationUrl}
+                  download
+                  className={buttonClasses("dark", "md", "mt-[8px] w-fit")}
+                >
+                  {t("download")}
+                </a>
+              )}
             </div>
           ) : (
             <form onSubmit={onSubmit} noValidate className="flex flex-col">

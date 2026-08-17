@@ -7,6 +7,13 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
+  experimental: {
+    serverActions: {
+      // через админку грузятся фото с телефона и PDF-презентация,
+      // дефолтного лимита в 1 МБ не хватает
+      bodySizeLimit: "40mb",
+    },
+  },
 };
 
 export default withNextIntl(nextConfig);

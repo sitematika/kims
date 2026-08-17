@@ -46,7 +46,7 @@ export default async function HomePage({
         <CaseStudy slides={media.caseSlides} />
         <InvestBand className="pt-[56px] md:pt-[80px] xl:pt-[110px]" />
         <Steps />
-        <LeadForm />
+        <LeadForm presentationUrl={media.presentation?.file} />
       </main>
       <Footer />
     </div>
