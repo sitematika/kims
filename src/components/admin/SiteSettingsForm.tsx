@@ -19,6 +19,17 @@ export function SiteSettingsForm({
       action={formAction}
       className="flex flex-col gap-[20px] rounded-[4px] border border-line-soft bg-white p-[20px]"
     >
+      <div className={`-m-[20px] mb-0 flex items-center gap-[12px] rounded-t-[4px] px-[20px] py-[14px] text-[14px] ${
+        indexing && !forcedByEnv ? "bg-blush-50" : "bg-ink text-white"
+      }`}>
+        <span className={`h-[10px] w-[10px] shrink-0 rounded-full ${
+          indexing && !forcedByEnv ? "bg-green-600" : "bg-accent"
+        }`} />
+        {indexing && !forcedByEnv
+          ? "Сейчас сайт открыт для поисковиков"
+          : "Сейчас сайт скрыт от поисковиков"}
+      </div>
+
       <div>
         <h2 className="text-[16px]">Адрес и видимость сайта</h2>
         <p className="mt-[4px] text-[13px] text-ink/60">

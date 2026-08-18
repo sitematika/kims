@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { isAuthorized } from "@/lib/auth";
-import { getContent, sectionLabels } from "@/lib/content";
+import { getIndexable } from "@/lib/site";
+import { navGroups } from "@/lib/admin-nav";
 import { logout } from "../actions";
 
 export default async function ProtectedLayout({
@@ -11,14 +12,15 @@ export default async function ProtectedLayout({
 }) {
   if (!(await isAuthorized())) redirect("/admin/login");
 
-  const uk = await getContent("uk");
-  const sections = Object.keys(uk);
+  const indexable = await getIndexable();
 
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
-      <aside className="shrink-0 border-b border-line-soft bg-white lg:min-h-screen lg:w-[280px] lg:border-r lg:border-b-0">
+      <aside className="shrink-0 border-b border-line-soft bg-white lg:min-h-screen lg:w-[286px] lg:border-r lg:border-b-0">
         <div className="flex items-center justify-between px-[24px] py-[20px]">
-          <p className="text-[16px] tracking-[2px]">KIMS</p>
+          <Link href="/admin" className="text-[16px] tracking-[2px]">
+            KIMS
+          </Link>
           <form action={logout}>
             <button
               type="submit"
@@ -29,57 +31,43 @@ export default async function ProtectedLayout({
           </form>
         </div>
 
-        <nav className="flex flex-wrap gap-[4px] px-[16px] pb-[16px] lg:flex-col lg:gap-[2px]">
-          {sections.map((section) => (
-            <Link
-              key={section}
-              href={`/admin/${section}`}
-              className="rounded-[4px] px-[12px] py-[10px] text-[14px] transition-colors hover:bg-blush-50"
-            >
-              {sectionLabels[section] ?? section}
-            </Link>
+        {/* Видимость для поиска — состояние, которое важно не потерять из виду */}
+        <Link
+          href="/admin/settings"
+          className={`mx-[16px] mb-[16px] flex items-center gap-[10px] rounded-[4px] px-[12px] py-[10px] text-[13px] transition-opacity hover:opacity-80 ${
+            indexable ? "bg-blush-50 text-ink" : "bg-ink text-white"
+          }`}
+        >
+          <span
+            className={`h-[8px] w-[8px] shrink-0 rounded-full ${
+              indexable ? "bg-green-600" : "bg-accent"
+            }`}
+          />
+          {indexable ? "Сайт открыт для поиска" : "Сайт скрыт от поиска"}
+        </Link>
+
+        <nav className="flex flex-col gap-[20px] px-[16px] pb-[24px]">
+          {navGroups.map((group) => (
+            <div key={group.title} className="flex flex-col gap-[2px]">
+              <p className="px-[12px] pb-[4px] text-[11px] tracking-[1px] text-ink/35 uppercase">
+                {group.title}
+              </p>
+              {group.links.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="rounded-[4px] px-[12px] py-[8px] text-[14px] transition-colors hover:bg-blush-50"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           ))}
 
           <Link
-            href="/admin/settings"
-            className="mt-[8px] rounded-[4px] px-[12px] py-[10px] text-[14px] transition-colors hover:bg-blush-50"
-          >
-            Настройки и доступ
-          </Link>
-          <Link
-            href="/admin/images"
-            className="rounded-[4px] px-[12px] py-[10px] text-[14px] transition-colors hover:bg-blush-50"
-          >
-            Картинки сайта
-          </Link>
-          <Link
-            href="/admin/presentation"
-            className="rounded-[4px] px-[12px] py-[10px] text-[14px] transition-colors hover:bg-blush-50"
-          >
-            Презентация
-          </Link>
-          <Link
-            href="/admin/case-slides"
-            className="rounded-[4px] px-[12px] py-[10px] text-[14px] transition-colors hover:bg-blush-50"
-          >
-            Слайдер кейса
-          </Link>
-          <Link
-            href="/admin/history"
-            className="rounded-[4px] px-[12px] py-[10px] text-[14px] transition-colors hover:bg-blush-50"
-          >
-            История изменений
-          </Link>
-          <Link
-            href="/admin/leads"
-            className="rounded-[4px] bg-blush-50 px-[12px] py-[10px] text-[14px] transition-colors hover:bg-blush-200"
-          >
-            Заявки
-          </Link>
-          <Link
             href="/uk"
             target="_blank"
-            className="rounded-[4px] px-[12px] py-[10px] text-[14px] text-ink/50 transition-colors hover:text-ink"
+            className="rounded-[4px] px-[12px] py-[8px] text-[14px] text-ink/50 transition-colors hover:text-ink"
           >
             Открыть сайт ↗
           </Link>
