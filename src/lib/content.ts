@@ -106,6 +106,7 @@ export function flattenFields(
 /** Разделы для меню админки: ключ верхнего уровня -> человеческое название. */
 export const sectionLabels: Record<string, string> = {
   meta: "SEO и мета-теги",
+  alt: "Alt-тексты картинок",
   nav: "Меню и шапка",
   cta: "Кнопки",
   hero: "Первый экран",

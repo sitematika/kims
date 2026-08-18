@@ -4,6 +4,8 @@ import { Onest } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { localeHtmlLang, routing, type Locale } from "@/i18n/routing";
+import { getMedia } from "@/lib/media";
+import { isIndexable, siteUrl } from "@/lib/site";
 import "../globals.css";
 
 const onest = Onest({
@@ -24,15 +26,43 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
+  const { ogImage } = await getMedia();
+
+  const title = t("title");
+  const description = t("description");
+  // отдельные заголовок и описание для соцсетей — если их не задали,
+  // берутся обычные
+  const ogTitle = t.has("ogTitle") && t("ogTitle") ? t("ogTitle") : title;
+  const ogDescription =
+    t.has("ogDescription") && t("ogDescription")
+      ? t("ogDescription")
+      : description;
 
   return {
-    title: t("title"),
-    description: t("description"),
+    metadataBase: new URL(siteUrl),
+    title,
+    description,
+    robots: isIndexable ? undefined : { index: false, follow: false },
     alternates: {
       canonical: `/${locale}`,
       languages: Object.fromEntries(
         routing.locales.map((l) => [localeHtmlLang[l], `/${l}`]),
       ),
+    },
+    openGraph: {
+      type: "website",
+      siteName: "KIMS",
+      url: `${siteUrl}/${locale}`,
+      locale: localeHtmlLang[locale as Locale],
+      title: ogTitle,
+      description: ogDescription,
+      images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: ogTitle,
+      description: ogDescription,
+      images: ogImage ? [ogImage] : undefined,
     },
   };
 }

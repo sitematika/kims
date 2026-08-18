@@ -41,8 +41,14 @@ export default async function ProtectedLayout({
           ))}
 
           <Link
-            href="/admin/presentation"
+            href="/admin/images"
             className="mt-[8px] rounded-[4px] px-[12px] py-[10px] text-[14px] transition-colors hover:bg-blush-50"
+          >
+            Картинки сайта
+          </Link>
+          <Link
+            href="/admin/presentation"
+            className="rounded-[4px] px-[12px] py-[10px] text-[14px] transition-colors hover:bg-blush-50"
           >
             Презентация
           </Link>

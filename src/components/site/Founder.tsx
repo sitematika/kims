@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import type { ResolvedImages } from "@/lib/images";
 
-export function Founder() {
+export function Founder({ images }: { images: ResolvedImages }) {
   const t = useTranslations("founder");
   const tCta = useTranslations("cta");
 
@@ -22,8 +23,8 @@ export function Founder() {
 
         <div className="relative aspect-[3/4] overflow-hidden rounded-[4px] md:aspect-[607/700]">
           <Image
-            src="/img/founder.webp"
-            alt={t("name")}
+            src={images.founder.src}
+            alt={images.founder.alt || t("name")}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover"
@@ -64,8 +65,8 @@ export function Founder() {
         {/* TODO: заменить на оригинал от клиента — сейчас кадр вырезан из макета */}
         <div className="relative aspect-[16/10] md:aspect-[1240/440]">
           <Image
-            src="/img/youtube-cover.webp"
-            alt=""
+            src={images.youtube.src}
+            alt={images.youtube.alt}
             fill
             sizes="100vw"
             className="object-cover"

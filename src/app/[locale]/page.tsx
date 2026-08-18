@@ -1,5 +1,8 @@
 import { setRequestLocale } from "next-intl/server";
 import { getMedia } from "@/lib/media";
+import { getContent } from "@/lib/content";
+import { resolveImages } from "@/lib/images";
+import type { Locale } from "@/i18n/routing";
 import { Preloader } from "@/components/site/Preloader";
 import { Header } from "@/components/site/Header";
 import { Hero } from "@/components/site/Hero";
@@ -31,26 +34,31 @@ export default async function HomePage({
   setRequestLocale(locale);
 
   const media = await getMedia();
+  const content = await getContent(locale as Locale);
+  const images = resolveImages(
+    media.images,
+    content.alt as Record<string, string> | undefined,
+  );
 
   return (
     <div id="top">
       <Preloader />
       <Header />
       <main>
-        <Hero />
+        <Hero images={images} />
         <Stats />
-        <Gallery />
+        <Gallery images={images} />
         <InvestBand className="pt-[56px] md:pt-[80px] xl:pt-[110px]" />
-        <Founder />
+        <Founder images={images} />
         <Market />
         <Benefits />
         <Formats />
         <InvestBand className="pt-[56px] md:pt-[80px] xl:pt-[110px]" />
         <Developers />
-        <PackageSection />
+        <PackageSection images={images} />
         <CaseStudy slides={media.caseSlides} />
         <InvestBand className="pt-[56px] md:pt-[80px] xl:pt-[110px]" />
-        <Steps />
+        <Steps images={images} />
         <LeadForm presentationUrl={media.presentation?.file} />
       </main>
       <Footer />

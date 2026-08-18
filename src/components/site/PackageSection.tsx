@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/Badge";
+import type { ResolvedImages } from "@/lib/images";
 
 function List({
   title,
@@ -39,7 +40,7 @@ function List({
   );
 }
 
-export function PackageSection() {
+export function PackageSection({ images }: { images: ResolvedImages }) {
   const t = useTranslations("package");
 
   return (
@@ -68,8 +69,8 @@ export function PackageSection() {
         >
           <div className="relative mt-[24px] aspect-[16/10] overflow-hidden rounded-[4px]">
             <Image
-              src="/img/package-reception.webp"
-              alt=""
+              src={images.package.src}
+              alt={images.package.alt}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover"

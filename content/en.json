@@ -1,7 +1,9 @@
 {
   "meta": {
     "title": "KIMS — premium wardrobe care franchise",
-    "description": "Not just a service — a new culture of consumption. Open a KIMS location in your city with a model already proven in Ukraine and Europe."
+    "description": "Not just a service — a new culture of consumption. Open a KIMS location in your city with a model already proven in Ukraine and Europe.",
+    "ogTitle": "",
+    "ogDescription": ""
   },
   "nav": {
     "kims": "KIMS",
@@ -360,5 +362,17 @@
     ],
     "signature": "KIMS. We love people. People love life.",
     "copyright": "© 2026 KIMS. All rights reserved."
+  },
+  "alt": {
+    "hero": "KIMS reception: a bright space with columns and a clothing rail",
+    "gallery1": "KIMS waiting area with a soft sofa",
+    "gallery2": "A KIMS hall with a sculpture and columns",
+    "gallery3": "KIMS reception with a counter and a clothing rail",
+    "gallery4": "KIMS interior with the Winged Victory of Samothrace",
+    "gallery5": "The garment drop-off counter at a KIMS location",
+    "founder": "Oleksandr Kohan, founder of KIMS, next to plant equipment",
+    "youtube": "The façade of the KIMS location in Riga",
+    "package": "KIMS reception: an attendant behind the counter",
+    "steps": "Signing the KIMS franchise agreement"
   }
 }

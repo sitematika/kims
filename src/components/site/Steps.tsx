@@ -4,10 +4,11 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { Badge } from "@/components/ui/Badge";
+import type { ResolvedImages } from "@/lib/images";
 
 type Item = { title: string; text: string };
 
-export function Steps() {
+export function Steps({ images }: { images: ResolvedImages }) {
   const t = useTranslations("steps");
   const items = t.raw("items") as Item[];
   const [active, setActive] = useState(0);
@@ -87,8 +88,8 @@ export function Steps() {
 
         <div className="relative aspect-[4/3] overflow-hidden rounded-[4px] xl:aspect-auto xl:h-full xl:min-h-[600px]">
           <Image
-            src="/img/steps.webp"
-            alt=""
+            src={images.steps.src}
+            alt={images.steps.alt}
             fill
             sizes="(max-width: 1280px) 100vw, 50vw"
             className="object-cover"

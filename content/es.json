@@ -1,7 +1,9 @@
 {
   "meta": {
     "title": "KIMS — franquicia del servicio premium de cuidado del vestuario",
-    "description": "No es solo un servicio: es una nueva cultura de consumo. Abra un establecimiento KIMS en su ciudad con un modelo que ya funciona en Ucrania y Europa."
+    "description": "No es solo un servicio: es una nueva cultura de consumo. Abra un establecimiento KIMS en su ciudad con un modelo que ya funciona en Ucrania y Europa.",
+    "ogTitle": "",
+    "ogDescription": ""
   },
   "nav": {
     "kims": "KIMS",
@@ -360,5 +362,17 @@
     ],
     "signature": "KIMS. We love people. People love life.",
     "copyright": "© 2026 KIMS. Todos los derechos reservados."
+  },
+  "alt": {
+    "hero": "Recepción de KIMS: un espacio luminoso con columnas y un perchero",
+    "gallery1": "Zona de espera de KIMS con un sofá mullido",
+    "gallery2": "Sala de KIMS con una escultura y columnas",
+    "gallery3": "Recepción de KIMS con mostrador y perchero",
+    "gallery4": "Interior de KIMS con la Victoria de Samotracia",
+    "gallery5": "Mostrador de recepción de prendas en un local KIMS",
+    "founder": "Oleksandr Kohan, fundador de KIMS, junto al equipamiento de la planta",
+    "youtube": "Fachada del establecimiento KIMS en Riga",
+    "package": "Recepción de KIMS: una empleada tras el mostrador",
+    "steps": "Firma del contrato de franquicia de KIMS"
   }
 }

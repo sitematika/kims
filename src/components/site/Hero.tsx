@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
+import type { ResolvedImages } from "@/lib/images";
 
-export function Hero() {
+export function Hero({ images }: { images: ResolvedImages }) {
   const t = useTranslations("hero");
   const tCta = useTranslations("cta");
 
@@ -11,8 +12,8 @@ export function Hero() {
       {/* Фон-фото на всю ширину с белой вуалью, как в макете */}
       <div className="absolute inset-0 -z-10">
         <Image
-          src="/img/hero.webp"
-          alt=""
+          src={images.hero.src}
+          alt={images.hero.alt}
           fill
           priority
           sizes="100vw"

@@ -21,6 +21,10 @@ export type Presentation = {
 export type Media = {
   caseSlides: Slide[];
   presentation?: Presentation | null;
+  /** Замены картинок сайта: id слота -> путь к загруженному файлу */
+  images?: Record<string, string>;
+  /** Картинка для превью в соцсетях */
+  ogImage?: string | null;
 };
 
 const file = path.join(contentDir, "media.json");
@@ -39,9 +43,14 @@ export async function getMedia(): Promise<Media> {
   await ensureSeeded();
   try {
     const media = JSON.parse(await readFile(file, "utf8")) as Media;
-    return { caseSlides: media.caseSlides ?? [], presentation: media.presentation ?? null };
+    return {
+      caseSlides: media.caseSlides ?? [],
+      presentation: media.presentation ?? null,
+      images: media.images ?? {},
+      ogImage: media.ogImage ?? null,
+    };
   } catch {
-    return { caseSlides: [], presentation: null };
+    return { caseSlides: [], presentation: null, images: {}, ogImage: null };
   }
 }
 

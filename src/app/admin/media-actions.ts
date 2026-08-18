@@ -165,3 +165,110 @@ export async function removePresentation() {
 
   revalidatePath("/", "layout");
 }
+
+/** Заменить картинку на сайте: слот из imageSlots -> загруженный файл */
+export async function replaceImage(
+  _state: string | null,
+  formData: FormData,
+): Promise<string | null> {
+  if (!(await isAuthorized())) return "Сессия истекла, войдите заново";
+
+  const slot = String(formData.get("slot") ?? "");
+  const file = formData.get("file");
+  if (!slot) return "Не указан слот";
+  if (!(file instanceof File) || file.size === 0) return "Выберите файл";
+  if (!file.type.startsWith("image/")) return "Нужен файл изображения";
+  if (file.size > 25 * 1024 * 1024) return "Файл больше 25 МБ";
+
+  const name = `slot-${slot}-${Date.now().toString(36).slice(-5)}.webp`;
+
+  try {
+    await mkdir(uploadsDir, { recursive: true });
+    const webp = await sharp(Buffer.from(await file.arrayBuffer()))
+      .rotate()
+      .resize({ width: 2400, height: 2400, fit: "inside", withoutEnlargement: true })
+      .webp({ quality: 82 })
+      .toBuffer();
+    await writeFile(path.join(uploadsDir, name), webp);
+  } catch {
+    return "Не удалось обработать изображение";
+  }
+
+  const media = await getMedia();
+  const images = { ...(media.images ?? {}) };
+  const previous = images[slot];
+  images[slot] = `${mediaUrlPrefix}/${name}`;
+  media.images = images;
+  await saveMedia(media);
+
+  // старую замену подчищаем, дефолт из репозитория не трогаем
+  if (previous?.startsWith(`${mediaUrlPrefix}/`)) {
+    await unlink(path.join(uploadsDir, path.basename(previous))).catch(() => {});
+  }
+
+  revalidatePath("/", "layout");
+  return "Картинка обновлена";
+}
+
+/** Вернуть картинку из макета вместо загруженной */
+export async function resetImage(formData: FormData) {
+  if (!(await isAuthorized())) return;
+
+  const slot = String(formData.get("slot") ?? "");
+  const media = await getMedia();
+  const images = { ...(media.images ?? {}) };
+  const previous = images[slot];
+  if (!previous) return;
+
+  delete images[slot];
+  media.images = images;
+  await saveMedia(media);
+
+  if (previous.startsWith(`${mediaUrlPrefix}/`)) {
+    await unlink(path.join(uploadsDir, path.basename(previous))).catch(() => {});
+  }
+
+  revalidatePath("/", "layout");
+}
+
+/** Картинка превью для соцсетей: приводим к 1200x630 */
+export async function uploadOgImage(
+  _state: string | null,
+  formData: FormData,
+): Promise<string | null> {
+  if (!(await isAuthorized())) return "Сессия истекла, войдите заново";
+
+  const file = formData.get("file");
+  if (!(file instanceof File) || file.size === 0) return "Выберите файл";
+  if (!file.type.startsWith("image/")) return "Нужен файл изображения";
+
+  try {
+    await mkdir(uploadsDir, { recursive: true });
+    const jpeg = await sharp(Buffer.from(await file.arrayBuffer()))
+      .rotate()
+      .resize(1200, 630, { fit: "cover" })
+      .jpeg({ quality: 86 })
+      .toBuffer();
+    await writeFile(path.join(uploadsDir, "og.jpg"), jpeg);
+  } catch {
+    return "Не удалось обработать изображение";
+  }
+
+  const media = await getMedia();
+  media.ogImage = `${mediaUrlPrefix}/og.jpg`;
+  await saveMedia(media);
+
+  revalidatePath("/", "layout");
+  return "Превью обновлено";
+}
+
+export async function removeOgImage() {
+  if (!(await isAuthorized())) return;
+
+  const media = await getMedia();
+  media.ogImage = null;
+  await saveMedia(media);
+  await unlink(path.join(uploadsDir, "og.jpg")).catch(() => {});
+
+  revalidatePath("/", "layout");
+}

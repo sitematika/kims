@@ -10,6 +10,9 @@ import {
   SectionEditor,
   type EditorField,
 } from "@/components/admin/SectionEditor";
+import { SeoExtras } from "@/components/admin/SeoExtras";
+import { getMedia } from "@/lib/media";
+import { isIndexable, siteUrl } from "@/lib/site";
 
 export default async function SectionPage({
   params,
@@ -33,11 +36,23 @@ export default async function SectionPage({
     return { path: field.path, values };
   });
 
+  const media = section === "meta" ? await getMedia() : null;
+
   return (
-    <SectionEditor
-      section={section}
-      title={sectionLabels[section] ?? section}
-      fields={fields}
-    />
+    <div className="flex flex-col gap-[24px]">
+      {media && (
+        <SeoExtras
+          ogImage={media.ogImage}
+          siteUrl={siteUrl}
+          indexable={isIndexable}
+        />
+      )}
+
+      <SectionEditor
+        section={section}
+        title={sectionLabels[section] ?? section}
+        fields={fields}
+      />
+    </div>
   );
 }
