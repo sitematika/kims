@@ -9,7 +9,8 @@ import {
   destroySession,
   isAuthorized,
 } from "@/lib/auth";
-import { getContent, saveContent, writePath } from "@/lib/content";
+import { getContent, saveContent, writePath, sectionLabels } from "@/lib/content";
+import { snapshot } from "@/lib/history";
 
 export async function login(_state: string | null, formData: FormData) {
   const password = String(formData.get("password") ?? "");
@@ -43,6 +44,8 @@ export async function saveSection(
     list.push([path, value]);
     updates.set(locale as Locale, list);
   }
+
+  await snapshot(`Тексты: ${sectionLabels[section] ?? section}`);
 
   for (const [locale, fields] of updates) {
     const content = await getContent(locale);

@@ -8,6 +8,7 @@ import { locales } from "@/i18n/routing";
 import { isAuthorized } from "@/lib/auth";
 import { getContent, saveContent, type ContentNode } from "@/lib/content";
 import { getMedia, makeSlideId, saveMedia } from "@/lib/media";
+import { snapshot } from "@/lib/history";
 import { mediaUrlPrefix, uploadsDir } from "@/lib/paths";
 
 async function captionsFor(id: string, fallback: string) {
@@ -45,6 +46,8 @@ export async function addSlide(
   if (!file.type.startsWith("image/")) return "Нужен файл изображения";
   if (file.size > 15 * 1024 * 1024) return "Файл больше 15 МБ";
 
+  await snapshot("Слайдер кейса: добавлен слайд");
+
   const id = makeSlideId(file.name, Date.now());
 
   try {
@@ -80,6 +83,8 @@ export async function removeSlide(formData: FormData) {
   const slide = media.caseSlides.find((s) => s.id === id);
   if (!slide) return;
 
+  await snapshot("Слайдер кейса: удалён слайд");
+
   media.caseSlides = media.caseSlides.filter((s) => s.id !== id);
   await saveMedia(media);
   await dropCaptions(id);
@@ -106,6 +111,8 @@ export async function moveSlide(formData: FormData) {
   const index = media.caseSlides.findIndex((s) => s.id === id);
   const target = index + direction;
   if (index < 0 || target < 0 || target >= media.caseSlides.length) return;
+
+  await snapshot("Слайдер кейса: изменён порядок");
 
   const [slide] = media.caseSlides.splice(index, 1);
   media.caseSlides.splice(target, 0, slide);
@@ -137,6 +144,8 @@ export async function uploadPresentation(
   } catch {
     return "Не удалось сохранить файл";
   }
+
+  await snapshot("Презентация обновлена");
 
   media.presentation = {
     file: `${mediaUrlPrefix}/presentation.pdf`,
@@ -180,6 +189,8 @@ export async function replaceImage(
   if (!file.type.startsWith("image/")) return "Нужен файл изображения";
   if (file.size > 25 * 1024 * 1024) return "Файл больше 25 МБ";
 
+  await snapshot("Картинки сайта: замена фото");
+
   const name = `slot-${slot}-${Date.now().toString(36).slice(-5)}.webp`;
 
   try {
@@ -220,6 +231,8 @@ export async function resetImage(formData: FormData) {
   const previous = images[slot];
   if (!previous) return;
 
+  await snapshot("Картинки сайта: возврат к макету");
+
   delete images[slot];
   media.images = images;
   await saveMedia(media);
@@ -255,6 +268,8 @@ export async function uploadOgImage(
   }
 
   const media = await getMedia();
+  await snapshot("Превью для соцсетей");
+
   media.ogImage = `${mediaUrlPrefix}/og.jpg`;
   await saveMedia(media);
 

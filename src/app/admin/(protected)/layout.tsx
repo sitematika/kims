@@ -59,6 +59,12 @@ export default async function ProtectedLayout({
             Слайдер кейса
           </Link>
           <Link
+            href="/admin/history"
+            className="rounded-[4px] px-[12px] py-[10px] text-[14px] transition-colors hover:bg-blush-50"
+          >
+            История изменений
+          </Link>
+          <Link
             href="/admin/leads"
             className="rounded-[4px] bg-blush-50 px-[12px] py-[10px] text-[14px] transition-colors hover:bg-blush-200"
           >
