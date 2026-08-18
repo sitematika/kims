@@ -17,6 +17,11 @@ import { Steps } from "@/components/site/Steps";
 import { LeadForm } from "@/components/site/LeadForm";
 import { Footer } from "@/components/site/Footer";
 
+// Страница статическая, но перепроверяется раз в минуту: после редеплоя
+// она подхватит тексты из CONTENT_DIR, даже если сборка их не видела.
+// Сохранение в админке обновляет страницу сразу, не дожидаясь этой минуты.
+export const revalidate = 60;
+
 export default async function HomePage({
   params,
 }: {

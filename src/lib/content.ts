@@ -1,24 +1,35 @@
-import { readFile, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { locales, type Locale } from "@/i18n/routing";
+import { contentDir, seedDir } from "./paths";
 
 /**
  * Хранилище контента сайта.
  *
- * Сейчас — JSON-файлы в content/. Работает локально и на VPS.
- * Если сайт поедет на serverless (Vercel), файловая система там только на
- * чтение: тогда меняется только этот модуль — на таблицу в Postgres, —
- * а весь остальной код остаётся как есть.
+ * JSON-файлы в каталоге CONTENT_DIR (по умолчанию content/ внутри проекта).
+ * На сервере каталог выносится за пределы папки приложения, чтобы редеплой
+ * не затирал правки заказчика. Пустой каталог заполняется текстами из
+ * репозитория при первом обращении.
  */
 
 export type ContentValue = string | number | ContentNode | ContentValue[];
 export type ContentNode = { [key: string]: ContentValue };
 
-const dir = path.join(process.cwd(), "content");
+/** Копирует эталонный файл в CONTENT_DIR, если его там ещё нет */
+async function ensureSeeded(fileName: string) {
+  const target = path.join(contentDir, fileName);
+  try {
+    await readFile(target, "utf8");
+  } catch {
+    await mkdir(contentDir, { recursive: true });
+    await copyFile(path.join(seedDir, fileName), target);
+  }
+  return target;
+}
 
 export async function getContent(locale: Locale): Promise<ContentNode> {
-  const raw = await readFile(path.join(dir, `${locale}.json`), "utf8");
-  return JSON.parse(raw) as ContentNode;
+  const target = await ensureSeeded(`${locale}.json`);
+  return JSON.parse(await readFile(target, "utf8")) as ContentNode;
 }
 
 export async function getAllContent(): Promise<Record<Locale, ContentNode>> {
@@ -29,8 +40,9 @@ export async function getAllContent(): Promise<Record<Locale, ContentNode>> {
 }
 
 export async function saveContent(locale: Locale, data: ContentNode) {
+  await mkdir(contentDir, { recursive: true });
   await writeFile(
-    path.join(dir, `${locale}.json`),
+    path.join(contentDir, `${locale}.json`),
     `${JSON.stringify(data, null, 2)}\n`,
     "utf8",
   );

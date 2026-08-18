@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { dataDir } from "@/lib/paths";
 import { isAuthorized } from "@/lib/auth";
 
 export const runtime = "nodejs";
@@ -17,7 +18,7 @@ export async function GET() {
   let lines: string[] = [];
   try {
     const raw = await readFile(
-      path.join(process.cwd(), "data", "leads.jsonl"),
+      path.join(dataDir, "leads.jsonl"),
       "utf8",
     );
     lines = raw.split("\n").filter(Boolean);

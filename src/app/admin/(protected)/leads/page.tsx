@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { dataDir } from "@/lib/paths";
 
 type Lead = {
   name: string;
@@ -12,7 +13,7 @@ type Lead = {
 async function readLeads(): Promise<Lead[]> {
   try {
     const raw = await readFile(
-      path.join(process.cwd(), "data", "leads.jsonl"),
+      path.join(dataDir, "leads.jsonl"),
       "utf8",
     );
     return raw

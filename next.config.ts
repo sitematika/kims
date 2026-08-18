@@ -6,6 +6,8 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
+    // загруженные через админку файлы отдаёт маршрут /media/*
+    localPatterns: [{ pathname: "/img/**" }, { pathname: "/media/**" }],
   },
   experimental: {
     serverActions: {

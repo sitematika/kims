@@ -1,5 +1,6 @@
 import { appendFile, mkdir } from "node:fs/promises";
 import path from "node:path";
+import { dataDir } from "@/lib/paths";
 
 export const runtime = "nodejs";
 
@@ -62,10 +63,9 @@ export async function POST(request: Request) {
   // Локальный лог заявок для разработки: LEADS_SAVE_LOCAL=1 -> data/leads.jsonl
   if (process.env.LEADS_SAVE_LOCAL === "1") {
     try {
-      const dir = path.join(process.cwd(), "data");
-      await mkdir(dir, { recursive: true });
+      await mkdir(dataDir, { recursive: true });
       await appendFile(
-        path.join(dir, "leads.jsonl"),
+        path.join(dataDir, "leads.jsonl"),
         `${JSON.stringify(lead)}\n`,
         "utf8",
       );

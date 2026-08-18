@@ -8,8 +8,7 @@ import { locales } from "@/i18n/routing";
 import { isAuthorized } from "@/lib/auth";
 import { getContent, saveContent, type ContentNode } from "@/lib/content";
 import { getMedia, makeSlideId, saveMedia } from "@/lib/media";
-
-const uploadsDir = path.join(process.cwd(), "public", "uploads");
+import { mediaUrlPrefix, uploadsDir } from "@/lib/paths";
 
 async function captionsFor(id: string, fallback: string) {
   for (const locale of locales) {
@@ -64,7 +63,7 @@ export async function addSlide(
   }
 
   const media = await getMedia();
-  media.caseSlides.push({ id, image: `/uploads/${id}.webp` });
+  media.caseSlides.push({ id, image: `${mediaUrlPrefix}/${id}.webp` });
   await saveMedia(media);
 
   await captionsFor(id, caption);
@@ -86,9 +85,9 @@ export async function removeSlide(formData: FormData) {
   await dropCaptions(id);
 
   // файлы из public/img — общие ассеты сайта, удаляем только свои загрузки
-  if (slide.image.startsWith("/uploads/")) {
+  if (slide.image.startsWith(`${mediaUrlPrefix}/`)) {
     try {
-      await unlink(path.join(process.cwd(), "public", slide.image));
+      await unlink(path.join(uploadsDir, path.basename(slide.image)));
     } catch {
       // файла может уже не быть — это не ошибка
     }
@@ -140,7 +139,7 @@ export async function uploadPresentation(
   }
 
   media.presentation = {
-    file: "/uploads/presentation.pdf",
+    file: `${mediaUrlPrefix}/presentation.pdf`,
     name: file.name,
     size: file.size,
     updatedAt: new Date().toISOString(),
