@@ -15,21 +15,35 @@ import { contentDir, seedDir } from "./paths";
 export type ContentValue = string | number | ContentNode | ContentValue[];
 export type ContentNode = { [key: string]: ContentValue };
 
-/** Копирует эталонный файл в CONTENT_DIR, если его там ещё нет */
-async function ensureSeeded(fileName: string) {
+/**
+ * Отдаёт содержимое файла из CONTENT_DIR. Если его там нет — пробует
+ * положить туда эталон из репозитория, а если каталог недоступен на запись
+ * (нет прав, сборка идёт в изолированном окружении), просто читает эталон.
+ * Сайт в любом случае поднимается с текстами; недоступную запись показывает
+ * админка в разделе «Настройки и доступ».
+ */
+async function readSeeded(fileName: string) {
   const target = path.join(contentDir, fileName);
+  const seed = path.join(seedDir, fileName);
+
   try {
-    await readFile(target, "utf8");
+    return await readFile(target, "utf8");
   } catch {
-    await mkdir(contentDir, { recursive: true });
-    await copyFile(path.join(seedDir, fileName), target);
+    // файла нет — пробуем создать рабочую копию
   }
-  return target;
+
+  const raw = await readFile(seed, "utf8");
+  try {
+    await mkdir(contentDir, { recursive: true });
+    await copyFile(seed, target);
+  } catch {
+    // каталог недоступен на запись — работаем с эталоном
+  }
+  return raw;
 }
 
 export async function getContent(locale: Locale): Promise<ContentNode> {
-  const target = await ensureSeeded(`${locale}.json`);
-  return JSON.parse(await readFile(target, "utf8")) as ContentNode;
+  return JSON.parse(await readSeeded(`${locale}.json`)) as ContentNode;
 }
 
 export async function getAllContent(): Promise<Record<Locale, ContentNode>> {
@@ -40,6 +54,7 @@ export async function getAllContent(): Promise<Record<Locale, ContentNode>> {
 }
 
 export async function saveContent(locale: Locale, data: ContentNode) {
+  // здесь ошибку не глушим: если запись невозможна, админка должна сказать
   await mkdir(contentDir, { recursive: true });
   await writeFile(
     path.join(contentDir, `${locale}.json`),

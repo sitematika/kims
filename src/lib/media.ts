@@ -29,20 +29,28 @@ export type Media = {
 
 const file = path.join(contentDir, "media.json");
 
-/** Реестр берётся из репозитория, если в CONTENT_DIR его ещё нет */
-async function ensureSeeded() {
+/** Реестр из CONTENT_DIR, с откатом на эталон из репозитория */
+async function readRegistry() {
   try {
-    await readFile(file, "utf8");
+    return await readFile(file, "utf8");
   } catch {
-    await mkdir(contentDir, { recursive: true });
-    await copyFile(path.join(seedDir, "media.json"), file).catch(() => {});
+    // рабочей копии ещё нет
   }
+
+  const seed = path.join(seedDir, "media.json");
+  const raw = await readFile(seed, "utf8");
+  try {
+    await mkdir(contentDir, { recursive: true });
+    await copyFile(seed, file);
+  } catch {
+    // каталог недоступен на запись — работаем с эталоном
+  }
+  return raw;
 }
 
 export async function getMedia(): Promise<Media> {
-  await ensureSeeded();
   try {
-    const media = JSON.parse(await readFile(file, "utf8")) as Media;
+    const media = JSON.parse(await readRegistry()) as Media;
     return {
       caseSlides: media.caseSlides ?? [],
       presentation: media.presentation ?? null,
