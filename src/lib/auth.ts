@@ -1,17 +1,29 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
+import { getSettings, verifyPassword } from "./settings";
 
 const COOKIE = "kims_admin";
 const MAX_AGE = 60 * 60 * 12; // 12 часов
 
-function secret() {
-  const value = process.env.ADMIN_SECRET ?? process.env.ADMIN_PASSWORD;
-  if (!value) throw new Error("ADMIN_PASSWORD не задан в окружении");
-  return value;
+/**
+ * Ключ подписи сессии завязан на текущий пароль: сменил пароль —
+ * все открытые сессии перестают действовать.
+ */
+async function secret() {
+  const settings = await getSettings();
+  const base =
+    settings.passwordHash ??
+    process.env.ADMIN_SECRET ??
+    process.env.ADMIN_PASSWORD;
+
+  if (!base) throw new Error("Пароль администратора не задан");
+  return base;
 }
 
-function sign(expiresAt: number) {
-  return createHmac("sha256", secret()).update(String(expiresAt)).digest("hex");
+async function sign(expiresAt: number) {
+  return createHmac("sha256", await secret())
+    .update(String(expiresAt))
+    .digest("hex");
 }
 
 function safeEqual(a: string, b: string) {
@@ -20,16 +32,14 @@ function safeEqual(a: string, b: string) {
   return bufA.length === bufB.length && timingSafeEqual(bufA, bufB);
 }
 
-export function checkPassword(input: string) {
-  const expected = process.env.ADMIN_PASSWORD;
-  if (!expected) return false;
-  return safeEqual(input, expected);
+export async function checkPassword(input: string) {
+  return verifyPassword(input, await getSettings());
 }
 
 export async function createSession() {
   const expiresAt = Date.now() + MAX_AGE * 1000;
   const store = await cookies();
-  store.set(COOKIE, `${expiresAt}.${sign(expiresAt)}`, {
+  store.set(COOKIE, `${expiresAt}.${await sign(expiresAt)}`, {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
@@ -52,7 +62,7 @@ export async function isAuthorized() {
   if (Number(expiresAt) < Date.now()) return false;
 
   try {
-    return safeEqual(signature, sign(Number(expiresAt)));
+    return safeEqual(signature, await sign(Number(expiresAt)));
   } catch {
     return false;
   }

@@ -41,8 +41,14 @@ export default async function ProtectedLayout({
           ))}
 
           <Link
-            href="/admin/images"
+            href="/admin/settings"
             className="mt-[8px] rounded-[4px] px-[12px] py-[10px] text-[14px] transition-colors hover:bg-blush-50"
+          >
+            Настройки и доступ
+          </Link>
+          <Link
+            href="/admin/images"
+            className="rounded-[4px] px-[12px] py-[10px] text-[14px] transition-colors hover:bg-blush-50"
           >
             Картинки сайта
           </Link>

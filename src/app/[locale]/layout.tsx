@@ -5,7 +5,7 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { localeHtmlLang, routing, type Locale } from "@/i18n/routing";
 import { getMedia } from "@/lib/media";
-import { isIndexable, siteUrl } from "@/lib/site";
+import { getIndexable, getSiteUrl } from "@/lib/site";
 import "../globals.css";
 
 const onest = Onest({
@@ -27,6 +27,7 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
   const { ogImage } = await getMedia();
+  const [siteUrl, isIndexable] = await Promise.all([getSiteUrl(), getIndexable()]);
 
   const title = t("title");
   const description = t("description");

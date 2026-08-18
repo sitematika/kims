@@ -14,7 +14,7 @@ import { snapshot } from "@/lib/history";
 
 export async function login(_state: string | null, formData: FormData) {
   const password = String(formData.get("password") ?? "");
-  if (!checkPassword(password)) return "Неверный пароль";
+  if (!(await checkPassword(password))) return "Неверный пароль";
 
   await createSession();
   redirect("/admin");

@@ -1,11 +1,13 @@
 import type { MetadataRoute } from "next";
 import { locales, localeHtmlLang } from "@/i18n/routing";
-import { siteUrl } from "@/lib/site";
+import { getSiteUrl } from "@/lib/site";
 
 // Адрес сайта берётся из окружения на каждом запросе, а не из сборки
 export const dynamic = "force-dynamic";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const siteUrl = await getSiteUrl();
+
   return locales.map((locale) => ({
     url: `${siteUrl}/${locale}`,
     lastModified: new Date(),

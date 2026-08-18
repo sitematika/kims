@@ -12,7 +12,7 @@ import {
 } from "@/components/admin/SectionEditor";
 import { SeoExtras } from "@/components/admin/SeoExtras";
 import { getMedia } from "@/lib/media";
-import { isIndexable, siteUrl } from "@/lib/site";
+import { getIndexable, getSiteUrl } from "@/lib/site";
 
 export default async function SectionPage({
   params,
@@ -37,6 +37,8 @@ export default async function SectionPage({
   });
 
   const media = section === "meta" ? await getMedia() : null;
+  const siteUrl = await getSiteUrl();
+  const isIndexable = await getIndexable();
 
   return (
     <div className="flex flex-col gap-[24px]">
