@@ -123,4 +123,7 @@ export const sectionLabels: Record<string, string> = {
   steps: "Шаги",
   lead: "Форма заявки",
   footer: "Футер",
+  cookies: "Cookie-баннер",
+  privacy: "Политика конфиденциальности",
+  notFound: "Страница 404",
 };

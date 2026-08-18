@@ -374,5 +374,21 @@
     "youtube": "Fachada del establecimiento KIMS en Riga",
     "package": "Recepción de KIMS: una empleada tras el mostrador",
     "steps": "Firma del contrato de franquicia de KIMS"
+  },
+  "notFound": {
+    "code": "404",
+    "title": "Página no encontrada",
+    "text": "Es probable que el enlace haya caducado o que la dirección tenga una errata.",
+    "action": "Ir al inicio"
+  },
+  "cookies": {
+    "text": "Usamos cookies para entender cómo se utiliza el sitio y hacerlo más cómodo.",
+    "accept": "Aceptar",
+    "decline": "Solo las necesarias",
+    "policy": "Política de privacidad"
+  },
+  "privacy": {
+    "title": "Política de privacidad",
+    "body": "El texto de la política de privacidad está en preparación."
   }
 }

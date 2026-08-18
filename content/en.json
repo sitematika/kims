@@ -374,5 +374,21 @@
     "youtube": "The façade of the KIMS location in Riga",
     "package": "KIMS reception: an attendant behind the counter",
     "steps": "Signing the KIMS franchise agreement"
+  },
+  "notFound": {
+    "code": "404",
+    "title": "Page not found",
+    "text": "The link is probably outdated, or there is a typo in the address.",
+    "action": "Go to the homepage"
+  },
+  "cookies": {
+    "text": "We use cookies to understand how the site is used and to make it more convenient.",
+    "accept": "Accept",
+    "decline": "Essential only",
+    "policy": "Privacy policy"
+  },
+  "privacy": {
+    "title": "Privacy policy",
+    "body": "The privacy policy text is being prepared."
   }
 }
