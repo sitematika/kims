@@ -26,7 +26,7 @@ export async function updateSite(
 
   await saveSettings({ siteUrl, indexing });
   revalidatePath("/", "layout");
-  revalidatePath("/admin/settings");
+  revalidatePath("/admin/seo");
 
   return indexing ? "indexingOn" : "indexingOff";
 }

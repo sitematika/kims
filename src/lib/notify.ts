@@ -59,8 +59,8 @@ async function toEmail(lead: Lead) {
   const host = process.env.SMTP_HOST;
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
-  const to = (await leadRecipients()).join(", ");
-  if (!host || !user || !pass || !to) return;
+  const to = await leadRecipients();
+  if (!host || !user || !pass || !to.length) return;
 
   const port = Number(process.env.SMTP_PORT ?? 465);
 

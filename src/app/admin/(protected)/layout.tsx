@@ -50,7 +50,7 @@ export default async function ProtectedLayout({
 
           {/* Видимость для поиска — состояние, которое важно не потерять из виду */}
           <Link
-            href="/admin/settings"
+            href="/admin/seo"
             className={`mx-[16px] mb-[16px] flex items-center gap-[10px] rounded-[4px] px-[12px] py-[10px] text-[13px] transition-opacity hover:opacity-80 ${
               indexable ? "bg-blush-50 text-ink" : "bg-ink text-white"
             }`}

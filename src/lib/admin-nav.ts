@@ -38,17 +38,14 @@ export function buildNav(dict: AdminDict): NavGroup[] {
     {
       title: dict.nav.siteWide,
       links: [
-        section("nav"),
-        section("cta"),
-        section("footer"),
-        { href: "/admin/social", label: dict.nav.social },
+        { href: "/admin/nav", label: dict.sections.nav },
+        { href: "/admin/footer", label: dict.sections.footer },
       ],
     },
     {
       title: dict.nav.mediaFiles,
       links: [
         { href: "/admin/images", label: dict.nav.images },
-        section("alt"),
         { href: "/admin/case-slides", label: dict.nav.caseSlides },
         { href: "/admin/presentation", label: dict.nav.presentation },
       ],
@@ -56,19 +53,16 @@ export function buildNav(dict: AdminDict): NavGroup[] {
     {
       title: dict.nav.seo,
       links: [
-        { href: "/admin/settings", label: dict.nav.settings },
-        section("meta"),
+        { href: "/admin/seo", label: dict.nav.seo },
+        { href: "/admin/service", label: dict.nav.servicePages },
       ],
-    },
-    {
-      title: dict.nav.servicePages,
-      links: [section("cookies"), section("privacy"), section("notFound")],
     },
     {
       title: dict.nav.operations,
       links: [
         { href: "/admin/leads", label: dict.nav.leads },
         { href: "/admin/history", label: dict.nav.history },
+        { href: "/admin/access", label: dict.nav.access },
       ],
     },
   ];
