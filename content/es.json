@@ -332,32 +332,32 @@
     "columns": [
       {
         "title": "Instagram",
-        "links": [
-          "Ucrania",
-          "Oeste",
-          "Letonia"
-        ]
+        "links": {
+          "instagram-ua": "Ucrania",
+          "instagram-zahid": "Oeste",
+          "instagram-lv": "Letonia"
+        }
       },
       {
         "title": "Facebook",
-        "links": [
-          "Ucrania",
-          "Europa"
-        ]
+        "links": {
+          "facebook-ua": "Ucrania",
+          "facebook-eu": "Europa"
+        }
       },
       {
         "title": "TikTok",
-        "links": [
-          "Oeste",
-          "Kiev, Odesa",
-          "Letonia"
-        ]
+        "links": {
+          "tiktok-zahid": "Oeste",
+          "tiktok-kyiv-odesa": "Kiev, Odesa",
+          "tiktok-lv": "Letonia"
+        }
       },
       {
         "title": "YouTube",
-        "links": [
-          "KIMS"
-        ]
+        "links": {
+          "youtube-kims": "KIMS"
+        }
       }
     ],
     "signature": "KIMS. We love people. People love life.",

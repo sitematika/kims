@@ -63,7 +63,7 @@ export default async function HomePage({
         <Steps images={images} />
         <LeadForm presentationUrl={media.presentation?.file} />
       </main>
-      <Footer />
+      <Footer socialLinks={media.socialLinks ?? {}} />
       <CookieBanner />
       <Analytics />
     </div>

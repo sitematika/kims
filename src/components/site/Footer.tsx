@@ -1,9 +1,9 @@
 import { useTranslations } from "next-intl";
 import { Logo } from "@/components/ui/Logo";
 
-type Column = { title: string; links: string[] };
+type Column = { title: string; links: Record<string, string> };
 
-export function Footer() {
+export function Footer({ socialLinks }: { socialLinks: Record<string, string> }) {
   const t = useTranslations("footer");
   const columns = t.raw("columns") as Column[];
 
@@ -27,16 +27,29 @@ export function Footer() {
                 {column.title}
               </p>
               <ul className="flex flex-col gap-[10px]">
-                {column.links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="inline-block text-[14px] transition-all duration-300 hover:translate-x-[4px] hover:text-accent md:text-[16px]"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
+                {Object.entries(column.links).map(([id, label]) => {
+                  const href = socialLinks[id];
+                  // пока адрес не задан, показываем подпись без ссылки —
+                  // лучше, чем ссылка в никуда
+                  return (
+                    <li key={id}>
+                      {href ? (
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                          className="inline-block text-[14px] transition-all duration-300 hover:translate-x-[4px] hover:text-accent md:text-[16px]"
+                        >
+                          {label}
+                        </a>
+                      ) : (
+                        <span className="inline-block text-[14px] text-white/40 md:text-[16px]">
+                          {label}
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}

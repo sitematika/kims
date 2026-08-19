@@ -41,5 +41,16 @@
       "image": "/img/case-10-ironing.webp"
     }
   ],
-  "presentation": null
+  "presentation": null,
+  "socialLinks": {
+    "instagram-ua": "https://www.instagram.com/kims_ukraine/",
+    "instagram-zahid": "https://www.instagram.com/kims_zahid/",
+    "instagram-lv": "https://www.instagram.com/kims_latvija/",
+    "facebook-ua": "https://www.facebook.com/kims.com.ua/",
+    "facebook-eu": "https://www.facebook.com/kimsclean.eu/",
+    "tiktok-zahid": "https://www.tiktok.com/@kims_zahid",
+    "tiktok-kyiv-odesa": "https://www.tiktok.com/@kims_odesa_kyiv",
+    "tiktok-lv": "https://www.tiktok.com/@kims_latvija",
+    "youtube-kims": "https://www.youtube.com/@kims2832"
+  }
 }

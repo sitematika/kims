@@ -1,6 +1,7 @@
 import { appendFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import { dataDir } from "@/lib/paths";
+import { notify } from "@/lib/notify";
 
 export const runtime = "nodejs";
 
@@ -43,9 +44,12 @@ export async function POST(request: Request) {
     userAgent: request.headers.get("user-agent") ?? "",
   };
 
-  // Куда уходит заявка, ещё не решено. Пока: лог + опциональный вебхук
-  // (Telegram/CRM/Make) + опциональный файл. Достаточно поменять env.
   console.info("[lead]", lead);
+
+  // Заявка уходит в Telegram и на почту; ошибка канала не влияет на ответ
+  // посетителю — он в любом случае видит экран благодарности
+
+  await notify(lead);
 
   const webhook = process.env.LEADS_WEBHOOK_URL;
   if (webhook) {

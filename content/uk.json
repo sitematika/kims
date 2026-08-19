@@ -332,32 +332,32 @@
     "columns": [
       {
         "title": "Instagram",
-        "links": [
-          "Україна",
-          "Захід",
-          "Латвія"
-        ]
+        "links": {
+          "instagram-ua": "Україна",
+          "instagram-zahid": "Захід",
+          "instagram-lv": "Латвія"
+        }
       },
       {
         "title": "Facebook",
-        "links": [
-          "Україна",
-          "Європа"
-        ]
+        "links": {
+          "facebook-ua": "Україна",
+          "facebook-eu": "Європа"
+        }
       },
       {
         "title": "TikTok",
-        "links": [
-          "Захід",
-          "Київ, Одеса",
-          "Латвія"
-        ]
+        "links": {
+          "tiktok-zahid": "Захід",
+          "tiktok-kyiv-odesa": "Київ, Одеса",
+          "tiktok-lv": "Латвія"
+        }
       },
       {
         "title": "YouTube",
-        "links": [
-          "KIMS"
-        ]
+        "links": {
+          "youtube-kims": "KIMS"
+        }
       }
     ],
     "signature": "KIMS. We love people. People love life.",

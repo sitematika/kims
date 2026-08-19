@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { dataDir } from "@/lib/paths";
+import { notifyStatus } from "@/lib/notify";
 
 type Lead = {
   name: string;
@@ -30,6 +31,7 @@ export const dynamic = "force-dynamic";
 
 export default async function LeadsPage() {
   const leads = await readLeads();
+  const channels = notifyStatus();
 
   return (
     <div className="flex max-w-[1100px] flex-col gap-[24px]">
@@ -41,6 +43,30 @@ export default async function LeadsPage() {
             : `Всего: ${leads.length}`}
         </p>
       </header>
+
+      <section className="flex flex-col gap-[8px] rounded-[4px] border border-line-soft bg-white p-[20px] text-[13px]">
+        <p className="text-[16px]">Куда уходят заявки</p>
+        <p>
+          <span className="text-ink/50">Telegram: </span>
+          {channels.telegram ? (
+            "настроен"
+          ) : (
+            <span className="text-red-700">
+              не настроен — нужны TELEGRAM_BOT_TOKEN и TELEGRAM_CHAT_ID
+            </span>
+          )}
+        </p>
+        <p>
+          <span className="text-ink/50">Почта: </span>
+          {channels.email ? (
+            `настроена, письма идут на ${channels.emailTo}`
+          ) : (
+            <span className="text-red-700">
+              не настроена — нужны SMTP_HOST, SMTP_USER, SMTP_PASS и LEADS_EMAIL_TO
+            </span>
+          )}
+        </p>
+      </section>
 
       {leads.length > 0 && (
         <div className="overflow-x-auto rounded-[4px] border border-line-soft bg-white">

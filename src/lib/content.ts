@@ -42,8 +42,52 @@ async function readSeeded(fileName: string) {
   return raw;
 }
 
+/**
+ * Достраивает рабочую копию недостающими ключами из эталона.
+ *
+ * Без этого всё, что добавлено в код после первого запуска — новая секция,
+ * новое поле, изменённая структура блока, — не доехало бы на работающий сайт:
+ * рабочая копия создаётся один раз и живёт своей жизнью. Правки заказчика
+ * при этом главнее: перезаписываются только отсутствующие и несовместимые
+ * по структуре ключи.
+ */
+export function mergeDefaults(seed: ContentValue, current: ContentValue): ContentValue {
+  const seedIsObject =
+    seed !== null && typeof seed === "object" && !Array.isArray(seed);
+  const currentIsObject =
+    current !== null && typeof current === "object" && !Array.isArray(current);
+
+  if (seedIsObject && currentIsObject) {
+    const result: ContentNode = { ...(current as ContentNode) };
+    for (const [key, value] of Object.entries(seed as ContentNode)) {
+      result[key] = mergeDefaults(value, (current as ContentNode)[key]);
+    }
+    return result;
+  }
+
+  // структура поменялась (например, список стал набором ключей) —
+  // берём эталон, иначе страница сломается
+  if (seedIsObject !== currentIsObject && current !== undefined) return seed;
+
+  if (Array.isArray(seed) && Array.isArray(current)) {
+    return current.length === seed.length
+      ? current.map((item, i) => mergeDefaults(seed[i], item))
+      : current;
+  }
+
+  return current === undefined ? seed : current;
+}
+
 export async function getContent(locale: Locale): Promise<ContentNode> {
-  return JSON.parse(await readSeeded(`${locale}.json`)) as ContentNode;
+  const [working, seed] = await Promise.all([
+    readSeeded(`${locale}.json`),
+    readFile(path.join(seedDir, `${locale}.json`), "utf8"),
+  ]);
+
+  return mergeDefaults(
+    JSON.parse(seed) as ContentNode,
+    JSON.parse(working) as ContentNode,
+  ) as ContentNode;
 }
 
 export async function getAllContent(): Promise<Record<Locale, ContentNode>> {

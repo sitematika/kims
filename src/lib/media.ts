@@ -1,6 +1,7 @@
 import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { contentDir, seedDir } from "./paths";
+import { mergeDefaults } from "./content";
 
 /**
  * Реестр картинок, которыми управляет админка.
@@ -25,6 +26,8 @@ export type Media = {
   images?: Record<string, string>;
   /** Картинка для превью в соцсетях */
   ogImage?: string | null;
+  /** Ссылки на соцсети: id из футера -> адрес. Общие для всех языков */
+  socialLinks?: Record<string, string>;
 };
 
 const file = path.join(contentDir, "media.json");
@@ -50,15 +53,30 @@ async function readRegistry() {
 
 export async function getMedia(): Promise<Media> {
   try {
-    const media = JSON.parse(await readRegistry()) as Media;
+    const working = JSON.parse(await readRegistry()) as Media;
+    // те же правила, что и для текстов: новые ключи из эталона добавляются
+    const seedRaw = await readFile(path.join(seedDir, "media.json"), "utf8").catch(
+      () => "{}",
+    );
+    const media = mergeDefaults(
+      JSON.parse(seedRaw),
+      working as never,
+    ) as unknown as Media;
     return {
       caseSlides: media.caseSlides ?? [],
       presentation: media.presentation ?? null,
       images: media.images ?? {},
       ogImage: media.ogImage ?? null,
+      socialLinks: media.socialLinks ?? {},
     };
   } catch {
-    return { caseSlides: [], presentation: null, images: {}, ogImage: null };
+    return {
+      caseSlides: [],
+      presentation: null,
+      images: {},
+      ogImage: null,
+      socialLinks: {},
+    };
   }
 }
 

@@ -332,32 +332,32 @@
     "columns": [
       {
         "title": "Instagram",
-        "links": [
-          "Ukraine",
-          "West",
-          "Latvia"
-        ]
+        "links": {
+          "instagram-ua": "Ukraine",
+          "instagram-zahid": "West",
+          "instagram-lv": "Latvia"
+        }
       },
       {
         "title": "Facebook",
-        "links": [
-          "Ukraine",
-          "Europe"
-        ]
+        "links": {
+          "facebook-ua": "Ukraine",
+          "facebook-eu": "Europe"
+        }
       },
       {
         "title": "TikTok",
-        "links": [
-          "West",
-          "Kyiv, Odesa",
-          "Latvia"
-        ]
+        "links": {
+          "tiktok-zahid": "West",
+          "tiktok-kyiv-odesa": "Kyiv, Odesa",
+          "tiktok-lv": "Latvia"
+        }
       },
       {
         "title": "YouTube",
-        "links": [
-          "KIMS"
-        ]
+        "links": {
+          "youtube-kims": "KIMS"
+        }
       }
     ],
     "signature": "KIMS. We love people. People love life.",

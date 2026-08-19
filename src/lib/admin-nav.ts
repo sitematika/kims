@@ -38,6 +38,7 @@ export const navGroups: NavGroup[] = [
       section("nav", "Меню и шапка"),
       section("cta", "Кнопки"),
       section("footer", "Футер"),
+      { href: "/admin/social", label: "Ссылки на соцсети" },
     ],
   },
   {

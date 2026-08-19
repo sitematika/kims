@@ -287,3 +287,31 @@ export async function removeOgImage() {
 
   revalidatePath("/", "layout");
 }
+
+/** Адреса соцсетей: общие для всех языков, подписи правятся в разделе «Футер» */
+export async function saveSocialLinks(
+  _state: string | null,
+  formData: FormData,
+): Promise<string | null> {
+  if (!(await isAuthorized())) return "Сессия истекла, войдите заново";
+
+  const links: Record<string, string> = {};
+  for (const [name, value] of formData.entries()) {
+    if (!name.startsWith("link::") || typeof value !== "string") continue;
+    const url = value.trim();
+    if (!url) continue;
+    if (!/^https?:\/\/.+/.test(url)) {
+      return `Адрес «${url}» должен начинаться с http:// или https://`;
+    }
+    links[name.slice("link::".length)] = url;
+  }
+
+  await snapshot("Ссылки на соцсети");
+
+  const media = await getMedia();
+  media.socialLinks = links;
+  await saveMedia(media);
+
+  revalidatePath("/", "layout");
+  return "Ссылки сохранены";
+}
