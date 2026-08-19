@@ -9,6 +9,17 @@ const nextConfig: NextConfig = {
     // загруженные через админку файлы отдаёт маршрут /media/*
     localPatterns: [{ pathname: "/img/**" }, { pathname: "/media/**" }],
   },
+  async redirects() {
+    return [
+      // На старом сайте было ровно две проиндексированные страницы.
+      // Главная попадает на локаль сама, политику уводим на новую.
+      {
+        source: "/privacy-policy",
+        destination: "/privacy",
+        permanent: true,
+      },
+    ];
+  },
   experimental: {
     serverActions: {
       // через админку грузятся фото с телефона и PDF-презентация,

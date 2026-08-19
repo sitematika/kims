@@ -1,6 +1,14 @@
 import { getSettings } from "./settings";
 
-const fallbackUrl = process.env.SITE_URL ?? "http://localhost:3003";
+// боевой адрес по умолчанию: карта сайта и canonical корректны сразу
+// после деплоя, без настройки. Переопределяется в админке и через SITE_URL
+const productionUrl = "https://kims-franchise.com";
+
+const fallbackUrl =
+  process.env.SITE_URL ??
+  (process.env.NODE_ENV === "production"
+    ? productionUrl
+    : "http://localhost:3003");
 
 /** Адрес сайта: сначала то, что задано в админке, затем окружение */
 export async function getSiteUrl() {
