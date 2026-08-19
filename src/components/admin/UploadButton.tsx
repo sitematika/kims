@@ -1,6 +1,8 @@
 "use client";
 
 import { useActionState } from "react";
+import { useDict } from "./AdminLangProvider";
+import type { AdminDict } from "@/lib/admin-lang";
 
 type Action = (
   state: string | null,
@@ -21,7 +23,11 @@ export function UploadButton({
   accept?: string;
   okMessage: string;
 }) {
+  const dict = useDict();
   const [message, formAction, pending] = useActionState(action, null);
+  const text = message
+    ? (dict.msg[message as keyof AdminDict["msg"]] ?? message)
+    : null;
 
   return (
     <form action={formAction} className="flex flex-wrap items-center gap-[12px]">
@@ -42,16 +48,16 @@ export function UploadButton({
         disabled={pending}
         className="h-[34px] rounded-[4px] bg-ink px-[16px] text-[13px] font-medium text-white disabled:opacity-60"
       >
-        {pending ? "Загружаем…" : label}
+        {pending ? dict.common.uploading : label}
       </button>
 
-      {message && (
+      {text && (
         <span
           className={`text-[12px] ${
             message === okMessage ? "text-ink/60" : "text-red-700"
           }`}
         >
-          {message}
+          {text}
         </span>
       )}
     </form>

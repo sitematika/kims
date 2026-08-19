@@ -2,18 +2,15 @@
 
 import { isAuthorized } from "@/lib/auth";
 import { notify } from "@/lib/notify";
-
-const names: Record<string, string> = {
-  telegram: "Telegram",
-  email: "Почта",
-};
+import { getAdminDict } from "@/lib/admin-lang";
 
 /** Отправляет тестовую заявку по всем настроенным каналам */
 export async function sendTestLead(): Promise<string | null> {
-  if (!(await isAuthorized())) return "Сессия истекла, войдите заново";
+  const dict = await getAdminDict();
+  if (!(await isAuthorized())) return dict.msg.sessionExpired;
 
   const results = await notify({
-    name: "Тестова заявка з адмінки",
+    name: "Тестова заявка з панелі",
     phone: "+380000000000",
     city: "Перевірка каналів",
     locale: "uk",
@@ -24,9 +21,9 @@ export async function sendTestLead(): Promise<string | null> {
     .filter((result) => result.status !== "skipped")
     .map((result) =>
       result.status === "ok"
-        ? `${names[result.channel]}: отправлено`
-        : `${names[result.channel]}: ошибка — ${result.detail}`,
+        ? `${result.channel === "telegram" ? dict.leads.telegram : dict.leads.email} ${dict.msg.sent}`
+        : `${result.channel === "telegram" ? dict.leads.telegram : dict.leads.email} ${dict.msg.error} — ${result.detail}`,
     );
 
-  return lines.length ? lines.join(" · ") : "Ни один канал не настроен";
+  return lines.length ? lines.join(" · ") : dict.msg.noChannels;
 }

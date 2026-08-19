@@ -2,12 +2,17 @@
 
 import { useActionState } from "react";
 import { saveSocialLinks } from "@/app/admin/media-actions";
+import { useDict } from "./AdminLangProvider";
 
 export type SocialRow = { id: string; group: string; label: string; url: string };
 
 export function SocialLinksForm({ rows }: { rows: SocialRow[] }) {
+  const dict = useDict();
   const [message, formAction, pending] = useActionState(saveSocialLinks, null);
-  const ok = message === "Ссылки сохранены";
+  const ok = message === "linksSaved";
+  const note = message
+    ? (dict.msg[message as keyof typeof dict.msg] ?? message)
+    : null;
 
   return (
     <form action={formAction} className="flex flex-col gap-[16px]">
@@ -37,11 +42,11 @@ export function SocialLinksForm({ rows }: { rows: SocialRow[] }) {
           disabled={pending}
           className="h-[42px] rounded-[4px] bg-ink px-[24px] text-[14px] font-medium text-white disabled:opacity-60"
         >
-          {pending ? "Сохраняем…" : "Сохранить ссылки"}
+          {pending ? dict.common.saving : dict.social.save}
         </button>
-        {message && (
+        {note && (
           <span className={`text-[13px] ${ok ? "text-ink/60" : "text-red-700"}`}>
-            {message}
+            {note}
           </span>
         )}
       </div>

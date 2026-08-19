@@ -1,5 +1,6 @@
 import { getContent, type ContentNode } from "@/lib/content";
 import { getMedia } from "@/lib/media";
+import { getAdminDict } from "@/lib/admin-lang";
 import {
   SocialLinksForm,
   type SocialRow,
@@ -10,8 +11,11 @@ export const dynamic = "force-dynamic";
 type Column = { title: string; links: Record<string, string> };
 
 export default async function SocialPage() {
-  const media = await getMedia();
-  const content = await getContent("uk");
+  const [media, content, dict] = await Promise.all([
+    getMedia(),
+    getContent("uk"),
+    getAdminDict(),
+  ]);
   const footer = content.footer as ContentNode;
   const columns = (footer?.columns ?? []) as unknown as Column[];
 
@@ -27,11 +31,8 @@ export default async function SocialPage() {
   return (
     <div className="flex max-w-[860px] flex-col gap-[24px]">
       <header>
-        <h1 className="text-[24px]">Ссылки на соцсети</h1>
-        <p className="mt-[4px] text-[14px] text-ink/60">
-          Адреса общие для всех языков. Подписи переводятся в разделе «Футер».
-          Пока адрес не заполнен, в футере остаётся неактивная подпись.
-        </p>
+        <h1 className="text-[24px]">{dict.social.title}</h1>
+        <p className="mt-[4px] text-[14px] text-ink/60">{dict.social.subtitle}</p>
       </header>
 
       <SocialLinksForm rows={rows} />

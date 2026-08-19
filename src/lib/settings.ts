@@ -25,12 +25,15 @@ export type Settings = {
   /** Пароль администратора: соль и хеш. Пусто — используется ADMIN_PASSWORD */
   passwordSalt?: string;
   passwordHash?: string;
+  /** Кому приходят заявки. Пусто — берётся LEADS_EMAIL_TO из окружения */
+  leadEmails?: string[];
 };
 
 const file = path.join(contentDir, "settings.json");
 
 const defaults: Settings = {
   siteUrl: "",
+  leadEmails: [],
   // по умолчанию закрыто: свежий сайт не должен попасть в поиск раньше времени
   indexing: false,
 };

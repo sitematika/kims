@@ -2,7 +2,9 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { dataDir } from "@/lib/paths";
 import { notifyStatus } from "@/lib/notify";
+import { getAdminDict } from "@/lib/admin-lang";
 import { TestLeadButton } from "@/components/admin/TestLeadButton";
+import { LeadEmailsForm } from "@/components/admin/LeadEmailsForm";
 
 type Lead = {
   name: string;
@@ -14,10 +16,7 @@ type Lead = {
 
 async function readLeads(): Promise<Lead[]> {
   try {
-    const raw = await readFile(
-      path.join(dataDir, "leads.jsonl"),
-      "utf8",
-    );
+    const raw = await readFile(path.join(dataDir, "leads.jsonl"), "utf8");
     return raw
       .split("\n")
       .filter(Boolean)
@@ -31,43 +30,50 @@ async function readLeads(): Promise<Lead[]> {
 export const dynamic = "force-dynamic";
 
 export default async function LeadsPage() {
-  const leads = await readLeads();
-  const channels = notifyStatus();
+  const [leads, channels, dict] = await Promise.all([
+    readLeads(),
+    notifyStatus(),
+    getAdminDict(),
+  ]);
 
   return (
     <div className="flex max-w-[1100px] flex-col gap-[24px]">
       <header>
-        <h1 className="text-[24px]">Заявки</h1>
+        <h1 className="text-[24px]">{dict.leads.title}</h1>
         <p className="mt-[4px] text-[14px] text-ink/60">
           {leads.length === 0
-            ? "Пока пусто. Заявки попадают сюда, если включён LEADS_SAVE_LOCAL=1."
-            : `Всего: ${leads.length}`}
+            ? dict.leads.empty
+            : `${dict.leads.total} ${leads.length}`}
         </p>
       </header>
 
-      <section className="flex flex-col gap-[8px] rounded-[4px] border border-line-soft bg-white p-[20px] text-[13px]">
-        <p className="text-[16px]">Куда уходят заявки</p>
+      <section className="flex flex-col gap-[14px] rounded-[4px] border border-line-soft bg-white p-[20px] text-[13px]">
+        <p className="text-[16px]">{dict.leads.channels}</p>
+
         <p>
-          <span className="text-ink/50">Telegram: </span>
+          <span className="text-ink/50">{dict.leads.telegram} </span>
           {channels.telegram ? (
-            "настроен"
+            dict.leads.configured
           ) : (
-            <span className="text-red-700">
-              не настроен — нужны TELEGRAM_BOT_TOKEN и TELEGRAM_CHAT_ID
-            </span>
+            <span className="text-red-700">{dict.leads.telegramMissing}</span>
           )}
         </p>
-        <p>
-          <span className="text-ink/50">Почта: </span>
-          {channels.email ? (
-            `настроена, письма идут на ${channels.emailTo}`
-          ) : (
-            <span className="text-red-700">
-              не настроена — нужны SMTP_HOST, SMTP_USER, SMTP_PASS и LEADS_EMAIL_TO
-            </span>
-          )}
-        </p>
-        <div className="pt-[8px]">
+
+        <div className="flex flex-col gap-[10px]">
+          <p>
+            <span className="text-ink/50">{dict.leads.email} </span>
+            {channels.smtpReady ? (
+              dict.leads.configured
+            ) : (
+              <span className="text-red-700">{dict.leads.smtpMissing}</span>
+            )}
+          </p>
+
+          <p className="text-ink/50">{dict.leads.recipients}</p>
+          <LeadEmailsForm emails={channels.recipients} />
+        </div>
+
+        <div className="pt-[4px]">
           <TestLeadButton />
         </div>
       </section>
@@ -77,11 +83,11 @@ export default async function LeadsPage() {
           <table className="w-full min-w-[720px] text-[14px]">
             <thead>
               <tr className="border-b border-line-soft text-left text-[12px] tracking-[1px] text-ink/50 uppercase">
-                <th className="px-[16px] py-[12px]">Дата</th>
-                <th className="px-[16px] py-[12px]">Имя</th>
-                <th className="px-[16px] py-[12px]">Телефон</th>
-                <th className="px-[16px] py-[12px]">Город</th>
-                <th className="px-[16px] py-[12px]">Язык</th>
+                <th className="px-[16px] py-[12px]">{dict.leads.date}</th>
+                <th className="px-[16px] py-[12px]">{dict.leads.name}</th>
+                <th className="px-[16px] py-[12px]">{dict.leads.phone}</th>
+                <th className="px-[16px] py-[12px]">{dict.leads.city}</th>
+                <th className="px-[16px] py-[12px]">{dict.leads.lang}</th>
               </tr>
             </thead>
             <tbody>
@@ -112,7 +118,7 @@ export default async function LeadsPage() {
         href="/admin/leads/export"
         className="inline-flex h-[44px] w-fit items-center rounded-[4px] border border-line px-[24px] text-[14px] transition-colors hover:bg-white"
       >
-        Выгрузить CSV
+        {dict.leads.csv}
       </a>
     </div>
   );

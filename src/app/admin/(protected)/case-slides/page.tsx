@@ -2,14 +2,18 @@ import Image from "next/image";
 import { locales, localeLabels } from "@/i18n/routing";
 import { getAllContent, type ContentNode } from "@/lib/content";
 import { getMedia } from "@/lib/media";
+import { getAdminDict } from "@/lib/admin-lang";
 import { SlideUploader } from "@/components/admin/SlideUploader";
 import { moveSlide, removeSlide } from "@/app/admin/media-actions";
 
 export const dynamic = "force-dynamic";
 
 export default async function CaseSlidesPage() {
-  const media = await getMedia();
-  const all = await getAllContent();
+  const [media, all, dict] = await Promise.all([
+    getMedia(),
+    getAllContent(),
+    getAdminDict(),
+  ]);
 
   const captionFor = (locale: (typeof locales)[number], id: string) => {
     const section = all[locale].case as ContentNode | undefined;
@@ -20,11 +24,8 @@ export default async function CaseSlidesPage() {
   return (
     <div className="flex max-w-[1100px] flex-col gap-[24px]">
       <header>
-        <h1 className="text-[24px]">Слайдер кейса</h1>
-        <p className="mt-[4px] text-[14px] text-ink/60">
-          Фото в блоке «Успішний кейс». Загруженное фото автоматически
-          сжимается в WebP. Подписи правятся в разделе «Кейс Риги».
-        </p>
+        <h1 className="text-[24px]">{dict.slides.title}</h1>
+        <p className="mt-[4px] text-[14px] text-ink/60">{dict.slides.subtitle}</p>
       </header>
 
       <SlideUploader />
@@ -61,10 +62,10 @@ export default async function CaseSlidesPage() {
                         {localeLabels[locale]}:{" "}
                       </span>
                       {caption || (
-                        <span className="text-red-700">не заполнено</span>
+                        <span className="text-red-700">{dict.common.empty}</span>
                       )}
                       {untranslated && (
-                        <span className="text-red-700"> · нужен перевод</span>
+                        <span className="text-red-700"> · {dict.common.needsTranslation}</span>
                       )}
                     </li>
                   );
@@ -79,7 +80,7 @@ export default async function CaseSlidesPage() {
                 <button
                   type="submit"
                   disabled={i === 0}
-                  aria-label="Выше"
+                  aria-label={dict.slides.up}
                   className="flex h-[36px] w-[36px] items-center justify-center rounded-[4px] border border-line disabled:opacity-30"
                 >
                   ↑
@@ -92,7 +93,7 @@ export default async function CaseSlidesPage() {
                 <button
                   type="submit"
                   disabled={i === media.caseSlides.length - 1}
-                  aria-label="Ниже"
+                  aria-label={dict.slides.down}
                   className="flex h-[36px] w-[36px] items-center justify-center rounded-[4px] border border-line disabled:opacity-30"
                 >
                   ↓
@@ -105,7 +106,7 @@ export default async function CaseSlidesPage() {
                   type="submit"
                   className="h-[36px] rounded-[4px] border border-line px-[16px] text-[13px] text-red-700 transition-colors hover:bg-red-50"
                 >
-                  Удалить
+                  {dict.common.delete}
                 </button>
               </form>
             </div>

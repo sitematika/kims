@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { getSettings } from "./settings";
 
 export type Lead = {
   name: string;
@@ -44,12 +45,21 @@ async function toTelegram(lead: Lead) {
   }
 }
 
-/** Письмо ответственному менеджеру */
+/** Список получателей: сначала заданные в админке, потом из окружения */
+export async function leadRecipients(): Promise<string[]> {
+  const { leadEmails } = await getSettings();
+  if (leadEmails?.length) return leadEmails;
+
+  const fromEnv = process.env.LEADS_EMAIL_TO;
+  return fromEnv ? fromEnv.split(",").map((s) => s.trim()).filter(Boolean) : [];
+}
+
+/** Письмо ответственным менеджерам */
 async function toEmail(lead: Lead) {
   const host = process.env.SMTP_HOST;
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
-  const to = process.env.LEADS_EMAIL_TO;
+  const to = (await leadRecipients()).join(", ");
   if (!host || !user || !pass || !to) return;
 
   const port = Number(process.env.SMTP_PORT ?? 465);
@@ -83,7 +93,7 @@ export type ChannelResult = {
  * заявка к этому моменту уже записана.
  */
 export async function notify(lead: Lead): Promise<ChannelResult[]> {
-  const status = notifyStatus();
+  const status = await notifyStatus();
   const settled = await Promise.allSettled([toTelegram(lead), toEmail(lead)]);
 
   return settled.map((result, i): ChannelResult => {
@@ -106,18 +116,24 @@ export async function notify(lead: Lead): Promise<ChannelResult[]> {
 }
 
 /** Какие каналы настроены — для диагностики в админке */
-export function notifyStatus() {
+export async function notifyStatus() {
+  const recipients = await leadRecipients();
+
   return {
     telegram: Boolean(
       process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID,
     ),
+    // почта считается настроенной, только когда есть и доступ, и получатель
     email: Boolean(
       process.env.SMTP_HOST &&
         process.env.SMTP_USER &&
         process.env.SMTP_PASS &&
-        process.env.LEADS_EMAIL_TO,
+        recipients.length,
     ),
-    emailTo: process.env.LEADS_EMAIL_TO ?? "",
+    smtpReady: Boolean(
+      process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS,
+    ),
+    recipients,
     webhook: Boolean(process.env.LEADS_WEBHOOK_URL),
   };
 }

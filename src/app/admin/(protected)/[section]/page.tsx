@@ -1,11 +1,7 @@
 import { notFound } from "next/navigation";
 import { locales, type Locale } from "@/i18n/routing";
-import {
-  flattenFields,
-  getAllContent,
-  readPath,
-  sectionLabels,
-} from "@/lib/content";
+import { flattenFields, getAllContent, readPath } from "@/lib/content";
+import { getAdminDict, type AdminDict } from "@/lib/admin-lang";
 import {
   SectionEditor,
   type EditorField,
@@ -36,6 +32,7 @@ export default async function SectionPage({
     return { path: field.path, values };
   });
 
+  const dict = await getAdminDict();
   const media = section === "meta" ? await getMedia() : null;
   const siteUrl = await getSiteUrl();
   const isIndexable = await getIndexable();
@@ -47,12 +44,13 @@ export default async function SectionPage({
           ogImage={media.ogImage}
           siteUrl={siteUrl}
           indexable={isIndexable}
+          dict={dict}
         />
       )}
 
       <SectionEditor
         section={section}
-        title={sectionLabels[section] ?? section}
+        title={dict.sections[section as keyof AdminDict["sections"]] ?? section}
         fields={fields}
       />
     </div>

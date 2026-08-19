@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Onest } from "next/font/google";
+import { getAdminDict, getAdminLang } from "@/lib/admin-lang";
 import "../globals.css";
 
 const onest = Onest({
@@ -9,18 +10,20 @@ const onest = Onest({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "KIMS — админка",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const dict = await getAdminDict();
+  return { title: dict.login.title, robots: { index: false, follow: false } };
+}
 
-export default function AdminRootLayout({
+export default async function AdminRootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const lang = await getAdminLang();
+
   return (
-    <html lang="ru" className={`${onest.variable} antialiased`}>
+    <html lang={lang} className={`${onest.variable} antialiased`}>
       <body className="bg-paper">{children}</body>
     </html>
   );

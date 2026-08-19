@@ -2,13 +2,18 @@
 
 import { useActionState } from "react";
 import { changePassword } from "@/app/admin/settings-actions";
+import { useDict } from "./AdminLangProvider";
 
 const field =
   "rounded-[4px] border border-line px-[12px] py-[10px] text-[14px] outline-none focus:border-ink";
 
 export function PasswordForm({ usingEnv }: { usingEnv: boolean }) {
+  const dict = useDict();
   const [message, formAction, pending] = useActionState(changePassword, null);
-  const done = message === "Пароль изменён. Войдите заново";
+  const done = message === "passwordChanged";
+  const note = message
+    ? (dict.msg[message as keyof typeof dict.msg] ?? message)
+    : null;
 
   return (
     <form
@@ -16,24 +21,24 @@ export function PasswordForm({ usingEnv }: { usingEnv: boolean }) {
       className="flex flex-col gap-[20px] rounded-[4px] border border-line-soft bg-white p-[20px]"
     >
       <div>
-        <h2 className="text-[16px]">Пароль администратора</h2>
+        <h2 className="text-[16px]">{dict.settings.passwordBlock}</h2>
         <p className="mt-[4px] text-[13px] text-ink/60">
           {usingEnv
-            ? "Сейчас действует пароль из настроек хостинга. Задайте свой — он будет храниться на сервере и переживёт переустановку."
-            : "Пароль задан здесь. После смены все открытые сессии закроются."}
+            ? dict.settings.passwordUsingEnv
+            : dict.settings.passwordStored}
         </p>
       </div>
 
       <div className="grid grid-cols-1 gap-[16px] md:grid-cols-3">
         <label className="flex flex-col gap-[8px]">
           <span className="text-[12px] tracking-[1px] text-ink/50">
-            ТЕКУЩИЙ
+            {dict.settings.current}
           </span>
           <input type="password" name="current" required className={field} />
         </label>
         <label className="flex flex-col gap-[8px]">
           <span className="text-[12px] tracking-[1px] text-ink/50">
-            НОВЫЙ (ОТ 10 СИМВОЛОВ)
+            {dict.settings.next}
           </span>
           <input
             type="password"
@@ -45,7 +50,7 @@ export function PasswordForm({ usingEnv }: { usingEnv: boolean }) {
         </label>
         <label className="flex flex-col gap-[8px]">
           <span className="text-[12px] tracking-[1px] text-ink/50">
-            НОВЫЙ ЕЩЁ РАЗ
+            {dict.settings.repeat}
           </span>
           <input type="password" name="repeat" required className={field} />
         </label>
@@ -57,11 +62,11 @@ export function PasswordForm({ usingEnv }: { usingEnv: boolean }) {
           disabled={pending}
           className="h-[42px] rounded-[4px] bg-ink px-[24px] text-[14px] font-medium text-white disabled:opacity-60"
         >
-          {pending ? "Меняем…" : "Сменить пароль"}
+          {pending ? dict.settings.changing : dict.settings.changePassword}
         </button>
-        {message && (
+        {note && (
           <span className={`text-[13px] ${done ? "text-ink/60" : "text-red-700"}`}>
-            {message}
+            {note}
           </span>
         )}
       </div>
@@ -71,7 +76,7 @@ export function PasswordForm({ usingEnv }: { usingEnv: boolean }) {
           href="/admin/login"
           className="w-fit text-[14px] underline underline-offset-[4px]"
         >
-          Войти с новым паролем
+          {dict.settings.loginAgain}
         </a>
       )}
     </form>

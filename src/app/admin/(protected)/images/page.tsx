@@ -2,6 +2,7 @@ import Image from "next/image";
 import { locales, localeLabels } from "@/i18n/routing";
 import { getAllContent, type ContentNode } from "@/lib/content";
 import { getMedia } from "@/lib/media";
+import { getAdminDict } from "@/lib/admin-lang";
 import { imageSlots } from "@/lib/images";
 import { UploadButton } from "@/components/admin/UploadButton";
 import { replaceImage, resetImage } from "@/app/admin/media-actions";
@@ -9,8 +10,11 @@ import { replaceImage, resetImage } from "@/app/admin/media-actions";
 export const dynamic = "force-dynamic";
 
 export default async function ImagesPage() {
-  const media = await getMedia();
-  const all = await getAllContent();
+  const [media, all, dict] = await Promise.all([
+    getMedia(),
+    getAllContent(),
+    getAdminDict(),
+  ]);
 
   const altFor = (locale: (typeof locales)[number], id: string) => {
     const section = all[locale].alt as ContentNode | undefined;
@@ -21,11 +25,8 @@ export default async function ImagesPage() {
   return (
     <div className="flex max-w-[1100px] flex-col gap-[24px]">
       <header>
-        <h1 className="text-[24px]">Картинки сайта</h1>
-        <p className="mt-[4px] text-[14px] text-ink/60">
-          Загруженное фото сжимается в WebP. Alt-тексты правятся в разделе
-          «Alt-тексты картинок» — здесь они показаны для проверки.
-        </p>
+        <h1 className="text-[24px]">{dict.images.title}</h1>
+        <p className="mt-[4px] text-[14px] text-ink/60">{dict.images.subtitle}</p>
       </header>
 
       <div className="flex flex-col gap-[12px]">
@@ -48,10 +49,10 @@ export default async function ImagesPage() {
 
               <div className="flex flex-1 flex-col gap-[10px]">
                 <div className="flex flex-wrap items-center gap-[10px]">
-                  <p className="text-[16px]">{slot.label}</p>
+                  <p className="text-[16px]">{dict.imageSlots[slot.id]}</p>
                   {custom && (
                     <span className="rounded-[3px] bg-blush-50 px-[8px] py-[2px] text-[11px] text-ink/60">
-                      заменена
+                      {dict.images.replaced}
                     </span>
                   )}
                 </div>
@@ -64,7 +65,7 @@ export default async function ImagesPage() {
                         <span className="text-ink/40">
                           {localeLabels[locale]}:{" "}
                         </span>
-                        {alt || <span className="text-red-700">нет alt</span>}
+                        {alt || <span className="text-red-700">{dict.images.noAlt}</span>}
                       </li>
                     );
                   })}
@@ -74,8 +75,8 @@ export default async function ImagesPage() {
                   <UploadButton
                     action={replaceImage}
                     hidden={{ slot: slot.id }}
-                    label="Заменить"
-                    okMessage="Картинка обновлена"
+                    label={dict.common.replace}
+                    okMessage="imageUpdated"
                   />
                   {custom && (
                     <form action={resetImage}>
@@ -84,7 +85,7 @@ export default async function ImagesPage() {
                         type="submit"
                         className="h-[34px] rounded-[4px] border border-line px-[14px] text-[13px] transition-colors hover:bg-paper"
                       >
-                        Вернуть из макета
+                        {dict.images.reset}
                       </button>
                     </form>
                   )}

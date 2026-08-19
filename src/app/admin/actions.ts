@@ -9,12 +9,12 @@ import {
   destroySession,
   isAuthorized,
 } from "@/lib/auth";
-import { getContent, saveContent, writePath, sectionLabels } from "@/lib/content";
+import { getContent, saveContent, writePath } from "@/lib/content";
 import { snapshot } from "@/lib/history";
 
 export async function login(_state: string | null, formData: FormData) {
   const password = String(formData.get("password") ?? "");
-  if (!(await checkPassword(password))) return "Неверный пароль";
+  if (!(await checkPassword(password))) return "wrongPassword";
 
   await createSession();
   redirect("/admin");
@@ -29,10 +29,10 @@ export async function saveSection(
   _state: string | null,
   formData: FormData,
 ): Promise<string | null> {
-  if (!(await isAuthorized())) return "Сессия истекла, войдите заново";
+  if (!(await isAuthorized())) return "sessionExpired";
 
   const section = String(formData.get("__section") ?? "");
-  if (!section) return "Не указан раздел";
+  if (!section) return "noSection";
 
   // Поля приходят как "<locale>::<путь.в.json>"
   const updates = new Map<Locale, [string, string][]>();
@@ -45,7 +45,7 @@ export async function saveSection(
     updates.set(locale as Locale, list);
   }
 
-  await snapshot(`Тексты: ${sectionLabels[section] ?? section}`);
+  await snapshot(`Тексты: ${section}`);
 
   for (const [locale, fields] of updates) {
     const content = await getContent(locale);
@@ -54,5 +54,5 @@ export async function saveSection(
   }
 
   revalidatePath("/", "layout");
-  return "Сохранено";
+  return "saved";
 }

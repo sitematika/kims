@@ -2,10 +2,15 @@
 
 import { useActionState } from "react";
 import { addSlide } from "@/app/admin/media-actions";
+import { useDict } from "./AdminLangProvider";
 
 export function SlideUploader() {
+  const dict = useDict();
   const [message, formAction, pending] = useActionState(addSlide, null);
-  const ok = message === "Слайд добавлен";
+  const ok = message === "slideAdded";
+  const note = message
+    ? (dict.msg[message as keyof typeof dict.msg] ?? message)
+    : null;
 
   return (
     <form
@@ -13,7 +18,7 @@ export function SlideUploader() {
       className="flex flex-col gap-[16px] rounded-[4px] border border-dashed border-line bg-white px-[20px] py-[20px] md:flex-row md:items-end"
     >
       <label className="flex flex-1 flex-col gap-[6px]">
-        <span className="text-[12px] tracking-[1px] text-ink/50">ФОТО</span>
+        <span className="text-[12px] tracking-[1px] text-ink/50">{dict.slides.photo}</span>
         <input
           type="file"
           name="file"
@@ -25,11 +30,11 @@ export function SlideUploader() {
 
       <label className="flex flex-1 flex-col gap-[6px]">
         <span className="text-[12px] tracking-[1px] text-ink/50">
-          ПОДПИСЬ (украинский)
+          {dict.slides.caption}
         </span>
         <input
           name="caption"
-          placeholder="Напр.: Після відкриття"
+          placeholder={dict.slides.captionPlaceholder}
           className="rounded-[4px] border border-line px-[12px] py-[10px] text-[14px] outline-none focus:border-ink"
         />
       </label>
@@ -39,12 +44,12 @@ export function SlideUploader() {
         disabled={pending}
         className="h-[42px] shrink-0 rounded-[4px] bg-ink px-[24px] text-[14px] font-medium text-white disabled:opacity-60"
       >
-        {pending ? "Загружаем…" : "Добавить слайд"}
+        {pending ? dict.common.uploading : dict.slides.add}
       </button>
 
-      {message && (
+      {note && (
         <p className={`text-[13px] ${ok ? "text-ink/60" : "text-red-700"}`}>
-          {message}
+          {note}
         </p>
       )}
     </form>

@@ -2,13 +2,18 @@
 
 import { useActionState } from "react";
 import { uploadPresentation } from "@/app/admin/media-actions";
+import { useDict } from "./AdminLangProvider";
 
 export function PresentationUploader({ hasFile }: { hasFile: boolean }) {
   const [message, formAction, pending] = useActionState(
     uploadPresentation,
     null,
   );
-  const ok = message === "Презентация обновлена";
+  const dict = useDict();
+  const ok = message === "presentationUpdated";
+  const note = message
+    ? (dict.msg[message as keyof typeof dict.msg] ?? message)
+    : null;
 
   return (
     <form
@@ -17,7 +22,7 @@ export function PresentationUploader({ hasFile }: { hasFile: boolean }) {
     >
       <label className="flex flex-1 flex-col gap-[6px]">
         <span className="text-[12px] tracking-[1px] text-ink/50">
-          PDF-ФАЙЛ (до 35 МБ)
+          {dict.presentation.file}
         </span>
         <input
           type="file"
@@ -34,15 +39,15 @@ export function PresentationUploader({ hasFile }: { hasFile: boolean }) {
         className="h-[42px] shrink-0 rounded-[4px] bg-ink px-[24px] text-[14px] font-medium text-white disabled:opacity-60"
       >
         {pending
-          ? "Загружаем…"
+          ? dict.common.uploading
           : hasFile
-            ? "Заменить презентацию"
-            : "Загрузить презентацию"}
+            ? dict.presentation.replace
+            : dict.presentation.upload}
       </button>
 
-      {message && (
+      {note && (
         <p className={`text-[13px] ${ok ? "text-ink/60" : "text-red-700"}`}>
-          {message}
+          {note}
         </p>
       )}
     </form>

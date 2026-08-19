@@ -162,27 +162,3 @@ export function flattenFields(
   return [];
 }
 
-/** Разделы для меню админки: ключ верхнего уровня -> человеческое название. */
-export const sectionLabels: Record<string, string> = {
-  meta: "Заголовки и описания",
-  alt: "Alt-тексты картинок",
-  nav: "Меню и шапка",
-  cta: "Кнопки",
-  hero: "Первый экран",
-  stats: "Цифры",
-  gallery: "Галерея",
-  invest: "Полоса «Инвестиции»",
-  founder: "От основателя",
-  market: "О бренде и рынке",
-  benefits: "Что вы получаете",
-  formats: "Форматы",
-  developers: "Для девелоперов",
-  package: "Пакет партнёра",
-  case: "Кейс Риги",
-  steps: "Шаги",
-  lead: "Форма заявки",
-  footer: "Футер",
-  cookies: "Cookie-баннер",
-  privacy: "Политика конфиденциальности",
-  notFound: "Страница 404",
-};

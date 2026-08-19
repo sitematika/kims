@@ -37,14 +37,14 @@ export async function addSlide(
   _state: string | null,
   formData: FormData,
 ): Promise<string | null> {
-  if (!(await isAuthorized())) return "Сессия истекла, войдите заново";
+  if (!(await isAuthorized())) return "sessionExpired";
 
   const file = formData.get("file");
   const caption = String(formData.get("caption") ?? "").trim();
 
-  if (!(file instanceof File) || file.size === 0) return "Выберите файл";
-  if (!file.type.startsWith("image/")) return "Нужен файл изображения";
-  if (file.size > 15 * 1024 * 1024) return "Файл больше 15 МБ";
+  if (!(file instanceof File) || file.size === 0) return "pickFile";
+  if (!file.type.startsWith("image/")) return "needImage";
+  if (file.size > 15 * 1024 * 1024) return "tooBig";
 
   await snapshot("Слайдер кейса: добавлен слайд");
 
@@ -62,7 +62,7 @@ export async function addSlide(
 
     await writeFile(path.join(uploadsDir, `${id}.webp`), webp);
   } catch {
-    return "Не удалось обработать изображение";
+    return "imageFailed";
   }
 
   const media = await getMedia();
@@ -72,7 +72,7 @@ export async function addSlide(
   await captionsFor(id, caption);
 
   revalidatePath("/", "layout");
-  return "Слайд добавлен";
+  return "slideAdded";
 }
 
 export async function removeSlide(formData: FormData) {
@@ -125,14 +125,14 @@ export async function uploadPresentation(
   _state: string | null,
   formData: FormData,
 ): Promise<string | null> {
-  if (!(await isAuthorized())) return "Сессия истекла, войдите заново";
+  if (!(await isAuthorized())) return "sessionExpired";
 
   const file = formData.get("file");
-  if (!(file instanceof File) || file.size === 0) return "Выберите файл";
+  if (!(file instanceof File) || file.size === 0) return "pickFile";
   if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
-    return "Нужен файл PDF";
+    return "needPdf";
   }
-  if (file.size > 35 * 1024 * 1024) return "Файл больше 35 МБ";
+  if (file.size > 35 * 1024 * 1024) return "tooBig";
 
   const media = await getMedia();
 
@@ -142,10 +142,10 @@ export async function uploadPresentation(
     // имя фиксированное: ссылка на презентацию не меняется при перезаливке
     await writeFile(path.join(uploadsDir, "presentation.pdf"), buffer);
   } catch {
-    return "Не удалось сохранить файл";
+    return "saveFailed";
   }
 
-  await snapshot("Презентация обновлена");
+  await snapshot("presentationUpdated");
 
   media.presentation = {
     file: `${mediaUrlPrefix}/presentation.pdf`,
@@ -156,7 +156,7 @@ export async function uploadPresentation(
   await saveMedia(media);
 
   revalidatePath("/", "layout");
-  return "Презентация обновлена";
+  return "presentationUpdated";
 }
 
 export async function removePresentation() {
@@ -180,14 +180,14 @@ export async function replaceImage(
   _state: string | null,
   formData: FormData,
 ): Promise<string | null> {
-  if (!(await isAuthorized())) return "Сессия истекла, войдите заново";
+  if (!(await isAuthorized())) return "sessionExpired";
 
   const slot = String(formData.get("slot") ?? "");
   const file = formData.get("file");
-  if (!slot) return "Не указан слот";
-  if (!(file instanceof File) || file.size === 0) return "Выберите файл";
-  if (!file.type.startsWith("image/")) return "Нужен файл изображения";
-  if (file.size > 25 * 1024 * 1024) return "Файл больше 25 МБ";
+  if (!slot) return "noSection";
+  if (!(file instanceof File) || file.size === 0) return "pickFile";
+  if (!file.type.startsWith("image/")) return "needImage";
+  if (file.size > 25 * 1024 * 1024) return "tooBig";
 
   await snapshot("Картинки сайта: замена фото");
 
@@ -202,7 +202,7 @@ export async function replaceImage(
       .toBuffer();
     await writeFile(path.join(uploadsDir, name), webp);
   } catch {
-    return "Не удалось обработать изображение";
+    return "imageFailed";
   }
 
   const media = await getMedia();
@@ -218,7 +218,7 @@ export async function replaceImage(
   }
 
   revalidatePath("/", "layout");
-  return "Картинка обновлена";
+  return "imageUpdated";
 }
 
 /** Вернуть картинку из макета вместо загруженной */
@@ -249,11 +249,11 @@ export async function uploadOgImage(
   _state: string | null,
   formData: FormData,
 ): Promise<string | null> {
-  if (!(await isAuthorized())) return "Сессия истекла, войдите заново";
+  if (!(await isAuthorized())) return "sessionExpired";
 
   const file = formData.get("file");
-  if (!(file instanceof File) || file.size === 0) return "Выберите файл";
-  if (!file.type.startsWith("image/")) return "Нужен файл изображения";
+  if (!(file instanceof File) || file.size === 0) return "pickFile";
+  if (!file.type.startsWith("image/")) return "needImage";
 
   try {
     await mkdir(uploadsDir, { recursive: true });
@@ -264,7 +264,7 @@ export async function uploadOgImage(
       .toBuffer();
     await writeFile(path.join(uploadsDir, "og.jpg"), jpeg);
   } catch {
-    return "Не удалось обработать изображение";
+    return "imageFailed";
   }
 
   const media = await getMedia();
@@ -274,7 +274,7 @@ export async function uploadOgImage(
   await saveMedia(media);
 
   revalidatePath("/", "layout");
-  return "Превью обновлено";
+  return "ogUpdated";
 }
 
 export async function removeOgImage() {
@@ -293,7 +293,7 @@ export async function saveSocialLinks(
   _state: string | null,
   formData: FormData,
 ): Promise<string | null> {
-  if (!(await isAuthorized())) return "Сессия истекла, войдите заново";
+  if (!(await isAuthorized())) return "sessionExpired";
 
   const links: Record<string, string> = {};
   for (const [name, value] of formData.entries()) {
@@ -301,7 +301,7 @@ export async function saveSocialLinks(
     const url = value.trim();
     if (!url) continue;
     if (!/^https?:\/\/.+/.test(url)) {
-      return `Адрес «${url}» должен начинаться с http:// или https://`;
+      return "badUrl";
     }
     links[name.slice("link::".length)] = url;
   }
@@ -313,5 +313,5 @@ export async function saveSocialLinks(
   await saveMedia(media);
 
   revalidatePath("/", "layout");
-  return "Ссылки сохранены";
+  return "linksSaved";
 }

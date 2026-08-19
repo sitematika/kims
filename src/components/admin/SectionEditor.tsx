@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { locales, localeLabels, type Locale } from "@/i18n/routing";
 import { saveSection } from "@/app/admin/actions";
+import { useDict } from "./AdminLangProvider";
 
 export type EditorField = {
   path: string;
@@ -18,7 +19,16 @@ export function SectionEditor({
   title: string;
   fields: EditorField[];
 }) {
+  const dict = useDict();
   const [message, formAction, pending] = useActionState(saveSection, null);
+  const note =
+    message === "saved"
+      ? dict.msg.saved
+      : message === "sessionExpired"
+        ? dict.msg.sessionExpired
+        : message === "noSection"
+          ? dict.msg.noSection
+          : null;
   const emptyCount = fields.filter((f) =>
     locales.some((l) => !f.values[l]?.trim()),
   ).length;
@@ -31,24 +41,24 @@ export function SectionEditor({
         <div>
           <h1 className="text-[24px]">{title}</h1>
           <p className="mt-[4px] text-[14px] text-ink/60">
-            {fields.length} полей
+            {fields.length} {dict.section.fields}
             {emptyCount > 0 && (
               <span className="text-red-700">
                 {" "}
-                · не заполнено переводов: {emptyCount}
+                · {dict.section.untranslated} {emptyCount}
               </span>
             )}
           </p>
         </div>
 
         <div className="flex items-center gap-[16px]">
-          {message && (
+          {note && (
             <span
               className={`text-[14px] ${
-                message === "Сохранено" ? "text-ink/60" : "text-red-700"
+                message === "saved" ? "text-ink/60" : "text-red-700"
               }`}
             >
-              {message}
+              {note}
             </span>
           )}
           <button
@@ -56,7 +66,7 @@ export function SectionEditor({
             disabled={pending}
             className="h-[44px] rounded-[4px] bg-ink px-[28px] text-[14px] font-medium text-white disabled:opacity-60"
           >
-            {pending ? "Сохраняем…" : "Сохранить и опубликовать"}
+            {pending ? dict.section.publishing : dict.section.publish}
           </button>
         </div>
       </header>
@@ -97,6 +107,7 @@ function LocaleInput({
   path: string;
   value: string;
 }) {
+  const dict = useDict();
   const long = value.length > 90;
   const name = `${locale}::${path}`;
   const empty = !value.trim();
@@ -109,7 +120,7 @@ function LocaleInput({
         }`}
       >
         {localeLabels[locale]}
-        {empty && " · пусто"}
+        {empty && ` · ${dict.common.empty}`}
       </span>
 
       {long ? (

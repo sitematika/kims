@@ -1,6 +1,7 @@
 import { revalidatePath } from "next/cache";
 import { isAuthorized } from "@/lib/auth";
 import { listSnapshots, restore } from "@/lib/history";
+import { getAdminDict } from "@/lib/admin-lang";
 
 export const dynamic = "force-dynamic";
 
@@ -17,22 +18,18 @@ async function restoreAction(formData: FormData) {
 }
 
 export default async function HistoryPage() {
-  const snapshots = await listSnapshots();
+  const [snapshots, dict] = await Promise.all([listSnapshots(), getAdminDict()]);
 
   return (
     <div className="flex max-w-[860px] flex-col gap-[24px]">
       <header>
-        <h1 className="text-[24px]">История изменений</h1>
-        <p className="mt-[4px] text-[14px] text-ink/60">
-          Состояние текстов и картинок сохраняется перед каждой правкой.
-          «Вернуть» откатывает сайт к выбранному моменту — сам откат тоже
-          записывается в историю, так что его можно отменить.
-        </p>
+        <h1 className="text-[24px]">{dict.history.title}</h1>
+        <p className="mt-[4px] text-[14px] text-ink/60">{dict.history.subtitle}</p>
       </header>
 
       {snapshots.length === 0 ? (
         <p className="rounded-[4px] bg-blush-50 px-[20px] py-[16px] text-[14px] text-ink/70">
-          Правок ещё не было — история пуста.
+          {dict.history.empty}
         </p>
       ) : (
         <div className="flex flex-col">
@@ -46,7 +43,7 @@ export default async function HistoryPage() {
                   {item.label}
                   {i === 0 && (
                     <span className="ml-[8px] rounded-[3px] bg-blush-50 px-[8px] py-[2px] text-[11px] text-ink/60">
-                      последняя
+                      {dict.history.latest}
                     </span>
                   )}
                 </p>
@@ -61,7 +58,7 @@ export default async function HistoryPage() {
                   type="submit"
                   className="h-[36px] rounded-[4px] border border-line px-[18px] text-[13px] transition-colors hover:bg-paper"
                 >
-                  Вернуть это состояние
+                  {dict.history.restore}
                 </button>
               </form>
             </div>

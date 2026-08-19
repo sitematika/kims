@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { updateSite } from "@/app/admin/settings-actions";
+import { useDict } from "./AdminLangProvider";
 
 export function SiteSettingsForm({
   siteUrl,
@@ -12,7 +13,11 @@ export function SiteSettingsForm({
   indexing: boolean;
   forcedByEnv: boolean;
 }) {
+  const dict = useDict();
   const [message, formAction, pending] = useActionState(updateSite, null);
+  const note = message
+    ? (dict.msg[message as keyof typeof dict.msg] ?? message)
+    : null;
 
   return (
     <form
@@ -26,20 +31,18 @@ export function SiteSettingsForm({
           indexing && !forcedByEnv ? "bg-green-600" : "bg-accent"
         }`} />
         {indexing && !forcedByEnv
-          ? "Сейчас сайт открыт для поисковиков"
-          : "Сейчас сайт скрыт от поисковиков"}
+          ? dict.indexing.openNow
+          : dict.indexing.hiddenNow}
       </div>
 
       <div>
-        <h2 className="text-[16px]">Адрес и видимость сайта</h2>
-        <p className="mt-[4px] text-[13px] text-ink/60">
-          Адрес подставляется в карту сайта, canonical и превью для соцсетей.
-        </p>
+        <h2 className="text-[16px]">{dict.settings.siteBlock}</h2>
+        <p className="mt-[4px] text-[13px] text-ink/60">{dict.settings.siteHint}</p>
       </div>
 
       <label className="flex flex-col gap-[8px]">
         <span className="text-[12px] tracking-[1px] text-ink/50">
-          АДРЕС САЙТА
+          {dict.settings.siteUrl}
         </span>
         <input
           name="siteUrl"
@@ -58,16 +61,10 @@ export function SiteSettingsForm({
           className="mt-[3px] h-[18px] w-[18px] shrink-0 accent-[#1e1e1e]"
         />
         <span className="text-[14px]">
-          Разрешить поисковикам индексировать сайт
-          <span className="mt-[4px] block text-[13px] text-ink/60">
-            Пока галочка снята, сайт закрыт: в robots.txt стоит полный запрет,
-            а в страницы добавлен noindex. Включать стоит перед запуском.
-          </span>
+          {dict.settings.allowIndexing}
+          <span className="mt-[4px] block text-[13px] text-ink/60">{dict.settings.indexingHint}</span>
           {forcedByEnv && (
-            <span className="mt-[6px] block text-[13px] text-red-700">
-              Сейчас индексация принудительно закрыта переменной SITE_NOINDEX —
-              это технический домен, галочка на нём не действует.
-            </span>
+            <span className="mt-[6px] block text-[13px] text-red-700">{dict.settings.forcedByEnv}</span>
           )}
         </span>
       </label>
@@ -78,9 +75,9 @@ export function SiteSettingsForm({
           disabled={pending}
           className="h-[42px] rounded-[4px] bg-ink px-[24px] text-[14px] font-medium text-white disabled:opacity-60"
         >
-          {pending ? "Сохраняем…" : "Сохранить"}
+          {pending ? dict.common.saving : dict.common.save}
         </button>
-        {message && <span className="text-[13px] text-ink/60">{message}</span>}
+        {note && <span className="text-[13px] text-ink/60">{note}</span>}
       </div>
     </form>
   );
