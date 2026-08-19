@@ -71,18 +71,37 @@ async function toEmail(lead: Lead) {
   });
 }
 
+export type ChannelResult = {
+  channel: "telegram" | "email";
+  status: "ok" | "skipped" | "error";
+  detail?: string;
+};
+
 /**
  * Рассылает заявку по всем настроенным каналам.
  * Ошибка одного канала не мешает остальным и не роняет ответ посетителю:
  * заявка к этому моменту уже записана.
  */
-export async function notify(lead: Lead) {
-  const results = await Promise.allSettled([toTelegram(lead), toEmail(lead)]);
+export async function notify(lead: Lead): Promise<ChannelResult[]> {
+  const status = notifyStatus();
+  const settled = await Promise.allSettled([toTelegram(lead), toEmail(lead)]);
 
-  results.forEach((result, i) => {
+  return settled.map((result, i): ChannelResult => {
+    const channel = i === 0 ? "telegram" : "email";
+    const configured = i === 0 ? status.telegram : status.email;
+
+    if (!configured) return { channel, status: "skipped" };
+
     if (result.status === "rejected") {
-      console.error(`[lead] канал ${i === 0 ? "telegram" : "email"}:`, result.reason);
+      const detail =
+        result.reason instanceof Error
+          ? result.reason.message
+          : String(result.reason);
+      console.error(`[lead] канал ${channel}:`, detail);
+      return { channel, status: "error", detail };
     }
+
+    return { channel, status: "ok" };
   });
 }
 

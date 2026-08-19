@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { dataDir } from "@/lib/paths";
 import { notifyStatus } from "@/lib/notify";
+import { TestLeadButton } from "@/components/admin/TestLeadButton";
 
 type Lead = {
   name: string;
@@ -66,6 +67,9 @@ export default async function LeadsPage() {
             </span>
           )}
         </p>
+        <div className="pt-[8px]">
+          <TestLeadButton />
+        </div>
       </section>
 
       {leads.length > 0 && (
