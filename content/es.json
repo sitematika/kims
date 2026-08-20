@@ -325,7 +325,8 @@
     "errorRequired": "Complete este campo",
     "errorPhone": "Indique un número de teléfono válido",
     "errorServer": "No se ha podido enviar la solicitud. Inténtelo de nuevo o escríbanos por correo.",
-    "download": "Descargar la presentación"
+    "download": "Descargar la presentación",
+    "countrySearch": "Buscar país"
   },
   "footer": {
     "tagline": "We love people. People love life",

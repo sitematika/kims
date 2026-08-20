@@ -325,7 +325,8 @@
     "errorRequired": "Please fill in this field",
     "errorPhone": "Please enter a valid phone number",
     "errorServer": "The request could not be sent. Please try again or email us.",
-    "download": "Download the presentation"
+    "download": "Download the presentation",
+    "countrySearch": "Search country"
   },
   "footer": {
     "tagline": "We love people. People love life",

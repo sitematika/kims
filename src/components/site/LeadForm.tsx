@@ -4,6 +4,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 import { Badge } from "@/components/ui/Badge";
 import { buttonClasses } from "@/components/ui/Button";
+import { PhoneField } from "./PhoneField";
+import { countries, defaultIso, digitsInMask } from "@/lib/countries";
 
 type Errors = Partial<Record<"name" | "phone" | "city" | "form", string>>;
 
@@ -12,7 +14,9 @@ export function LeadForm({ presentationUrl }: { presentationUrl?: string | null 
   const tCta = useTranslations("cta");
   const locale = useLocale();
 
-  const [values, setValues] = useState({ name: "", phone: "", city: "" });
+  const [values, setValues] = useState({ name: "", city: "" });
+  const [iso, setIso] = useState(() => defaultIso(locale));
+  const [digits, setDigits] = useState("");
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
 
@@ -21,12 +25,16 @@ export function LeadForm({ presentationUrl }: { presentationUrl?: string | null 
     setErrors((e) => ({ ...e, [key]: undefined, form: undefined }));
   };
 
+  const country = countries.find((c) => c.iso === iso) ?? countries[0];
+  const phone = `+${country.dial}${digits}`;
+
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     const next: Errors = {};
     if (values.name.trim().length < 2) next.name = t("errorRequired");
-    if (values.phone.replace(/\D/g, "").length < 9) next.phone = t("errorPhone");
+    // ждём столько цифр, сколько задаёт маска выбранной страны
+    if (digits.length < digitsInMask(country.mask)) next.phone = t("errorPhone");
     if (values.city.trim().length < 2) next.city = t("errorRequired");
 
     if (Object.keys(next).length) {
@@ -39,7 +47,7 @@ export function LeadForm({ presentationUrl }: { presentationUrl?: string | null 
       const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ ...values, locale }),
+        body: JSON.stringify({ ...values, phone, locale }),
       });
       if (!res.ok) throw new Error(String(res.status));
       setStatus("done");
@@ -105,14 +113,21 @@ export function LeadForm({ presentationUrl }: { presentationUrl?: string | null 
                 error={errors.name}
                 autoComplete="name"
               />
-              <Field
+              <PhoneField
+                locale={locale}
                 label={t("phoneLabel")}
-                placeholder={t("phonePlaceholder")}
-                value={values.phone}
-                onChange={set("phone")}
+                searchPlaceholder={t("countrySearch")}
+                iso={iso}
+                onIsoChange={(next) => {
+                  setIso(next);
+                  setErrors((e) => ({ ...e, phone: undefined }));
+                }}
+                digits={digits}
+                onDigitsChange={(next) => {
+                  setDigits(next);
+                  setErrors((e) => ({ ...e, phone: undefined, form: undefined }));
+                }}
                 error={errors.phone}
-                type="tel"
-                autoComplete="tel"
               />
               <Field
                 label={t("cityLabel")}

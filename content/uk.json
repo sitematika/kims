@@ -325,7 +325,8 @@
     "errorRequired": "Заповніть це поле",
     "errorPhone": "Вкажіть коректний номер телефону",
     "errorServer": "Не вдалося надіслати заявку. Спробуйте ще раз або напишіть нам на пошту.",
-    "download": "Завантажити презентацію"
+    "download": "Завантажити презентацію",
+    "countrySearch": "Пошук країни"
   },
   "footer": {
     "tagline": "We love people. People love life",

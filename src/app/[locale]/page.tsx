@@ -1,5 +1,5 @@
 import { setRequestLocale } from "next-intl/server";
-import { getMedia } from "@/lib/media";
+import { getMedia, presentationFor } from "@/lib/media";
 import { getContent } from "@/lib/content";
 import { resolveImages } from "@/lib/images";
 import type { Locale } from "@/i18n/routing";
@@ -61,7 +61,7 @@ export default async function HomePage({
         <CaseStudy slides={media.caseSlides} />
         <InvestBand className="pt-[56px] md:pt-[80px] xl:pt-[110px]" />
         <Steps images={images} />
-        <LeadForm presentationUrl={media.presentation?.file} />
+        <LeadForm presentationUrl={presentationFor(media, locale)?.file} />
       </main>
       <Footer socialLinks={media.socialLinks ?? {}} />
       <CookieBanner />

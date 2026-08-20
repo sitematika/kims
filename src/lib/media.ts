@@ -21,6 +21,9 @@ export type Presentation = {
 
 export type Media = {
   caseSlides: Slide[];
+  /** Презентации по языкам: ключ — код языка */
+  presentations?: Record<string, Presentation>;
+  /** Старое поле с одной презентацией на все языки. Осталось для переноса */
   presentation?: Presentation | null;
   /** Замены картинок сайта: id слота -> путь к загруженному файлу */
   images?: Record<string, string>;
@@ -62,8 +65,15 @@ export async function getMedia(): Promise<Media> {
       JSON.parse(seedRaw),
       working as never,
     ) as unknown as Media;
+    // раньше презентация была одна на все языки — считаем её украинской
+    const presentations = { ...(media.presentations ?? {}) };
+    if (media.presentation && !presentations.uk) {
+      presentations.uk = media.presentation;
+    }
+
     return {
       caseSlides: media.caseSlides ?? [],
+      presentations,
       presentation: media.presentation ?? null,
       images: media.images ?? {},
       ogImage: media.ogImage ?? null,
@@ -72,12 +82,24 @@ export async function getMedia(): Promise<Media> {
   } catch {
     return {
       caseSlides: [],
+      presentations: {},
       presentation: null,
       images: {},
       ogImage: null,
       socialLinks: {},
     };
   }
+}
+
+/**
+ * Презентация для языка. Если своей нет — отдаём украинскую, чтобы кнопка
+ * на сайте не пропадала: лучше файл на другом языке, чем ничего.
+ */
+export function presentationFor(
+  media: Media,
+  locale: string,
+): Presentation | null {
+  return media.presentations?.[locale] ?? media.presentations?.uk ?? null;
 }
 
 export async function saveMedia(media: Media) {

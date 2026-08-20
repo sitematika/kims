@@ -1,3 +1,4 @@
+import { locales, localeLabels } from "@/i18n/routing";
 import { getMedia } from "@/lib/media";
 import { getAdminDict } from "@/lib/admin-lang";
 import { PresentationUploader } from "@/components/admin/PresentationUploader";
@@ -7,55 +8,82 @@ export const dynamic = "force-dynamic";
 
 function formatSize(bytes: number) {
   const mb = bytes / (1024 * 1024);
-  return mb >= 1 ? `${mb.toFixed(1)} МБ` : `${Math.round(bytes / 1024)} КБ`;
+  return mb >= 1 ? `${mb.toFixed(1)} MB` : `${Math.round(bytes / 1024)} KB`;
 }
 
 export default async function PresentationPage() {
-  const [{ presentation }, dict] = await Promise.all([getMedia(), getAdminDict()]);
+  const [media, dict] = await Promise.all([getMedia(), getAdminDict()]);
 
   return (
     <div className="flex max-w-[860px] flex-col gap-[24px]">
       <header>
         <h1 className="text-[24px]">{dict.presentation.title}</h1>
-        <p className="mt-[4px] text-[14px] text-ink/60">{dict.presentation.subtitle}</p>
+        <p className="mt-[4px] text-[14px] text-ink/60">
+          {dict.presentation.subtitle}
+        </p>
       </header>
 
-      <PresentationUploader hasFile={Boolean(presentation)} />
+      <div className="flex flex-col gap-[12px]">
+        {locales.map((locale) => {
+          const file = media.presentations?.[locale];
+          const hasUk = Boolean(media.presentations?.uk);
 
-      {presentation ? (
-        <div className="flex flex-col gap-[16px] rounded-[4px] border border-line-soft bg-white p-[20px] md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-[16px]">{presentation.name}</p>
-            <p className="mt-[4px] text-[13px] text-ink/50">
-              {formatSize(presentation.size)} · {dict.presentation.updated}{" "}
-              {new Date(presentation.updatedAt).toLocaleString("uk-UA")}
-            </p>
-          </div>
-
-          <div className="flex items-center gap-[12px]">
-            <a
-              href={presentation.file}
-              target="_blank"
-              rel="noreferrer"
-              className="flex h-[40px] items-center rounded-[4px] border border-line px-[20px] text-[14px] transition-colors hover:bg-paper"
+          return (
+            <section
+              key={locale}
+              className="flex flex-col gap-[14px] rounded-[4px] border border-line-soft bg-white p-[20px]"
             >
-              {dict.common.open}
-            </a>
-            <form action={removePresentation}>
-              <button
-                type="submit"
-                className="h-[40px] rounded-[4px] border border-line px-[20px] text-[14px] text-red-700 transition-colors hover:bg-red-50"
-              >
-                {dict.common.delete}
-              </button>
-            </form>
-          </div>
-        </div>
-      ) : (
-        <p className="rounded-[4px] bg-blush-50 px-[20px] py-[16px] text-[14px] text-ink/70">
-          {dict.presentation.missing}
-        </p>
-      )}
+              <div className="flex flex-wrap items-center gap-[12px]">
+                <span className="rounded-[3px] bg-paper px-[10px] py-[4px] text-[12px] tracking-[1px]">
+                  {localeLabels[locale]}
+                </span>
+
+                {file ? (
+                  <>
+                    <span className="text-[15px]">{file.name}</span>
+                    <span className="text-[13px] text-ink/50">
+                      {formatSize(file.size)} · {dict.presentation.updated}{" "}
+                      {new Date(file.updatedAt).toLocaleString("uk-UA")}
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-[13px] text-ink/50">
+                    {locale !== "uk" && hasUk
+                      ? dict.presentation.fallback
+                      : dict.presentation.noFallback}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex flex-wrap items-end gap-[16px]">
+                <PresentationUploader locale={locale} hasFile={Boolean(file)} />
+
+                {file && (
+                  <div className="flex items-center gap-[10px]">
+                    <a
+                      href={file.file}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex h-[38px] items-center rounded-[4px] border border-line px-[16px] text-[13px] transition-colors hover:bg-paper"
+                    >
+                      {dict.common.open}
+                    </a>
+                    <form action={removePresentation}>
+                      <input type="hidden" name="locale" value={locale} />
+                      <button
+                        type="submit"
+                        className="h-[38px] rounded-[4px] border border-line px-[16px] text-[13px] text-red-700 transition-colors hover:bg-red-50"
+                      >
+                        {dict.common.delete}
+                      </button>
+                    </form>
+                  </div>
+                )}
+              </div>
+            </section>
+          );
+        })}
+      </div>
     </div>
   );
 }

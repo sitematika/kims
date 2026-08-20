@@ -127,6 +127,9 @@ export async function uploadPresentation(
 ): Promise<string | null> {
   if (!(await isAuthorized())) return "sessionExpired";
 
+  const locale = String(formData.get("locale") ?? "");
+  if (!locales.includes(locale as (typeof locales)[number])) return "noSection";
+
   const file = formData.get("file");
   if (!(file instanceof File) || file.size === 0) return "pickFile";
   if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
@@ -135,42 +138,53 @@ export async function uploadPresentation(
   if (file.size > 35 * 1024 * 1024) return "tooBig";
 
   const media = await getMedia();
+  // имя фиксированное для языка: ссылка не меняется при перезаливке
+  const fileName = `presentation-${locale}.pdf`;
 
   try {
     await mkdir(uploadsDir, { recursive: true });
     const buffer = Buffer.from(await file.arrayBuffer());
-    // имя фиксированное: ссылка на презентацию не меняется при перезаливке
-    await writeFile(path.join(uploadsDir, "presentation.pdf"), buffer);
+    await writeFile(path.join(uploadsDir, fileName), buffer);
   } catch {
     return "saveFailed";
   }
 
-  await snapshot("presentationUpdated");
+  await snapshot(`Презентация: ${locale}`);
 
-  media.presentation = {
-    file: `${mediaUrlPrefix}/presentation.pdf`,
-    name: file.name,
-    size: file.size,
-    updatedAt: new Date().toISOString(),
+  media.presentations = {
+    ...(media.presentations ?? {}),
+    [locale]: {
+      file: `${mediaUrlPrefix}/${fileName}`,
+      name: file.name,
+      size: file.size,
+      updatedAt: new Date().toISOString(),
+    },
   };
+  // старое общее поле больше не используется
+  media.presentation = null;
   await saveMedia(media);
 
   revalidatePath("/", "layout");
   return "presentationUpdated";
 }
 
-export async function removePresentation() {
+export async function removePresentation(formData: FormData) {
   if (!(await isAuthorized())) return;
 
+  const locale = String(formData.get("locale") ?? "");
   const media = await getMedia();
+  const current = media.presentations?.[locale];
+  if (!current) return;
+
+  await snapshot(`Презентация удалена: ${locale}`);
+
+  const rest = { ...(media.presentations ?? {}) };
+  delete rest[locale];
+  media.presentations = rest;
   media.presentation = null;
   await saveMedia(media);
 
-  try {
-    await unlink(path.join(uploadsDir, "presentation.pdf"));
-  } catch {
-    // файла может уже не быть
-  }
+  await unlink(path.join(uploadsDir, path.basename(current.file))).catch(() => {});
 
   revalidatePath("/", "layout");
 }

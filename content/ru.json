@@ -325,7 +325,8 @@
     "errorRequired": "Заполните это поле",
     "errorPhone": "Укажите корректный номер телефона",
     "errorServer": "Не удалось отправить заявку. Попробуйте ещё раз или напишите нам на почту.",
-    "download": "Скачать презентацию"
+    "download": "Скачать презентацию",
+    "countrySearch": "Поиск страны"
   },
   "footer": {
     "tagline": "We love people. People love life",

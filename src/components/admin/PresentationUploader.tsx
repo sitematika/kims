@@ -4,7 +4,13 @@ import { useActionState } from "react";
 import { uploadPresentation } from "@/app/admin/media-actions";
 import { useDict } from "./AdminLangProvider";
 
-export function PresentationUploader({ hasFile }: { hasFile: boolean }) {
+export function PresentationUploader({
+  locale,
+  hasFile,
+}: {
+  locale: string;
+  hasFile: boolean;
+}) {
   const [message, formAction, pending] = useActionState(
     uploadPresentation,
     null,
@@ -18,8 +24,9 @@ export function PresentationUploader({ hasFile }: { hasFile: boolean }) {
   return (
     <form
       action={formAction}
-      className="flex flex-col gap-[16px] rounded-[4px] border border-dashed border-line bg-white px-[20px] py-[20px] md:flex-row md:items-end"
+      className="flex flex-col gap-[16px] md:flex-row md:items-end"
     >
+      <input type="hidden" name="locale" value={locale} />
       <label className="flex flex-1 flex-col gap-[6px]">
         <span className="text-[12px] tracking-[1px] text-ink/50">
           {dict.presentation.file}
