@@ -51,7 +51,22 @@ async function readSeeded(fileName: string) {
  * при этом главнее: перезаписываются только отсутствующие и несовместимые
  * по структуре ключи.
  */
+/**
+ * Строки-заглушки, которые мы ставили до того, как появился настоящий текст.
+ * Считаем их незаполненными: правка заказчика важнее эталона, но заглушка
+ * правкой не является — иначе настоящий текст никогда не доедет на сервер,
+ * где рабочая копия уже создана.
+ */
+const placeholders = new Set([
+  "Текст політики конфіденційності готується.",
+  "The privacy policy text is being prepared.",
+  "El texto de la política de privacidad está en preparación.",
+  "Текст политики конфиденциальности готовится.",
+]);
+
 export function mergeDefaults(seed: ContentValue, current: ContentValue): ContentValue {
+  if (typeof current === "string" && placeholders.has(current)) return seed;
+
   const seedIsObject =
     seed !== null && typeof seed === "object" && !Array.isArray(seed);
   const currentIsObject =
