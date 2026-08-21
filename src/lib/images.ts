@@ -13,6 +13,7 @@ export const imageSlots = [
   { id: "gallery3", src: "/img/gallery-3-hall.webp" },
   { id: "gallery4", src: "/img/gallery-4-nike.webp" },
   { id: "gallery5", src: "/img/gallery-5-counter.webp" },
+  { id: "market", src: "/img/market-suits.webp" },
   { id: "founder", src: "/img/founder.webp" },
   { id: "youtube", src: "/img/youtube-cover.webp" },
   {

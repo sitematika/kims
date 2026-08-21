@@ -10,6 +10,8 @@ export function Hero({ images }: { images: ResolvedImages }) {
   return (
     <section id="kims" className="relative isolate overflow-hidden">
       {/* Фон-фото на всю ширину с белой вуалью, как в макете */}
+      {/* На телефоне кадр взят крупнее и сильнее выбелен — как в мобильном
+          макете; ниже добавлена белая растушёвка к следующему блоку */}
       <div className="absolute inset-0 -z-10">
         <Image
           src={images.hero.src}
@@ -17,9 +19,10 @@ export function Hero({ images }: { images: ResolvedImages }) {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center"
+          className="object-cover object-[68%_center] md:object-center"
         />
-        <div className="absolute inset-0 bg-white/40" />
+        <div className="absolute inset-0 bg-white/65 md:bg-white/40" />
+        <div className="absolute inset-x-0 bottom-0 h-[10%] bg-gradient-to-t from-white to-transparent md:hidden" />
       </div>
 
       {/* Надпись со стены — только на широких экранах, где для неё есть место */}

@@ -9,7 +9,8 @@ export function InvestBand({ className = "" }: { className?: string }) {
   return (
     <section className={`shell ${className}`}>
       <div className="flex flex-col gap-[24px] rounded-[4px] bg-ink px-[24px] py-[28px] text-white md:px-[40px] md:py-[36px] xl:flex-row xl:items-center xl:justify-between xl:px-[60px] xl:py-[56px]">
-        <p className="text-[18px] leading-[1.35] tracking-[-0.4px] uppercase md:text-[24px] xl:text-[32px]">
+        {/* На телефоне текст по центру — как в макете */}
+        <p className="text-center text-[15px] leading-[1.35] tracking-[-0.4px] uppercase md:text-[24px] xl:text-left xl:text-[36px] xl:leading-[1.35] xl:tracking-[-0.72px]">
           {t("label")} <span className="text-accent">{t("value")}</span>
           <br />
           {t("paybackLabel")}{" "}

@@ -36,9 +36,10 @@ export function Steps({ images }: { images: ResolvedImages }) {
 
       <div className="mt-[24px] grid grid-cols-1 gap-[32px] xl:mt-[32px] xl:grid-cols-2 xl:gap-[40px]">
         <div>
-          <h2 className="max-w-[480px] text-[22px] leading-[1.2] tracking-[-0.5px] uppercase md:text-[28px] xl:text-[32px]">
-            {t("titleStart")}{" "}
-            <strong className="font-medium">{t("titleStrong")}</strong>
+          <h2 className="text-[22px] leading-[1.2] tracking-[-0.5px] uppercase md:text-[28px] xl:text-[38px] xl:tracking-[-0.38px]">
+            <strong className="font-medium">{t("titleStart")}</strong>
+            <br />
+            <span className="font-light">{t("titleStrong")}</span>
           </h2>
 
           <ol className="mt-[28px] flex flex-col xl:mt-[40px]">
@@ -56,12 +57,12 @@ export function Steps({ images }: { images: ResolvedImages }) {
                   {i < items.length - 1 && (
                     <span
                       aria-hidden
-                      className="absolute top-[48px] bottom-0 left-[24px] w-px bg-ink/15"
+                      className="absolute top-[48px] bottom-0 left-[24px] w-px bg-ink/15 xl:top-[60px] xl:left-[30px]"
                     />
                   )}
 
                   <span
-                    className={`relative z-10 flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-full border bg-white text-[16px] transition-all duration-500 ${
+                    className={`relative z-10 flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-full border bg-white text-[16px] font-light transition-all duration-500 xl:h-[60px] xl:w-[60px] xl:text-[32px] ${
                       on
                         ? "scale-105 border-accent text-accent"
                         : "scale-100 border-ink/15 text-ink/30"
@@ -70,13 +71,16 @@ export function Steps({ images }: { images: ResolvedImages }) {
                     {i + 1}
                   </span>
 
+                  {/* ширина колонки как в макете: описания ложатся в 2–3 строки */}
                   <div
-                    className={`flex flex-col gap-[8px] pt-[8px] transition-opacity duration-300 ${
+                    className={`flex flex-col gap-[8px] pt-[8px] transition-opacity duration-300 xl:max-w-[364px] xl:gap-[16px] xl:pt-[6px] ${
                       on ? "opacity-100" : "opacity-40"
                     }`}
                   >
-                    <h3 className="text-[17px] md:text-[18px]">{item.title}</h3>
-                    <p className="text-[13px] leading-[1.4] text-ink/70 md:text-[14px]">
+                    <h3 className="text-[17px] md:text-[18px] xl:text-[24px] xl:leading-[1.1]">
+                      {item.title}
+                    </h3>
+                    <p className="text-[13px] leading-[1.4] text-ink-warm/80 md:text-[14px] xl:text-[16px] xl:leading-[1.2] xl:font-light xl:tracking-[-0.16px]">
                       {item.text}
                     </p>
                   </div>

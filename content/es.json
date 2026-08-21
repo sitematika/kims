@@ -51,21 +51,21 @@
       "a": "4",
       "aUnit": "plantas",
       "b": "58",
-      "bUnit": "puntos de recogida"
+      "bUnit": "puntos"
     },
     "franchiseUa": {
       "label": "Franquicias en Ucrania",
       "a": "7",
       "aUnit": "plantas",
       "b": "42",
-      "bUnit": "puntos de recogida"
+      "bUnit": "puntos"
     },
     "ownEu": {
       "label": "Propios en Europa",
       "a": "1",
       "aUnit": "planta",
       "b": "7",
-      "bUnit": "puntos de recogida"
+      "bUnit": "puntos"
     }
   },
   "gallery": {
@@ -94,7 +94,8 @@
     "quoteMid": "Ahora construimos una red internacional",
     "quoteStrong2": "y buscamos socios que piensen igual.",
     "youtube": "Más sobre KIMS — en nuestro",
-    "youtubeLink": "canal de YouTube"
+    "youtubeLink": "canal de YouTube",
+    "youtubeCta": "Ir a YouTube"
   },
   "market": {
     "badge": "La marca y el mercado",
@@ -275,8 +276,8 @@
   },
   "steps": {
     "badge": "Cómo funciona",
-    "titleStart": "Del primer contacto a la",
-    "titleStrong": "apertura",
+    "titleStart": "Del primer contacto",
+    "titleStrong": "a la apertura",
     "items": [
       {
         "title": "Solicitud",
@@ -371,6 +372,7 @@
     "gallery3": "Recepción de KIMS con mostrador y perchero",
     "gallery4": "Interior de KIMS con la Victoria de Samotracia",
     "gallery5": "Mostrador de recepción de prendas en un local KIMS",
+    "market": "Trajes en perchas en el taller KIMS: revisión con guantes blancos",
     "founder": "Oleksandr Kohan, fundador de KIMS, junto al equipamiento de la planta",
     "youtube": "Fachada del establecimiento KIMS en Riga",
     "package": "Recepción de KIMS: una empleada tras el mostrador",

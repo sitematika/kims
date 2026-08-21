@@ -1,6 +1,6 @@
 /** Пункты меню и якоря секций — единый источник для шапки и разметки страницы. */
+// Пункт «KIMS» убран намеренно: логотип рядом ведёт туда же.
 export const navItems = [
-  { id: "kims", key: "kims" },
   { id: "brand", key: "brand" },
   { id: "benefits", key: "benefits" },
   { id: "formats", key: "formats" },

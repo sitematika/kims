@@ -100,6 +100,23 @@ body {
   }
 }
 
+/* Фирменная кнопка: мрамор поверх акцентного #c99a90 на половине силы —
+   ровно так собрана кнопка в макете. Одной картинкой цвет уходит в серый. */
+@utility btn-accent {
+  background-color: var(--color-accent);
+  background-image:
+    linear-gradient(rgba(201, 154, 144, 0.5), rgba(201, 154, 144, 0.5)),
+    url("/img/button-texture.webp");
+  background-size: cover;
+  background-position: center;
+
+  &:hover {
+    background-image:
+      linear-gradient(rgba(184, 130, 119, 0.62), rgba(184, 130, 119, 0.62)),
+      url("/img/button-texture.webp");
+  }
+}
+
 @utility shell {
   width: 100%;
   max-width: calc(var(--container-shell) + var(--shell-pad) * 2);

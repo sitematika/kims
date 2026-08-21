@@ -11,11 +11,11 @@ export function Benefits() {
     <section id="benefits" className="pt-[56px] md:pt-[80px] xl:pt-[110px]">
       <div className="shell grid grid-cols-1 gap-[24px] md:grid-cols-2 md:gap-[32px]">
         <Badge>{t("badge")}</Badge>
-        <div className="flex flex-col gap-[12px]">
-          <h2 className="text-[22px] leading-[1.2] tracking-[-0.5px] uppercase md:text-[28px] xl:text-[32px]">
+        <div className="flex flex-col gap-[12px] xl:gap-[24px]">
+          <h2 className="text-[22px] leading-[1.2] tracking-[-0.5px] uppercase md:text-[28px] xl:text-[38px] xl:tracking-[-0.38px]">
             {t("title")}
           </h2>
-          <p className="text-[14px] leading-[1.35] md:text-[16px]">
+          <p className="text-[14px] leading-[1.2] md:text-[16px] xl:text-[18px] xl:tracking-[-0.18px]">
             {t("subtitle")}
           </p>
         </div>
@@ -32,14 +32,18 @@ export function Benefits() {
                 : "bg-white hover:bg-blush-50/60"
             }`}
           >
-            <div className="shell grid grid-cols-[auto_1fr] items-start gap-x-[20px] gap-y-[8px] py-[24px] md:gap-x-[32px] md:py-[28px] xl:grid-cols-[80px_1fr_1fr] xl:items-center xl:gap-x-[40px] xl:py-[36px]">
-              <span className="text-[28px] leading-none font-light text-accent/60 md:text-[32px]">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <h3 className="text-[16px] leading-[1.25] md:text-[18px] xl:text-[20px]">
-                {item.title}
-              </h3>
-              <p className="col-start-2 text-[13px] leading-[1.4] text-ink/70 md:text-[14px] xl:col-start-3">
+            {/* На десктопе левая колонка равна половине сетки шапки минус
+                половина зазора — тогда описание начинается ровно под заголовком */}
+            <div className="shell grid grid-cols-1 gap-y-[10px] py-[24px] md:py-[28px] xl:grid-cols-[calc(50%-16px)_1fr] xl:items-center xl:gap-x-[32px] xl:py-[36px]">
+              <div className="flex items-center gap-[20px] md:gap-[32px] xl:gap-[64px]">
+                <span className="w-[40px] shrink-0 text-[28px] leading-none font-light text-accent md:w-[48px] md:text-[32px] xl:w-[62px] xl:text-[42px] xl:tracking-[-0.42px]">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="text-[16px] leading-[1.25] md:text-[18px] xl:text-[24px] xl:leading-[1.1]">
+                  {item.title}
+                </h3>
+              </div>
+              <p className="pl-[60px] text-[13px] leading-[1.4] text-ink-warm/80 md:pl-[80px] md:text-[14px] xl:pl-0 xl:text-[16px] xl:leading-[1.2] xl:tracking-[-0.16px]">
                 {item.text}
               </p>
             </div>

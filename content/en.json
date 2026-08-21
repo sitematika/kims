@@ -94,7 +94,8 @@
     "quoteMid": "Now we are building an international network —",
     "quoteStrong2": "and looking for partners who think the same way.",
     "youtube": "More about KIMS — on our",
-    "youtubeLink": "YouTube channel"
+    "youtubeLink": "YouTube channel",
+    "youtubeCta": "Go to YouTube"
   },
   "market": {
     "badge": "The brand and the market",
@@ -275,8 +276,8 @@
   },
   "steps": {
     "badge": "How it works",
-    "titleStart": "From the first contact to the",
-    "titleStrong": "opening",
+    "titleStart": "From the first",
+    "titleStrong": "contact to the opening",
     "items": [
       {
         "title": "Request",
@@ -371,6 +372,7 @@
     "gallery3": "KIMS reception with a counter and a clothing rail",
     "gallery4": "KIMS interior with the Winged Victory of Samothrace",
     "gallery5": "The garment drop-off counter at a KIMS location",
+    "market": "Suits on hangers at a KIMS workshop: a white-gloved quality check",
     "founder": "Oleksandr Kohan, founder of KIMS, next to plant equipment",
     "youtube": "The façade of the KIMS location in Riga",
     "package": "KIMS reception: an attendant behind the counter",

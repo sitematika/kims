@@ -70,10 +70,13 @@ function format(value: number, parsed: Parsed) {
 export function CountUp({
   children,
   className,
+  align = "start",
   duration = 1400,
 }: {
   children: string;
   className?: string;
+  /** к какому краю прижата бегущая цифра внутри зарезервированного места */
+  align?: "start" | "end";
   duration?: number;
 }) {
   const parsed = parse(children);
@@ -121,9 +124,19 @@ export function CountUp({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [children, duration]);
 
+  // Место под число резервирует невидимая копия финального значения:
+  // пока цифры растут, соседние элементы стоят на месте и ничего не прыгает.
   return (
-    <span ref={ref} className={className}>
-      {text}
+    <span
+      ref={ref}
+      className={`inline-grid tabular-nums ${
+        align === "end" ? "justify-items-end" : "justify-items-start"
+      } ${className ?? ""}`}
+    >
+      <span aria-hidden className="invisible col-start-1 row-start-1">
+        {children}
+      </span>
+      <span className="col-start-1 row-start-1 whitespace-nowrap">{text}</span>
     </span>
   );
 }

@@ -7,7 +7,7 @@ import { CountUp } from "@/components/ui/CountUp";
  * на всех языках, даже когда перевод подписи длиннее украинского.
  */
 const cell =
-  "flex flex-col border border-ink/20 px-[24px] py-[20px] transition-colors duration-300 hover:bg-blush-50/60 md:px-[32px] md:py-[24px]";
+  "flex flex-col border border-ink/20 px-[24px] py-[20px] transition-colors duration-300 hover:bg-blush-50/60 md:py-[24px]";
 const caption =
   "min-h-[2.4em] text-[14px] leading-[1.2] font-light text-ink/60 md:text-[16px]";
 
@@ -55,15 +55,19 @@ function Pair({
   return (
     <div className={`${cell} ${className}`}>
       <p className={caption}>{label}</p>
-      {/* Всегда две колонки: длинные переводы единиц переносятся внутри
-          своей колонки, а не роняют вторую цифру на строку ниже */}
-      <div className="mt-[32px] grid grid-cols-2 gap-x-[16px] md:mt-[52px] md:gap-x-[24px]">
+      {/* Пары не режутся пополам, а стоят по содержимому: длинные единицы
+          вроде «drop-off points» остаются в одну строку. Если места совсем
+          нет — вторая пара уходит на строку ниже, а не рвётся посередине */}
+      <div className="mt-[32px] flex flex-wrap gap-x-[16px] gap-y-[12px] md:mt-[52px]">
         {[
           [a, aUnit],
           [b, bUnit],
         ].map(([value, unit]) => (
-          <p key={unit} className="flex items-baseline gap-[8px]">
-            <span className="text-[40px] leading-none font-medium tracking-[-0.8px] md:text-[48px]">
+          <p
+            key={unit}
+            className="flex items-baseline gap-[8px] whitespace-nowrap"
+          >
+            <span className="text-[40px] leading-none font-medium tracking-[-0.8px] md:text-[44px]">
               <CountUp>{value}</CountUp>
             </span>
             <span className="text-[15px] leading-[1.2] md:text-[18px]">

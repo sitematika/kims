@@ -66,13 +66,13 @@ export function CaseStudy({ slides: source }: { slides: Slide[] }) {
 
       <div className="mt-[24px] grid grid-cols-1 gap-[32px] xl:mt-[32px] xl:grid-cols-2 xl:gap-[40px]">
         <div className="flex flex-col">
-          <h2 className="text-[22px] leading-[1.2] tracking-[-0.5px] uppercase md:text-[28px] xl:text-[32px]">
+          <h2 className="text-[22px] leading-[1.2] tracking-[-0.5px] uppercase md:text-[28px] xl:text-[38px] xl:tracking-[-0.38px]">
             {t("titleStart")}{" "}
             <strong className="font-medium">{t("titleAccent")}</strong>
             <br />
             {t("titleEnd")}
           </h2>
-          <p className="mt-[12px] text-[13px] text-ink/60 md:text-[14px]">
+          <p className="mt-[12px] text-[13px] text-ink/60 md:text-[14px] xl:mt-[16px] xl:text-[18px]">
             {t("subtitle")}
           </p>
 
@@ -82,7 +82,7 @@ export function CaseStudy({ slides: source }: { slides: Slide[] }) {
                 key={y.year}
                 className="flex items-center gap-[16px] border-t border-ink/10 py-[20px] last:border-b md:gap-[24px] md:py-[24px]"
               >
-                <span className="w-[44px] shrink-0 text-[14px] text-ink/50 md:text-[16px]">
+                <span className="w-[44px] shrink-0 text-[14px] text-ink/50 md:text-[16px] xl:w-[52px] xl:text-[20px] xl:font-light">
                   {y.year}
                 </span>
                 <span className="h-[10px] flex-1 rounded-full bg-blush-50">
@@ -91,17 +91,21 @@ export function CaseStudy({ slides: source }: { slides: Slide[] }) {
                     style={{ width: barsIn ? `${y.share}%` : "0%" }}
                   />
                 </span>
-                <span className="shrink-0 text-[18px] font-light md:text-[24px]">
-                  <CountUp>{y.value}</CountUp>
+                <span className="shrink-0 text-[18px] font-light md:text-[24px] xl:text-[36px] xl:font-normal">
+                  <CountUp align="end">{y.value}</CountUp>
                 </span>
               </div>
             ))}
           </div>
 
-          <div className="mt-[24px] grid grid-cols-1 gap-px overflow-hidden rounded-[4px] sm:grid-cols-[1fr_auto]">
-            <div className="bg-blush-50 px-[24px] py-[24px] md:px-[32px] md:py-[28px]">
-              <p className="text-[20px] md:text-[24px]">{t("city")}</p>
-              <p className="mt-[8px] text-[14px] md:text-[16px]">
+          {/* На телефоне — три отдельные карточки, как в макете;
+              с планшета они срастаются в одну полосу */}
+          <div className="mt-[24px] grid grid-cols-1 gap-[12px] sm:grid-cols-[1fr_auto] sm:gap-0 sm:overflow-hidden sm:rounded-[4px]">
+            <div className="rounded-[4px] bg-blush-50 px-[24px] py-[24px] sm:rounded-none md:px-[32px] md:py-[28px]">
+              <p className="text-[20px] md:text-[24px] xl:text-[40px]">
+                {t("city")}
+              </p>
+              <p className="mt-[8px] text-[14px] md:text-[16px] xl:mt-[16px] xl:text-[24px]">
                 {t("growthStart")}{" "}
                 <span className="text-accent">
                   <CountUp>{t("growthValue")}</CountUp>
@@ -109,16 +113,21 @@ export function CaseStudy({ slides: source }: { slides: Slide[] }) {
                 {t("growthEnd")}
               </p>
             </div>
-            <div className="flex gap-[32px] bg-blush-200 px-[24px] py-[24px] sm:flex-col sm:gap-[8px] md:px-[32px]">
+            <div className="grid grid-cols-2 gap-[12px] sm:flex sm:flex-col sm:justify-center sm:gap-[8px] sm:bg-blush-200 sm:px-[24px] sm:py-[24px] md:px-[32px]">
               {[
                 [t("workshops"), t("workshopsUnit")],
                 [t("points"), t("pointsUnit")],
               ].map(([value, unit]) => (
-                <p key={unit} className="flex items-baseline gap-[8px]">
-                  <span className="text-[24px] font-light">
+                <p
+                  key={unit}
+                  className="flex items-baseline gap-[8px] rounded-[4px] bg-blush-200 px-[20px] py-[16px] sm:rounded-none sm:bg-transparent sm:p-0"
+                >
+                  <span className="text-[24px] font-light xl:text-[36px]">
                     <CountUp>{value}</CountUp>
                   </span>
-                  <span className="text-[13px] text-ink/60">{unit}</span>
+                  <span className="text-[13px] text-ink/60 xl:text-[16px]">
+                    {unit}
+                  </span>
                 </p>
               ))}
             </div>

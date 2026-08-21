@@ -52,7 +52,7 @@ export default async function HomePage({
         <Gallery images={images} />
         <InvestBand className="pt-[56px] md:pt-[80px] xl:pt-[110px]" />
         <Founder images={images} />
-        <Market />
+        <Market images={images} />
         <Benefits />
         <Formats />
         <InvestBand className="pt-[56px] md:pt-[80px] xl:pt-[110px]" />
