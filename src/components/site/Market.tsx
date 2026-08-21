@@ -12,6 +12,12 @@ export function Market({ images }: { images: ResolvedImages }) {
   const figures = t.raw("figures") as Figure[];
   const pillars = t.raw("pillars") as Pillar[];
 
+  // Заголовок из двух фраз: вторая всегда начинается с новой строки,
+  // как в макете. Делим по концу первого предложения, а не жёстким <br>,
+  // чтобы текст оставался обычным полем в админке на всех языках.
+  const [titleLead, ...titleRest] = t("title").split(/(?<=[.!?])\s+/);
+  const titleTail = titleRest.join(" ");
+
   return (
     <section
       id="brand"
@@ -20,10 +26,15 @@ export function Market({ images }: { images: ResolvedImages }) {
       <div className="shell py-[56px] md:py-[72px] xl:py-[100px]">
         <Badge>{t("badge")}</Badge>
 
-        <div className="mt-[24px] grid grid-cols-1 gap-[24px] md:grid-cols-2 md:gap-[32px] xl:mt-[60px] xl:grid-cols-[499px_1fr] xl:gap-[136px]">
-          {/* ширина как в макете: заголовок ложится в три строки */}
-          <h2 className="max-w-[430px] text-[22px] leading-[1.2] tracking-[-0.5px] uppercase md:text-[28px] xl:max-w-[335px] xl:text-[38px] xl:tracking-[-0.38px]">
-            {t("title")}
+        <div className="mt-[24px] grid grid-cols-1 gap-[24px] md:grid-cols-2 md:gap-[32px] xl:mt-[60px] xl:grid-cols-[580px_1fr] xl:gap-[100px]">
+          <h2 className="text-[22px] leading-[1.2] tracking-[-0.5px] uppercase md:text-[28px] xl:text-[38px] xl:tracking-[-0.38px]">
+            <span className="font-medium">{titleLead}</span>
+            {titleTail && (
+              <>
+                <br />
+                {titleTail}
+              </>
+            )}
           </h2>
 
           <div className="flex flex-col gap-[16px] text-[14px] leading-[1.35] md:text-[15px] xl:gap-[24px] xl:text-[18px] xl:leading-[1.2]">
