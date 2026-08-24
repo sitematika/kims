@@ -25,10 +25,10 @@ function Single({
   return (
     <div className={`${cell} ${className}`}>
       <p className={caption}>{label}</p>
-      <p className="mt-[32px] flex items-baseline gap-[8px] text-[48px] leading-none font-medium tracking-[-1.28px] md:mt-[52px] md:text-[56px] xl:text-[64px]">
+      <p className="mt-[20px] flex items-baseline gap-[8px] text-[40px] leading-none font-medium tracking-[-1px] md:mt-[28px] md:text-[46px] xl:text-[52px]">
         <CountUp>{value}</CountUp>
         {unit ? (
-          <span className="text-[20px] font-medium tracking-normal md:text-[24px]">
+          <span className="text-[18px] font-medium tracking-normal md:text-[20px]">
             {unit}
           </span>
         ) : null}
@@ -58,7 +58,7 @@ function Pair({
       {/* Пары не режутся пополам, а стоят по содержимому: длинные единицы
           вроде «drop-off points» остаются в одну строку. Если места совсем
           нет — вторая пара уходит на строку ниже, а не рвётся посередине */}
-      <div className="mt-[32px] flex flex-wrap gap-x-[16px] gap-y-[12px] md:mt-[52px]">
+      <div className="mt-[20px] flex flex-wrap gap-x-[24px] gap-y-[12px] md:mt-[28px] md:gap-x-[48px] xl:gap-x-[64px]">
         {[
           [a, aUnit],
           [b, bUnit],
@@ -67,10 +67,10 @@ function Pair({
             key={unit}
             className="flex items-baseline gap-[8px] whitespace-nowrap"
           >
-            <span className="text-[40px] leading-none font-medium tracking-[-0.8px] md:text-[44px]">
+            <span className="text-[34px] leading-none font-medium tracking-[-0.7px] md:text-[38px]">
               <CountUp>{value}</CountUp>
             </span>
-            <span className="text-[15px] leading-[1.2] md:text-[18px]">
+            <span className="text-[14px] leading-[1.2] md:text-[16px]">
               {unit}
             </span>
           </p>

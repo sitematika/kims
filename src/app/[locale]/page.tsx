@@ -50,16 +50,16 @@ export default async function HomePage({
         <Hero images={images} />
         <Stats />
         <Gallery images={images} />
-        <InvestBand className="pt-[56px] md:pt-[80px] xl:pt-[110px]" />
+        <InvestBand className="pt-[32px] md:pt-[40px] xl:pt-[52px]" />
         <Founder images={images} />
         <Market images={images} />
         <Benefits />
         <Formats />
-        <InvestBand className="pt-[56px] md:pt-[80px] xl:pt-[110px]" />
+        <InvestBand className="pt-[32px] md:pt-[40px] xl:pt-[52px]" />
         <Developers />
         <PackageSection images={images} />
         <CaseStudy slides={media.caseSlides} />
-        <InvestBand className="pt-[56px] md:pt-[80px] xl:pt-[110px]" />
+        <InvestBand className="pt-[32px] md:pt-[40px] xl:pt-[52px]" />
         <Steps images={images} />
         <LeadForm presentationUrl={presentationFor(media, locale)?.file} />
       </main>

@@ -45,10 +45,10 @@ export function Market({ images }: { images: ResolvedImages }) {
 
         <hr className="my-[40px] border-white/15 xl:my-[56px]" />
 
-        <div className="grid grid-cols-1 gap-[32px] sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-[32px] sm:grid-cols-2 xl:grid-cols-4 xl:gap-[40px]">
           {figures.map((f) => (
             <div key={f.value} className="flex flex-col gap-[16px] xl:gap-[24px]">
-              <p className="text-[36px] leading-none font-light text-blush-300 md:text-[42px] xl:text-[52px]">
+              <p className="text-[32px] leading-none font-light text-blush-300 md:text-[38px] xl:text-[44px]">
                 <CountUp>{f.value}</CountUp>
               </p>
               <p className="text-[13px] leading-[1.35] text-white/70 md:text-[14px] xl:text-[16px] xl:leading-[1.2]">

@@ -41,7 +41,7 @@ export function Hero({ images }: { images: ResolvedImages }) {
       <div className="shell pt-[40px] pb-[48px] md:pt-[56px] md:pb-[72px] xl:pt-[76px] xl:pb-[110px]">
         <div className="flex flex-col gap-[32px] xl:ml-auto xl:w-[639px] xl:gap-[68px]">
           <div className="flex flex-col gap-[20px] md:gap-[32px]">
-            <p className="inline-flex w-fit items-center rounded-[4px] bg-blush-50 px-[21px] py-[12px] text-[14px] md:h-[48px] md:py-0 md:text-[16px] md:tracking-[-0.32px]">
+            <p className="inline-flex w-fit items-center rounded-[4px] bg-blush-50 px-[18px] py-[10px] text-[13px] leading-[1.3] md:px-[24px] md:text-[14px] xl:px-[28px] xl:text-[15px] xl:tracking-[-0.3px]">
               {t("badge")}
             </p>
 

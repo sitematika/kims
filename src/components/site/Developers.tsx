@@ -11,7 +11,7 @@ export function Developers() {
   return (
     <section
       id="developers"
-      className="mt-[56px] bg-ink-deep text-white md:mt-[80px] xl:mt-[110px]"
+      className="mt-[64px] bg-ink-deep text-white md:mt-[100px] xl:mt-[160px]"
     >
       <div className="shell grid grid-cols-1 gap-[32px] py-[56px] md:py-[72px] xl:grid-cols-[485px_1fr] xl:gap-[150px] xl:py-[100px]">
         <div className="flex flex-col items-start gap-[24px] xl:gap-[32px]">

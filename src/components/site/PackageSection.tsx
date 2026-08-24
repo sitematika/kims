@@ -24,11 +24,13 @@ function List({
         {title}
       </p>
 
-      <ul className="mt-[16px] flex flex-col md:mt-[24px] xl:mt-[28px]">
+      {/* Строки делят высоту карточки поровну: у левой колонки больше
+          пунктов, у правой — фото, но обе заканчиваются на одной линии */}
+      <ul className="mt-[16px] flex flex-1 flex-col md:mt-[24px] xl:mt-[28px]">
         {items.map((item) => (
           <li
             key={item}
-            className="border-t border-ink/10 py-[16px] text-[14px] leading-[1.35] md:py-[20px] md:text-[15px] xl:py-[12px] xl:text-[18px] xl:leading-[1.2] xl:font-light xl:tracking-[-0.18px]"
+            className="flex items-center border-t border-ink/10 py-[16px] text-[14px] leading-[1.35] md:py-[20px] md:text-[15px] md:flex-1 xl:py-[12px] xl:text-[18px] xl:leading-[1.2] xl:font-light xl:tracking-[-0.18px]"
           >
             {item}
           </li>

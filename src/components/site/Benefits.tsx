@@ -39,7 +39,7 @@ export function Benefits() {
                 <span className="w-[40px] shrink-0 text-[28px] leading-none font-light text-accent md:w-[48px] md:text-[32px] xl:w-[62px] xl:text-[42px] xl:tracking-[-0.42px]">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <h3 className="text-[16px] leading-[1.25] md:text-[18px] xl:text-[24px] xl:leading-[1.1]">
+                <h3 className="text-[16px] leading-[1.25] md:text-[18px] xl:text-[20px] xl:leading-[1.15]">
                   {item.title}
                 </h3>
               </div>

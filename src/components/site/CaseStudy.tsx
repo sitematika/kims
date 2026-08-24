@@ -91,7 +91,7 @@ export function CaseStudy({ slides: source }: { slides: Slide[] }) {
                     style={{ width: barsIn ? `${y.share}%` : "0%" }}
                   />
                 </span>
-                <span className="shrink-0 text-[18px] font-light md:text-[24px] xl:text-[36px] xl:font-normal">
+                <span className="shrink-0 text-[18px] font-light md:text-[24px] xl:text-[30px] xl:font-normal">
                   <CountUp align="end">{y.value}</CountUp>
                 </span>
               </div>
