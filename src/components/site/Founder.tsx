@@ -65,14 +65,19 @@ export function Founder({ images }: { images: ResolvedImages }) {
 
       {/* Блок с YouTube */}
       <div className="relative mt-[24px] overflow-hidden rounded-[4px] xl:mt-[32px]">
-        {/* TODO: заменить на оригинал от клиента — сейчас кадр вырезан из макета */}
-        <div className="relative aspect-[16/10] md:aspect-[1240/440]">
-          <Image
-            src={images.youtube.src}
-            alt={images.youtube.alt}
-            fill
-            sizes="100vw"
-            className="object-cover"
+        {/* Фоновое видео без звука. Пока оно грузится, виден кадр-постер —
+            он же остаётся, если браузер запретил автозапуск */}
+        <div className="relative aspect-[16/10] bg-ink md:aspect-[1240/440]">
+          <video
+            className="absolute inset-0 h-full w-full object-cover"
+            src="/video/kims-showreel.mp4"
+            poster={images.youtube.src}
+            aria-label={images.youtube.alt}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
           />
         </div>
         {/* На телефоне — компактная строка со ссылкой, как в макете;
@@ -85,7 +90,7 @@ export function Founder({ images }: { images: ResolvedImages }) {
               <span className="font-medium">{t("youtubeLink")}</span>
             </span>
             <a
-              href="https://www.youtube.com/@kims_ukraine"
+              href="https://www.youtube.com/@kims2832"
               target="_blank"
               rel="noreferrer noopener"
               className="group inline-flex items-center gap-[10px] whitespace-nowrap md:hidden"
@@ -100,7 +105,7 @@ export function Founder({ images }: { images: ResolvedImages }) {
             </a>
           </p>
           <a
-            href="https://www.youtube.com/@kims_ukraine"
+            href="https://www.youtube.com/@kims2832"
             target="_blank"
             rel="noreferrer noopener"
             className="hidden h-[40px] shrink-0 items-center justify-center rounded-[2px] bg-ink px-[32px] text-[14px] font-medium text-white transition-colors hover:bg-ink-soft md:inline-flex xl:w-[184px]"
