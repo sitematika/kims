@@ -1,0 +1,16 @@
+{
+  "rev": 1,
+  "note": "Тексты, переписанные после запуска сайта. Рабочая копия на сервере создаётся один раз и живёт своей жизнью, поэтому правки в репозитории до неё не доезжают — этот список доносит их ровно один раз.",
+  "paths": [
+    "hero.title",
+    "market.title",
+    "benefits.items.4.title",
+    "developers.points.2",
+    "steps.titleStart",
+    "steps.titleStrong",
+    "stats.ownUa.bUnit",
+    "stats.franchiseUa.bUnit",
+    "stats.ownEu.bUnit",
+    "alt.youtube"
+  ]
+}

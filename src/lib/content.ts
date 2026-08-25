@@ -93,16 +93,64 @@ export function mergeDefaults(seed: ContentValue, current: ContentValue): Conten
   return current === undefined ? seed : current;
 }
 
+/**
+ * Разовая доставка переписанных текстов.
+ *
+ * Рабочая копия на сервере создаётся один раз, дальше правки в репозитории
+ * до неё не доезжают — так и задумано, иначе редеплой затирал бы правки
+ * заказчика. Но когда текст переписан именно в релизе, его нужно донести.
+ * content/release.json перечисляет такие поля; номер применённого релиза
+ * запоминается в рабочей копии, поэтому список срабатывает один раз.
+ */
+const REV_KEY = "_rev";
+
+type Release = { rev: number; paths: string[] };
+
+async function readRelease(): Promise<Release | null> {
+  try {
+    const raw = await readFile(path.join(seedDir, "release.json"), "utf8");
+    const parsed = JSON.parse(raw) as Partial<Release>;
+    if (typeof parsed.rev !== "number" || !Array.isArray(parsed.paths)) {
+      return null;
+    }
+    return { rev: parsed.rev, paths: parsed.paths };
+  } catch {
+    return null;
+  }
+}
+
 export async function getContent(locale: Locale): Promise<ContentNode> {
-  const [working, seed] = await Promise.all([
+  const [working, seed, release] = await Promise.all([
     readSeeded(`${locale}.json`),
     readFile(path.join(seedDir, `${locale}.json`), "utf8"),
+    readRelease(),
   ]);
 
-  return mergeDefaults(
-    JSON.parse(seed) as ContentNode,
-    JSON.parse(working) as ContentNode,
-  ) as ContentNode;
+  const seedNode = JSON.parse(seed) as ContentNode;
+  const workingNode = JSON.parse(working) as ContentNode;
+
+  const merged = mergeDefaults(seedNode, workingNode) as ContentNode;
+
+  const applied = Number(workingNode[REV_KEY] ?? 0);
+  if (!release || applied >= release.rev) return merged;
+
+  for (const dotted of release.paths) {
+    const value = readPath(seedNode, dotted);
+    if (typeof value === "string") writePath(merged, dotted, value);
+  }
+  merged[REV_KEY] = release.rev;
+
+  // запоминаем номер релиза, чтобы список не применялся на каждый рендер.
+  // В разработке рабочая копия и есть эталон — туда служебную метку не пишем
+  if (contentDir !== seedDir) {
+    try {
+      await saveContent(locale, merged);
+    } catch {
+      // каталог недоступен на запись — тексты всё равно верные
+    }
+  }
+
+  return merged;
 }
 
 export async function getAllContent(): Promise<Record<Locale, ContentNode>> {
