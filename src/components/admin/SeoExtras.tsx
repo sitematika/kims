@@ -16,7 +16,7 @@ export function SeoExtras({
   dict: AdminDict;
 }) {
   return (
-    <section className="flex flex-col gap-[16px] rounded-[4px] border border-line-soft bg-white p-[20px]">
+    <section className="flex flex-col gap-[16px] rounded-[12px] border border-line-soft bg-white p-[20px] shadow-[0_1px_2px_rgba(30,30,30,0.04)]">
       <div>
         <h2 className="text-[16px]">{dict.seo.ogTitle}</h2>
         <p className="mt-[4px] text-[13px] text-ink/60">{dict.seo.ogHint}</p>

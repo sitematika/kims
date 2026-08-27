@@ -35,14 +35,14 @@ export function SlideUploader() {
         <input
           name="caption"
           placeholder={dict.slides.captionPlaceholder}
-          className="rounded-[4px] border border-line px-[12px] py-[10px] text-[14px] outline-none focus:border-ink"
+          className="rounded-[8px] border border-line px-[12px] py-[10px] text-[14px] outline-none transition-colors focus:border-ink"
         />
       </label>
 
       <button
         type="submit"
         disabled={pending}
-        className="h-[42px] shrink-0 rounded-[4px] bg-ink px-[24px] text-[14px] font-medium text-white disabled:opacity-60"
+        className="h-[42px] shrink-0 rounded-[9px] bg-ink px-[24px] text-[14px] font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60"
       >
         {pending ? dict.common.uploading : dict.slides.add}
       </button>

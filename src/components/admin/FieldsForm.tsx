@@ -96,7 +96,7 @@ export function FieldsForm({
               href={anchor}
               target="_blank"
               rel="noreferrer"
-              className="h-[36px] rounded-[4px] border border-line px-[16px] text-[13px] leading-[34px] transition-colors hover:bg-paper"
+              className="h-[36px] rounded-[8px] border border-line px-[16px] text-[13px] leading-[34px] transition-colors hover:bg-paper"
             >
               {dict.section.viewOnSite}
             </a>
@@ -104,7 +104,7 @@ export function FieldsForm({
           <button
             type="button"
             onClick={() => setAllLangs((v) => !v)}
-            className="h-[36px] rounded-[4px] border border-line px-[16px] text-[13px] transition-colors hover:bg-paper"
+            className="h-[36px] rounded-[8px] border border-line px-[16px] text-[13px] transition-colors hover:bg-paper"
           >
             {allLangs ? dict.section.onlyPrimary : dict.section.allLangs}
           </button>
@@ -132,7 +132,7 @@ export function FieldsForm({
         <button
           type="submit"
           disabled={pending}
-          className="h-[44px] rounded-[4px] bg-ink px-[28px] text-[14px] font-medium text-white disabled:opacity-60"
+          className="h-[44px] rounded-[9px] bg-ink px-[28px] text-[14px] font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60"
         >
           {pending ? dict.section.publishing : dict.section.publish}
         </button>
@@ -205,7 +205,7 @@ function Block({ block, shown }: { block: Block; shown: readonly Locale[] }) {
   }
 
   return (
-    <div className="flex flex-col gap-[10px] rounded-[4px] border border-line-soft bg-paper/40 px-[14px] py-[14px]">
+    <div className="flex flex-col gap-[10px] rounded-[10px] border border-line-soft bg-paper/50 px-[14px] py-[14px]">
       <p className="text-[13px] text-ink/70">{block.heading}</p>
 
       {block.fields.map((field) => (
@@ -228,7 +228,7 @@ function FieldRow({
   const lang = useLang();
 
   return (
-    <fieldset className="rounded-[4px] border border-line-soft bg-white px-[20px] py-[18px]">
+    <fieldset className="rounded-[10px] border border-line-soft bg-white px-[18px] py-[16px]">
       <legend className="px-[6px] text-[13px] text-ink/70">
         {fieldLabel(field.path, lang, inBlock)}
       </legend>

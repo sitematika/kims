@@ -33,7 +33,7 @@ export function TelegramForm({
   return (
     <form
       action={formAction}
-      className="flex flex-col gap-[16px] rounded-[4px] border border-line-soft bg-white p-[20px]"
+      className="flex flex-col gap-[16px] rounded-[12px] border border-line-soft bg-white p-[20px] shadow-[0_1px_2px_rgba(30,30,30,0.04)]"
     >
       <div>
         <h2 className="text-[16px]">{dict.telegram.title}</h2>
@@ -51,7 +51,7 @@ export function TelegramForm({
           placeholder={
             hasToken ? dict.telegram.tokenSaved : "123456789:AA..."
           }
-          className="rounded-[4px] border border-line px-[12px] py-[10px] text-[14px] outline-none focus:border-ink"
+          className="rounded-[8px] border border-line px-[12px] py-[10px] text-[14px] outline-none transition-colors focus:border-ink"
         />
         <span className="text-[13px] text-ink/60">
           {hasToken ? dict.telegram.tokenKeep : dict.telegram.tokenHint}
@@ -67,7 +67,7 @@ export function TelegramForm({
           value={chatValue}
           onChange={(e) => setChatValue(e.target.value)}
           placeholder="-1001234567890"
-          className="rounded-[4px] border border-line px-[12px] py-[10px] text-[14px] outline-none focus:border-ink"
+          className="rounded-[8px] border border-line px-[12px] py-[10px] text-[14px] outline-none transition-colors focus:border-ink"
         />
       </label>
 
@@ -86,7 +86,7 @@ export function TelegramForm({
               }
             })
           }
-          className="h-[38px] rounded-[4px] border border-line px-[18px] text-[13px] transition-colors hover:bg-paper disabled:opacity-50"
+          className="h-[38px] rounded-[8px] border border-line px-[18px] text-[13px] transition-colors hover:bg-paper disabled:opacity-50"
         >
           {searching ? dict.telegram.searching : dict.telegram.find}
         </button>
@@ -130,7 +130,7 @@ export function TelegramForm({
         <button
           type="submit"
           disabled={pending}
-          className="h-[42px] rounded-[4px] bg-ink px-[24px] text-[14px] font-medium text-white disabled:opacity-60"
+          className="h-[42px] rounded-[9px] bg-ink px-[24px] text-[14px] font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60"
         >
           {pending ? dict.common.saving : dict.common.save}
         </button>

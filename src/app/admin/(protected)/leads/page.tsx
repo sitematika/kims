@@ -28,7 +28,7 @@ export default async function LeadsPage() {
         </p>
       </header>
 
-      <section className="flex flex-col gap-[14px] rounded-[4px] border border-line-soft bg-white p-[20px] text-[13px]">
+      <section className="flex flex-col gap-[14px] rounded-[12px] border border-line-soft bg-white p-[20px] shadow-[0_1px_2px_rgba(30,30,30,0.04)] text-[13px]">
         <p className="text-[16px]">{dict.leads.channels}</p>
 
         <p>

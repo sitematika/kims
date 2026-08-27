@@ -61,7 +61,7 @@ export function LeadEmailsForm({ emails }: { emails: string[] }) {
         <button
           type="submit"
           disabled={pending}
-          className="h-[36px] rounded-[4px] border border-line px-[16px] text-[13px] transition-colors hover:bg-paper disabled:opacity-60"
+          className="h-[36px] rounded-[8px] border border-line px-[16px] text-[13px] transition-colors hover:bg-paper disabled:opacity-60"
         >
           {dict.leads.addEmail}
         </button>

@@ -31,7 +31,7 @@ export function SocialLinksForm({ rows }: { rows: SocialRow[] }) {
             name={`link::${row.id}`}
             defaultValue={row.url}
             placeholder="https://"
-            className="flex-1 rounded-[4px] border border-line px-[12px] py-[10px] text-[14px] outline-none focus:border-ink"
+            className="flex-1 rounded-[8px] border border-line px-[12px] py-[10px] text-[14px] outline-none transition-colors focus:border-ink"
           />
         </label>
       ))}
@@ -40,7 +40,7 @@ export function SocialLinksForm({ rows }: { rows: SocialRow[] }) {
         <button
           type="submit"
           disabled={pending}
-          className="h-[42px] rounded-[4px] bg-ink px-[24px] text-[14px] font-medium text-white disabled:opacity-60"
+          className="h-[42px] rounded-[9px] bg-ink px-[24px] text-[14px] font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60"
         >
           {pending ? dict.common.saving : dict.social.save}
         </button>

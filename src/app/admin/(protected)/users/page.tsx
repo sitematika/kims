@@ -21,7 +21,7 @@ export default async function UsersPage() {
       </header>
 
       {users.length === 0 ? (
-        <p className="rounded-[4px] bg-blush-50 px-[20px] py-[16px] text-[14px] text-ink/70">
+        <p className="rounded-[10px] bg-blush-50 px-[20px] py-[16px] text-[14px] text-ink/70">
           {dict.users.empty}
         </p>
       ) : (
@@ -59,7 +59,7 @@ export default async function UsersPage() {
                     <input type="hidden" name="id" value={user.id} />
                     <button
                       type="submit"
-                      className="h-[36px] rounded-[4px] border border-line px-[18px] text-[13px] text-red-700 transition-colors hover:bg-red-50"
+                      className="h-[36px] rounded-[8px] border border-line px-[18px] text-[13px] text-red-700 transition-colors hover:bg-red-50"
                     >
                       {dict.common.delete}
                     </button>

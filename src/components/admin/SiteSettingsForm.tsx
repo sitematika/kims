@@ -53,9 +53,9 @@ export function SiteSettingsForm({
   return (
     <form
       action={formAction}
-      className="flex flex-col gap-[20px] rounded-[4px] border border-line-soft bg-white p-[20px]"
+      className="flex flex-col gap-[20px] rounded-[12px] border border-line-soft bg-white p-[20px] shadow-[0_1px_2px_rgba(30,30,30,0.04)]"
     >
-      <div className={`-m-[20px] mb-0 flex items-center gap-[12px] rounded-t-[4px] px-[20px] py-[14px] text-[14px] ${
+      <div className={`-m-[20px] mb-0 flex items-center gap-[12px] rounded-t-[12px] px-[20px] py-[14px] text-[14px] ${
         indexing && !forcedByEnv ? "bg-blush-50" : "bg-ink text-white"
       }`}>
         <span className={`h-[10px] w-[10px] shrink-0 rounded-full ${
@@ -79,7 +79,7 @@ export function SiteSettingsForm({
           name="siteUrl"
           defaultValue={siteUrl}
           placeholder="https://example.com"
-          className="rounded-[4px] border border-line px-[12px] py-[10px] text-[14px] outline-none focus:border-ink"
+          className="rounded-[8px] border border-line px-[12px] py-[10px] text-[14px] outline-none transition-colors focus:border-ink"
         />
       </label>
 
@@ -117,7 +117,7 @@ export function SiteSettingsForm({
           name="gtmId"
           defaultValue={gtmId}
           placeholder="GTM-XXXXXXX"
-          className="rounded-[4px] border border-line px-[12px] py-[10px] text-[14px] outline-none focus:border-ink"
+          className="rounded-[8px] border border-line px-[12px] py-[10px] text-[14px] outline-none transition-colors focus:border-ink"
         />
         <span className="text-[13px] text-ink/60">{dict.settings.gtmHint}</span>
       </label>
@@ -130,7 +130,7 @@ export function SiteSettingsForm({
           name="googleVerification"
           defaultValue={googleVerification}
           placeholder='<meta name="google-site-verification" content="..." />'
-          className="rounded-[4px] border border-line px-[12px] py-[10px] text-[14px] outline-none focus:border-ink"
+          className="rounded-[8px] border border-line px-[12px] py-[10px] text-[14px] outline-none transition-colors focus:border-ink"
         />
         <span className="text-[13px] text-ink/60">
           {dict.settings.googleVerificationHint}
@@ -146,7 +146,7 @@ export function SiteSettingsForm({
           defaultValue={verificationTags}
           rows={2}
           placeholder='<meta name="facebook-domain-verification" content="..." />'
-          className="w-full rounded-[4px] border border-line px-[12px] py-[10px] font-mono text-[13px] leading-[1.5] outline-none focus:border-ink"
+          className="w-full rounded-[8px] border border-line px-[12px] py-[10px] font-mono text-[13px] leading-[1.5] outline-none transition-colors focus:border-ink"
         />
         <span className="text-[13px] text-ink/60">
           {dict.settings.verificationTagsHint}
@@ -171,7 +171,7 @@ export function SiteSettingsForm({
           onChange={(e) => setHead(e.target.value)}
           rows={4}
           spellCheck={false}
-          className="w-full rounded-[4px] border border-line px-[12px] py-[10px] font-mono text-[13px] leading-[1.5] outline-none focus:border-ink"
+          className="w-full rounded-[8px] border border-line px-[12px] py-[10px] font-mono text-[13px] leading-[1.5] outline-none transition-colors focus:border-ink"
         />
         <input type="hidden" name="headCode" value={encode(head)} />
       </label>
@@ -185,7 +185,7 @@ export function SiteSettingsForm({
           onChange={(e) => setBody(e.target.value)}
           rows={4}
           spellCheck={false}
-          className="w-full rounded-[4px] border border-line px-[12px] py-[10px] font-mono text-[13px] leading-[1.5] outline-none focus:border-ink"
+          className="w-full rounded-[8px] border border-line px-[12px] py-[10px] font-mono text-[13px] leading-[1.5] outline-none transition-colors focus:border-ink"
         />
         <input type="hidden" name="bodyCode" value={encode(body)} />
       </label>
@@ -209,7 +209,7 @@ export function SiteSettingsForm({
         <button
           type="submit"
           disabled={pending}
-          className="h-[42px] rounded-[4px] bg-ink px-[24px] text-[14px] font-medium text-white disabled:opacity-60"
+          className="h-[42px] rounded-[9px] bg-ink px-[24px] text-[14px] font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60"
         >
           {pending ? dict.common.saving : dict.common.save}
         </button>

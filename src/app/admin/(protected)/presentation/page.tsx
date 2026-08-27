@@ -31,7 +31,7 @@ export default async function PresentationPage() {
           return (
             <section
               key={locale}
-              className="flex flex-col gap-[14px] rounded-[4px] border border-line-soft bg-white p-[20px]"
+              className="flex flex-col gap-[14px] rounded-[12px] border border-line-soft bg-white p-[20px] shadow-[0_1px_2px_rgba(30,30,30,0.04)]"
             >
               <div className="flex flex-wrap items-center gap-[12px]">
                 <span className="rounded-[3px] bg-paper px-[10px] py-[4px] text-[12px] tracking-[1px]">
@@ -64,7 +64,7 @@ export default async function PresentationPage() {
                       href={file.file}
                       target="_blank"
                       rel="noreferrer"
-                      className="flex h-[38px] items-center rounded-[4px] border border-line px-[16px] text-[13px] transition-colors hover:bg-paper"
+                      className="flex h-[38px] items-center rounded-[8px] border border-line px-[16px] text-[13px] transition-colors hover:bg-paper"
                     >
                       {dict.common.open}
                     </a>
@@ -72,7 +72,7 @@ export default async function PresentationPage() {
                       <input type="hidden" name="locale" value={locale} />
                       <button
                         type="submit"
-                        className="h-[38px] rounded-[4px] border border-line px-[16px] text-[13px] text-red-700 transition-colors hover:bg-red-50"
+                        className="h-[38px] rounded-[8px] border border-line px-[16px] text-[13px] text-red-700 transition-colors hover:bg-red-50"
                       >
                         {dict.common.delete}
                       </button>

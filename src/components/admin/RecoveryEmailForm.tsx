@@ -24,7 +24,7 @@ export function RecoveryEmailForm({
   return (
     <form
       action={formAction}
-      className="flex flex-col gap-[16px] rounded-[4px] border border-line-soft bg-white p-[20px]"
+      className="flex flex-col gap-[16px] rounded-[12px] border border-line-soft bg-white p-[20px] shadow-[0_1px_2px_rgba(30,30,30,0.04)]"
     >
       <div>
         <h2 className="text-[16px]">{dict.reset.title}</h2>
@@ -42,7 +42,7 @@ export function RecoveryEmailForm({
           type="email"
           defaultValue={recoveryEmail}
           placeholder={fallback[0] ?? "name@example.com"}
-          className="rounded-[4px] border border-line px-[12px] py-[10px] text-[14px] outline-none focus:border-ink"
+          className="rounded-[8px] border border-line px-[12px] py-[10px] text-[14px] outline-none transition-colors focus:border-ink"
         />
       </label>
 
@@ -58,7 +58,7 @@ export function RecoveryEmailForm({
         <button
           type="submit"
           disabled={pending}
-          className="h-[42px] rounded-[4px] bg-ink px-[24px] text-[14px] font-medium text-white disabled:opacity-60"
+          className="h-[42px] rounded-[9px] bg-ink px-[24px] text-[14px] font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60"
         >
           {pending ? dict.common.saving : dict.common.save}
         </button>

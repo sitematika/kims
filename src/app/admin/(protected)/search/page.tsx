@@ -50,11 +50,11 @@ export default async function SearchPage({
           defaultValue={q ?? ""}
           autoFocus
           placeholder={dict.search.placeholder}
-          className="h-[44px] min-w-[240px] flex-1 rounded-[4px] border border-line px-[14px] text-[15px] outline-none focus:border-ink"
+          className="h-[44px] min-w-[240px] flex-1 rounded-[9px] border border-line px-[14px] text-[15px] outline-none transition-colors focus:border-ink"
         />
         <button
           type="submit"
-          className="h-[44px] rounded-[4px] bg-ink px-[28px] text-[14px] font-medium text-white"
+          className="h-[44px] rounded-[9px] bg-ink px-[28px] text-[14px] font-medium text-white transition-opacity hover:opacity-90"
         >
           {dict.search.go}
         </button>
@@ -76,7 +76,7 @@ export default async function SearchPage({
             <Link
               key={`${hit.locale}-${hit.path}`}
               href={sectionHref(section)}
-              className="flex flex-col gap-[6px] rounded-[4px] border border-line-soft bg-white px-[16px] py-[12px] transition-colors hover:border-line"
+              className="flex flex-col gap-[6px] rounded-[10px] border border-line-soft bg-white px-[16px] py-[12px] transition-colors hover:border-line hover:bg-paper/40"
             >
               <span className="flex flex-wrap items-center gap-[8px] text-[12px] text-ink/45">
                 <span className="rounded-[3px] bg-paper px-[6px] py-[2px]">

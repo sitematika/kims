@@ -16,7 +16,7 @@ export function AddUserForm({ first }: { first: boolean }) {
   return (
     <form
       action={formAction}
-      className="flex flex-col gap-[16px] rounded-[4px] border border-dashed border-line bg-white p-[20px]"
+      className="flex flex-col gap-[16px] rounded-[12px] border border-dashed border-line bg-white p-[20px]"
     >
       <div>
         <h2 className="text-[16px]">{dict.users.addTitle}</h2>
@@ -34,7 +34,7 @@ export function AddUserForm({ first }: { first: boolean }) {
             name="name"
             required
             placeholder={dict.users.namePlaceholder}
-            className="rounded-[4px] border border-line px-[12px] py-[10px] text-[14px] outline-none focus:border-ink"
+            className="rounded-[8px] border border-line px-[12px] py-[10px] text-[14px] outline-none transition-colors focus:border-ink"
           />
         </label>
 
@@ -47,7 +47,7 @@ export function AddUserForm({ first }: { first: boolean }) {
             type="email"
             required
             placeholder="name@example.com"
-            className="rounded-[4px] border border-line px-[12px] py-[10px] text-[14px] outline-none focus:border-ink"
+            className="rounded-[8px] border border-line px-[12px] py-[10px] text-[14px] outline-none transition-colors focus:border-ink"
           />
         </label>
 
@@ -61,7 +61,7 @@ export function AddUserForm({ first }: { first: boolean }) {
             required
             minLength={10}
             autoComplete="off"
-            className="rounded-[4px] border border-line px-[12px] py-[10px] text-[14px] outline-none focus:border-ink"
+            className="rounded-[8px] border border-line px-[12px] py-[10px] text-[14px] outline-none transition-colors focus:border-ink"
           />
         </label>
       </div>
@@ -70,7 +70,7 @@ export function AddUserForm({ first }: { first: boolean }) {
         <button
           type="submit"
           disabled={pending}
-          className="h-[42px] rounded-[4px] bg-ink px-[24px] text-[14px] font-medium text-white disabled:opacity-60"
+          className="h-[42px] rounded-[9px] bg-ink px-[24px] text-[14px] font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60"
         >
           {pending ? dict.common.saving : dict.users.add}
         </button>

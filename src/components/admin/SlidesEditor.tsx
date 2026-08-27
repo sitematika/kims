@@ -57,7 +57,7 @@ export function SlidesEditor({ rows }: { rows: SlideRow[] }) {
             type="submit"
             form={FORM_ID}
             disabled={pending}
-            className="h-[44px] rounded-[4px] bg-ink px-[28px] text-[14px] font-medium text-white disabled:opacity-60"
+            className="h-[44px] rounded-[9px] bg-ink px-[28px] text-[14px] font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60"
           >
             {pending ? dict.section.publishing : dict.section.publish}
           </button>

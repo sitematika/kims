@@ -15,7 +15,7 @@ export function TestLeadButton() {
         type="button"
         disabled={pending}
         onClick={() => start(async () => setResult(await sendTestLead()))}
-        className="h-[38px] rounded-[4px] border border-line px-[18px] text-[13px] transition-colors hover:bg-paper disabled:opacity-60"
+        className="h-[38px] rounded-[8px] border border-line px-[18px] text-[13px] transition-colors hover:bg-paper disabled:opacity-60"
       >
         {pending ? dict.leads.testing : dict.leads.test}
       </button>

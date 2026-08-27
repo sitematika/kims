@@ -6,6 +6,8 @@ import { buildNav } from "@/lib/admin-nav";
 import { getAdminDict, getAdminLang } from "@/lib/admin-lang";
 import { AdminLangProvider } from "@/components/admin/AdminLangProvider";
 import { AdminLangSwitch } from "@/components/admin/AdminLangSwitch";
+import { AdminNav } from "@/components/admin/AdminNav";
+import { Icon } from "@/components/admin/icons";
 import { logout } from "../actions";
 
 export default async function ProtectedLayout({
@@ -26,45 +28,48 @@ export default async function ProtectedLayout({
 
   return (
     <AdminLangProvider dict={dict} lang={lang}>
-      <div className="flex min-h-screen flex-col lg:flex-row">
+      <div className="flex min-h-screen flex-col bg-paper/60 lg:flex-row">
         {/* меню стоит на месте при прокрутке; разделов много, поэтому
             при нехватке высоты оно прокручивается внутри себя */}
         <aside className="shrink-0 border-b border-line-soft bg-white lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-[286px] lg:shrink-0 lg:flex-col lg:overflow-y-auto lg:border-r lg:border-b-0">
-          <div className="flex items-center justify-between px-[24px] py-[20px]">
-            <Link href="/admin" className="text-[16px] tracking-[2px]">
+          <div className="flex items-center justify-between px-[20px] pt-[20px] pb-[14px]">
+            <Link
+              href="/admin"
+              className="text-[15px] tracking-[3px] transition-opacity hover:opacity-70"
+            >
               KIMS
             </Link>
-            <div className="flex items-center gap-[12px]">
-              {actor?.name && (
-                <span
-                  title={actor.email}
-                  className="max-w-[140px] truncate text-[13px] text-ink/50"
-                >
-                  {actor.name}
-                </span>
-              )}
-              <form action={logout}>
-                <button
-                  type="submit"
-                  className="text-[13px] text-ink/50 transition-colors hover:text-ink"
-                >
-                  {dict.common.logout}
-                </button>
-              </form>
-            </div>
+            <AdminLangSwitch current={lang} />
           </div>
 
-          <div className="flex items-center justify-between px-[24px] pb-[16px]">
-            <span className="text-[12px] text-ink/40">
-              {dict.common.interfaceLang}
+          <div className="mx-[12px] mb-[12px] flex items-center gap-[10px] rounded-[10px] bg-paper px-[12px] py-[10px]">
+            <span className="flex h-[28px] w-[28px] shrink-0 items-center justify-center rounded-full bg-ink text-[12px] font-medium text-white">
+              {(actor?.name ?? "?").trim().charAt(0).toUpperCase()}
             </span>
-            <AdminLangSwitch current={lang} />
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-[13px]">{actor?.name}</span>
+              {actor?.email && (
+                <span className="block truncate text-[11px] text-ink/45">
+                  {actor.email}
+                </span>
+              )}
+            </span>
+            <form action={logout}>
+              <button
+                type="submit"
+                title={dict.common.logout}
+                aria-label={dict.common.logout}
+                className="flex h-[28px] w-[28px] items-center justify-center rounded-[7px] text-ink/40 transition-colors hover:bg-white hover:text-ink"
+              >
+                <Icon name="logout" />
+              </button>
+            </form>
           </div>
 
           {/* Видимость для поиска — состояние, которое важно не потерять из виду */}
           <Link
             href="/admin/seo"
-            className={`mx-[16px] mb-[16px] flex items-center gap-[10px] rounded-[4px] px-[12px] py-[10px] text-[13px] transition-opacity hover:opacity-80 ${
+            className={`mx-[12px] mb-[16px] flex items-center gap-[10px] rounded-[10px] px-[12px] py-[10px] text-[13px] transition-opacity hover:opacity-80 ${
               indexable ? "bg-blush-50 text-ink" : "bg-ink text-white"
             }`}
           >
@@ -76,35 +81,11 @@ export default async function ProtectedLayout({
             {indexable ? dict.indexing.open : dict.indexing.hidden}
           </Link>
 
-          <nav className="flex flex-col gap-[20px] px-[16px] pb-[24px]">
-            {groups.map((group) => (
-              <div key={group.title} className="flex flex-col gap-[2px]">
-                <p className="px-[12px] pb-[4px] text-[11px] tracking-[1px] text-ink/35 uppercase">
-                  {group.title}
-                </p>
-                {group.links.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="rounded-[4px] px-[12px] py-[8px] text-[14px] transition-colors hover:bg-blush-50"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            ))}
+          <AdminNav groups={groups} openSite={dict.common.openSite} />
 
-            <Link
-              href="/uk"
-              target="_blank"
-              className="rounded-[4px] px-[12px] py-[8px] text-[14px] text-ink/50 transition-colors hover:text-ink"
-            >
-              {dict.common.openSite}
-            </Link>
-          </nav>
         </aside>
 
-        <main className="flex-1 px-[20px] py-[28px] lg:px-[40px] lg:py-[40px]">
+        <main className="flex-1 px-[20px] py-[28px] lg:px-[44px] lg:py-[40px]">
           {children}
         </main>
       </div>

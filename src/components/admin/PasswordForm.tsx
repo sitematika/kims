@@ -5,7 +5,7 @@ import { changePassword } from "@/app/admin/settings-actions";
 import { useDict } from "./AdminLangProvider";
 
 const field =
-  "rounded-[4px] border border-line px-[12px] py-[10px] text-[14px] outline-none focus:border-ink";
+  "rounded-[8px] border border-line px-[12px] py-[10px] text-[14px] outline-none transition-colors focus:border-ink";
 
 export function PasswordForm({ usingEnv }: { usingEnv: boolean }) {
   const dict = useDict();
@@ -18,7 +18,7 @@ export function PasswordForm({ usingEnv }: { usingEnv: boolean }) {
   return (
     <form
       action={formAction}
-      className="flex flex-col gap-[20px] rounded-[4px] border border-line-soft bg-white p-[20px]"
+      className="flex flex-col gap-[20px] rounded-[12px] border border-line-soft bg-white p-[20px] shadow-[0_1px_2px_rgba(30,30,30,0.04)]"
     >
       <div>
         <h2 className="text-[16px]">{dict.settings.passwordBlock}</h2>
@@ -60,7 +60,7 @@ export function PasswordForm({ usingEnv }: { usingEnv: boolean }) {
         <button
           type="submit"
           disabled={pending}
-          className="h-[42px] rounded-[4px] bg-ink px-[24px] text-[14px] font-medium text-white disabled:opacity-60"
+          className="h-[42px] rounded-[9px] bg-ink px-[24px] text-[14px] font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60"
         >
           {pending ? dict.settings.changing : dict.settings.changePassword}
         </button>
