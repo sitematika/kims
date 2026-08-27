@@ -25,18 +25,25 @@ export function Hero({ images }: { images: ResolvedImages }) {
         <div className="absolute inset-x-0 bottom-0 h-[10%] bg-gradient-to-t from-white to-transparent md:hidden" />
       </div>
 
-      {/* Надпись со стены — только на широких экранах, где для неё есть место */}
-      <p
+      {/* Надпись со стены — только на широких экранах, где для неё есть место.
+          Лежит в той же сетке, что и остальной контент: раньше она отступала
+          от края экрана, а не от колонки, и на широком мониторе уезжала влево
+          от логотипа и заголовка — сетка визуально распадалась. */}
+      <div
         aria-hidden
-        className="absolute top-[76px] left-[var(--shell-pad)] hidden text-[42px] leading-none font-medium text-blush-400 opacity-50 xl:block"
+        className="pointer-events-none absolute inset-x-0 top-[76px] hidden xl:block"
       >
-        KIMS
-        <span className="mt-[6px] block font-normal">
-          We&nbsp; love&nbsp; people.
-          <br />
-          People&nbsp; love&nbsp; life
-        </span>
-      </p>
+        <div className="shell">
+          <p className="text-[42px] leading-none font-medium text-blush-400 opacity-50">
+            KIMS
+            <span className="mt-[6px] block font-normal">
+              We&nbsp; love&nbsp; people.
+              <br />
+              People&nbsp; love&nbsp; life
+            </span>
+          </p>
+        </div>
+      </div>
 
       <div className="shell pt-[40px] pb-[48px] md:pt-[56px] md:pb-[72px] xl:pt-[76px] xl:pb-[110px]">
         <div className="flex flex-col gap-[32px] xl:ml-auto xl:w-[639px] xl:gap-[68px]">
