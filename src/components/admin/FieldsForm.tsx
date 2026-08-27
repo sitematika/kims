@@ -121,8 +121,8 @@ export function FieldsForm({
             </p>
           )}
 
-          {group.fields.map((field) => (
-            <FieldRow key={field.path} field={field} shown={shown} />
+          {blocksOf(group.fields).map((block) => (
+            <Block key={block.key} block={block} shown={shown} />
           ))}
         </div>
       ))}
@@ -157,19 +157,80 @@ export function FieldsForm({
   );
 }
 
+type Block = { key: string; heading: string | null; fields: EditorField[] };
+
+/**
+ * Собирает поля в блоки по общему родителю.
+ *
+ * Плоский список из «Підпис / Значення / Підпис / Значення» не даёт понять,
+ * какая подпись к какому числу. Поля одной ячейки идут в JSON рядом, под
+ * общим ключом — по нему и группируем, а заголовком берём осмысленный текст
+ * самой ячейки, если он там есть.
+ */
+function blocksOf(fields: EditorField[]): Block[] {
+  const blocks: Block[] = [];
+
+  for (const field of fields) {
+    const parts = field.path.split(".");
+    // у поля верхнего уровня родитель — сам раздел, группировать нечего
+    const key = parts.length > 2 ? parts.slice(0, -1).join(".") : "";
+    const last = blocks.at(-1);
+
+    if (last && last.key === key) last.fields.push(field);
+    else blocks.push({ key, heading: null, fields: [field] });
+  }
+
+  for (const block of blocks) {
+    if (!block.key) continue;
+    const named = block.fields.find((f) =>
+      /\.(label|title|name|year)$/.test(f.path),
+    );
+    block.heading = named?.values.uk?.trim() || null;
+  }
+
+  return blocks;
+}
+
+function Block({ block, shown }: { block: Block; shown: readonly Locale[] }) {
+  // без осмысленного заголовка рамка только мешает: у простых списков
+  // номер элемента и так написан в подписи поля
+  if (!block.heading) {
+    return (
+      <>
+        {block.fields.map((field) => (
+          <FieldRow key={field.path} field={field} shown={shown} />
+        ))}
+      </>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-[10px] rounded-[4px] border border-line-soft bg-paper/40 px-[14px] py-[14px]">
+      <p className="text-[13px] text-ink/70">{block.heading}</p>
+
+      {block.fields.map((field) => (
+        <FieldRow key={field.path} field={field} shown={shown} inBlock />
+      ))}
+    </div>
+  );
+}
+
 function FieldRow({
   field,
   shown,
+  inBlock = false,
 }: {
   field: EditorField;
   shown: readonly Locale[];
+  /** Внутри блока с заголовком номер элемента в подписи не нужен */
+  inBlock?: boolean;
 }) {
   const lang = useLang();
 
   return (
     <fieldset className="rounded-[4px] border border-line-soft bg-white px-[20px] py-[18px]">
       <legend className="px-[6px] text-[13px] text-ink/70">
-        {fieldLabel(field.path, lang)}
+        {fieldLabel(field.path, lang, inBlock)}
       </legend>
 
       <div

@@ -219,12 +219,15 @@ const groupWords: Record<AdminLang, Record<string, string>> = {
  * Возвращает «Пункт 5 · Заголовок»; если расшифровки нет — сам путь,
  * чтобы поле всё равно можно было опознать.
  */
-export function fieldLabel(path: string, lang: AdminLang) {
+export function fieldLabel(path: string, lang: AdminLang, leafOnly = false) {
   const parts = path.split(".");
   const last = parts.at(-1) ?? path;
 
   const name = leaf[lang][last];
   const index = parts.findIndex((p) => /^\d+$/.test(p));
+
+  // внутри блока номер элемента уже написан в его заголовке
+  if (leafOnly && name) return name;
 
   if (index > 0) {
     const group = groupWords[lang][parts[index - 1]] ?? parts[index - 1];
