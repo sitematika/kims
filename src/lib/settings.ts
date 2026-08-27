@@ -31,6 +31,12 @@ export type Settings = {
   gtmId?: string;
   /** Код подтверждения прав в Search Console (метод «HTML-тег») */
   googleVerification?: string;
+  /** Куда слать ссылку на сброс пароля. Пусто — на адреса для заявок */
+  recoveryEmail?: string;
+  /** Хеш одноразовой ссылки сброса, срок её жизни и время последнего запроса */
+  resetHash?: string;
+  resetExpires?: number;
+  resetRequestedAt?: number;
 };
 
 const file = path.join(contentDir, "settings.json");

@@ -2,15 +2,18 @@ import { getSettings } from "@/lib/settings";
 import { checkDataDirs } from "@/lib/diagnostics";
 import { getAdminDict } from "@/lib/admin-lang";
 import { PasswordForm } from "@/components/admin/PasswordForm";
+import { RecoveryEmailForm } from "@/components/admin/RecoveryEmailForm";
+import { leadRecipients } from "@/lib/notify";
 
 export const dynamic = "force-dynamic";
 
 /** Пароль и место хранения данных */
 export default async function AccessPage() {
-  const [settings, dirs, dict] = await Promise.all([
+  const [settings, dirs, dict, fallback] = await Promise.all([
     getSettings(),
     checkDataDirs(),
     getAdminDict(),
+    leadRecipients(),
   ]);
 
   return (
@@ -23,6 +26,11 @@ export default async function AccessPage() {
       </header>
 
       <PasswordForm usingEnv={!settings.passwordHash} />
+
+      <RecoveryEmailForm
+        recoveryEmail={settings.recoveryEmail ?? ""}
+        fallback={fallback}
+      />
 
       <section className="flex flex-col gap-[12px] rounded-[4px] border border-line-soft bg-white p-[20px]">
         <div>

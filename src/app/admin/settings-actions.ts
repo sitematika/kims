@@ -42,6 +42,22 @@ export async function updateSite(
   return indexing ? "indexingOn" : "indexingOff";
 }
 
+export async function updateRecoveryEmail(
+  _state: string | null,
+  formData: FormData,
+): Promise<string | null> {
+  if (!(await isAuthorized())) return "sessionExpired";
+
+  const recoveryEmail = String(formData.get("recoveryEmail") ?? "").trim();
+  if (recoveryEmail && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(recoveryEmail)) {
+    return "badEmail";
+  }
+
+  await saveSettings({ recoveryEmail });
+  revalidatePath("/admin/access");
+  return "saved";
+}
+
 export async function changePassword(
   _state: string | null,
   formData: FormData,
@@ -60,7 +76,12 @@ export async function changePassword(
   if (next !== repeat) return "passwordMismatch";
   if (next === current) return "passwordSame";
 
-  await saveSettings(await hashPassword(next));
+  await saveSettings({
+    ...(await hashPassword(next)),
+    // выданная ранее ссылка на сброс больше не должна работать
+    resetHash: undefined,
+    resetExpires: undefined,
+  });
 
   // ключ подписи сессии завязан на пароль, поэтому текущий вход больше
   // недействителен — выходим явно, чтобы не оставлять битую сессию

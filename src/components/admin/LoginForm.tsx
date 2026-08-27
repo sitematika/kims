@@ -1,10 +1,17 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { login } from "@/app/admin/actions";
 import type { AdminDict } from "@/lib/admin-lang";
 
-export function LoginForm({ dict }: { dict: AdminDict }) {
+export function LoginForm({
+  dict,
+  passwordChanged = false,
+}: {
+  dict: AdminDict;
+  passwordChanged?: boolean;
+}) {
   const [error, formAction, pending] = useActionState(login, null);
 
   return (
@@ -33,6 +40,10 @@ export function LoginForm({ dict }: { dict: AdminDict }) {
           />
         </label>
 
+        {passwordChanged && !error && (
+          <p className="text-[13px] text-ink/70">{dict.msg.resetDone}</p>
+        )}
+
         {error && (
           <p className="text-[13px] text-red-700">
             {error === "wrongPassword" ? dict.msg.wrongPassword : error}
@@ -46,6 +57,13 @@ export function LoginForm({ dict }: { dict: AdminDict }) {
         >
           {pending ? dict.login.checking : dict.login.submit}
         </button>
+
+        <Link
+          href="/admin/reset"
+          className="text-center text-[13px] text-ink/60 underline underline-offset-[3px] hover:text-ink"
+        >
+          {dict.reset.link}
+        </Link>
       </form>
     </main>
   );

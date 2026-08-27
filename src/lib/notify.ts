@@ -54,6 +54,40 @@ export async function leadRecipients(): Promise<string[]> {
   return fromEnv ? fromEnv.split(",").map((s) => s.trim()).filter(Boolean) : [];
 }
 
+/**
+ * Отправка письма через настроенный SMTP. Возвращает false, если доступ
+ * к почте не настроен — вызывающий решает, ошибка это или штатный пропуск.
+ */
+export async function sendMail(options: {
+  to: string[];
+  subject: string;
+  text: string;
+}) {
+  const host = process.env.SMTP_HOST;
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+  if (!host || !user || !pass || !options.to.length) return false;
+
+  const port = Number(process.env.SMTP_PORT ?? 465);
+
+  const transport = nodemailer.createTransport({
+    host,
+    port,
+    // 465 — соединение сразу шифруется, 587 — переходит на TLS после старта
+    secure: port === 465,
+    auth: { user, pass },
+  });
+
+  await transport.sendMail({
+    from: process.env.SMTP_FROM ?? user,
+    to: options.to,
+    subject: options.subject,
+    text: options.text,
+  });
+
+  return true;
+}
+
 /** Письмо ответственным менеджерам */
 async function toEmail(lead: Lead) {
   const host = process.env.SMTP_HOST;
