@@ -1,6 +1,4 @@
-import { appendFile, mkdir } from "node:fs/promises";
-import path from "node:path";
-import { dataDir } from "@/lib/paths";
+import { appendLead } from "@/lib/leads";
 import { notify } from "@/lib/notify";
 
 export const runtime = "nodejs";
@@ -112,17 +110,14 @@ export async function POST(request: Request) {
     }
   }
 
-  // Локальный лог заявок для разработки: LEADS_SAVE_LOCAL=1 -> data/leads.jsonl
-  if (process.env.LEADS_SAVE_LOCAL === "1") {
+  // Журнал заявок ведём всегда: на него смотрит админка, из него делается
+  // выгрузка, и политика обещает посетителю, что данные хранятся и удаляются
+  // по запросу. Отключается явным LEADS_SAVE_LOCAL=0
+  if (process.env.LEADS_SAVE_LOCAL !== "0") {
     try {
-      await mkdir(dataDir, { recursive: true });
-      await appendFile(
-        path.join(dataDir, "leads.jsonl"),
-        `${JSON.stringify(lead)}\n`,
-        "utf8",
-      );
+      await appendLead(lead);
     } catch (error) {
-      console.error("[lead] file write failed", error);
+      console.error("[lead] журнал не записался", error);
     }
   }
 
