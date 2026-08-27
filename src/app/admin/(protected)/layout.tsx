@@ -27,7 +27,9 @@ export default async function ProtectedLayout({
   return (
     <AdminLangProvider dict={dict} lang={lang}>
       <div className="flex min-h-screen flex-col lg:flex-row">
-        <aside className="shrink-0 border-b border-line-soft bg-white lg:min-h-screen lg:w-[286px] lg:border-r lg:border-b-0">
+        {/* меню стоит на месте при прокрутке; разделов много, поэтому
+            при нехватке высоты оно прокручивается внутри себя */}
+        <aside className="shrink-0 border-b border-line-soft bg-white lg:sticky lg:top-0 lg:flex lg:h-screen lg:w-[286px] lg:shrink-0 lg:flex-col lg:overflow-y-auto lg:border-r lg:border-b-0">
           <div className="flex items-center justify-between px-[24px] py-[20px]">
             <Link href="/admin" className="text-[16px] tracking-[2px]">
               KIMS
