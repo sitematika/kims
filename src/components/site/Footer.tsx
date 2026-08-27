@@ -61,6 +61,18 @@ export function Footer({ socialLinks }: { socialLinks: Record<string, string> })
           <p>{t("signature")}</p>
           <p>{t("copyright")}</p>
         </div>
+
+        <p className="pt-[16px] text-[13px] text-white/30 md:pt-[20px]">
+          {t("byLabel")}{" "}
+          <a
+            href="https://www.sitematika.com"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="underline underline-offset-[3px] transition-colors hover:text-white/60"
+          >
+            {t("byName")}
+          </a>
+        </p>
       </div>
     </footer>
   );
