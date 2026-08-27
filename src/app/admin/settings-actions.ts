@@ -19,12 +19,23 @@ export async function updateSite(
 
   const siteUrl = String(formData.get("siteUrl") ?? "").trim();
   const indexing = formData.get("indexing") === "on";
+  const gtmId = String(formData.get("gtmId") ?? "")
+    .trim()
+    .toUpperCase();
+  const googleVerification = String(formData.get("googleVerification") ?? "")
+    .trim()
+    // из Search Console копируют весь тег — достаём content, если он есть
+    .replace(/^[\s\S]*content=["']([^"']+)["'][\s\S]*$/, "$1")
+    .trim();
 
   if (siteUrl && !/^https?:\/\/.+/.test(siteUrl)) {
     return "badUrl";
   }
+  if (gtmId && !/^GTM-[A-Z0-9]{4,10}$/.test(gtmId)) {
+    return "badGtm";
+  }
 
-  await saveSettings({ siteUrl, indexing });
+  await saveSettings({ siteUrl, indexing, gtmId, googleVerification });
   revalidatePath("/", "layout");
   revalidatePath("/admin/seo");
 

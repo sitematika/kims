@@ -4,6 +4,7 @@ import { Onest } from "next/font/google";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { localeHtmlLang, routing, type Locale } from "@/i18n/routing";
+import { getSettings } from "@/lib/settings";
 import { getMedia } from "@/lib/media";
 import { getIndexable, getSiteUrl } from "@/lib/site";
 import "../globals.css";
@@ -27,7 +28,11 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "meta" });
   const { ogImage } = await getMedia();
-  const [siteUrl, isIndexable] = await Promise.all([getSiteUrl(), getIndexable()]);
+  const [siteUrl, isIndexable, settings] = await Promise.all([
+    getSiteUrl(),
+    getIndexable(),
+    getSettings(),
+  ]);
 
   const title = t("title");
   const description = t("description");
@@ -44,6 +49,10 @@ export async function generateMetadata({
     title,
     description,
     robots: isIndexable ? undefined : { index: false, follow: false },
+    // подтверждение прав в Search Console работает и при закрытой индексации
+    verification: settings.googleVerification
+      ? { google: settings.googleVerification }
+      : undefined,
     alternates: {
       canonical: `/${locale}`,
       languages: Object.fromEntries(

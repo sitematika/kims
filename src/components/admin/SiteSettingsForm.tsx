@@ -8,10 +8,14 @@ export function SiteSettingsForm({
   siteUrl,
   indexing,
   forcedByEnv,
+  gtmId,
+  googleVerification,
 }: {
   siteUrl: string;
   indexing: boolean;
   forcedByEnv: boolean;
+  gtmId: string;
+  googleVerification: string;
 }) {
   const dict = useDict();
   const [message, formAction, pending] = useActionState(updateSite, null);
@@ -66,6 +70,43 @@ export function SiteSettingsForm({
           {forcedByEnv && (
             <span className="mt-[6px] block text-[13px] text-red-700">{dict.settings.forcedByEnv}</span>
           )}
+        </span>
+      </label>
+
+      <hr className="border-line-soft" />
+
+      <div>
+        <h2 className="text-[16px]">{dict.settings.countersBlock}</h2>
+        <p className="mt-[4px] text-[13px] text-ink/60">
+          {dict.settings.countersHint}
+        </p>
+      </div>
+
+      <label className="flex flex-col gap-[8px]">
+        <span className="text-[12px] tracking-[1px] text-ink/50">
+          {dict.settings.gtmId}
+        </span>
+        <input
+          name="gtmId"
+          defaultValue={gtmId}
+          placeholder="GTM-XXXXXXX"
+          className="rounded-[4px] border border-line px-[12px] py-[10px] text-[14px] outline-none focus:border-ink"
+        />
+        <span className="text-[13px] text-ink/60">{dict.settings.gtmHint}</span>
+      </label>
+
+      <label className="flex flex-col gap-[8px]">
+        <span className="text-[12px] tracking-[1px] text-ink/50">
+          {dict.settings.googleVerification}
+        </span>
+        <input
+          name="googleVerification"
+          defaultValue={googleVerification}
+          placeholder='<meta name="google-site-verification" content="..." />'
+          className="rounded-[4px] border border-line px-[12px] py-[10px] text-[14px] outline-none focus:border-ink"
+        />
+        <span className="text-[13px] text-ink/60">
+          {dict.settings.googleVerificationHint}
         </span>
       </label>
 

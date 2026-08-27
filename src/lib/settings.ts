@@ -27,6 +27,10 @@ export type Settings = {
   passwordHash?: string;
   /** Кому приходят заявки. Пусто — берётся LEADS_EMAIL_TO из окружения */
   leadEmails?: string[];
+  /** Контейнер Google Tag Manager, вид GTM-XXXXXXX. Пусто — счётчиков нет */
+  gtmId?: string;
+  /** Код подтверждения прав в Search Console (метод «HTML-тег») */
+  googleVerification?: string;
 };
 
 const file = path.join(contentDir, "settings.json");
@@ -34,6 +38,8 @@ const file = path.join(contentDir, "settings.json");
 const defaults: Settings = {
   siteUrl: "",
   leadEmails: [],
+  gtmId: "",
+  googleVerification: "",
   // по умолчанию закрыто: свежий сайт не должен попасть в поиск раньше времени
   indexing: false,
 };

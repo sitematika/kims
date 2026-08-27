@@ -29,6 +29,8 @@ export default async function SeoPage() {
         siteUrl={settings.siteUrl}
         indexing={settings.indexing}
         forcedByEnv={forcedByEnv}
+        gtmId={settings.gtmId ?? ""}
+        googleVerification={settings.googleVerification ?? ""}
       />
 
       <SeoExtras

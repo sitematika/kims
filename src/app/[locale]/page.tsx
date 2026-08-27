@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 import { getMedia, presentationFor } from "@/lib/media";
 import { getContent } from "@/lib/content";
+import { getSettings } from "@/lib/settings";
 import { resolveImages } from "@/lib/images";
 import type { Locale } from "@/i18n/routing";
 import { Preloader } from "@/components/site/Preloader";
@@ -35,7 +36,7 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const media = await getMedia();
+  const [media, settings] = await Promise.all([getMedia(), getSettings()]);
   const content = await getContent(locale as Locale);
   const images = resolveImages(
     media.images,
@@ -65,7 +66,7 @@ export default async function HomePage({
       </main>
       <Footer socialLinks={media.socialLinks ?? {}} />
       <CookieBanner />
-      <Analytics />
+      <Analytics gtmId={settings.gtmId} />
     </div>
   );
 }
