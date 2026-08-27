@@ -1,5 +1,7 @@
 import { readLeads } from "@/lib/leads";
-import { notifyStatus } from "@/lib/notify";
+import { notifyStatus, telegramAccess } from "@/lib/notify";
+import { getSettings } from "@/lib/settings";
+import { TelegramForm } from "@/components/admin/TelegramForm";
 import { getAdminDict } from "@/lib/admin-lang";
 import { TestLeadButton } from "@/components/admin/TestLeadButton";
 import { LeadEmailsForm } from "@/components/admin/LeadEmailsForm";
@@ -7,10 +9,12 @@ import { LeadEmailsForm } from "@/components/admin/LeadEmailsForm";
 export const dynamic = "force-dynamic";
 
 export default async function LeadsPage() {
-  const [leads, channels, dict] = await Promise.all([
+  const [leads, channels, dict, telegram, settings] = await Promise.all([
     readLeads(),
     notifyStatus(),
     getAdminDict(),
+    telegramAccess(),
+    getSettings(),
   ]);
 
   return (
@@ -54,6 +58,12 @@ export default async function LeadsPage() {
           <TestLeadButton />
         </div>
       </section>
+
+      <TelegramForm
+        hasToken={Boolean(telegram.token)}
+        chat={telegram.chat}
+        fromEnv={Boolean(telegram.token) && !settings.telegramToken}
+      />
 
       {leads.length > 0 && (
         <div className="overflow-x-auto rounded-[4px] border border-line-soft bg-white">

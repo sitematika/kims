@@ -26,10 +26,18 @@ function lines(lead: Lead) {
   ];
 }
 
+/** Доступ к боту: сначала то, что задано в админке, потом окружение */
+export async function telegramAccess() {
+  const { telegramToken, telegramChat } = await getSettings();
+  return {
+    token: telegramToken || process.env.TELEGRAM_BOT_TOKEN || "",
+    chat: telegramChat || process.env.TELEGRAM_CHAT_ID || "",
+  };
+}
+
 /** Сообщение в группу Telegram */
 async function toTelegram(lead: Lead) {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chat = process.env.TELEGRAM_CHAT_ID;
+  const { token, chat } = await telegramAccess();
   if (!token || !chat) return;
 
   const text = ["🔔 Нова заявка з сайту KIMS", "", ...lines(lead)].join("\n");
@@ -151,12 +159,13 @@ export async function notify(lead: Lead): Promise<ChannelResult[]> {
 
 /** Какие каналы настроены — для диагностики в админке */
 export async function notifyStatus() {
-  const recipients = await leadRecipients();
+  const [recipients, telegram] = await Promise.all([
+    leadRecipients(),
+    telegramAccess(),
+  ]);
 
   return {
-    telegram: Boolean(
-      process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID,
-    ),
+    telegram: Boolean(telegram.token && telegram.chat),
     // почта считается настроенной, только когда есть и доступ, и получатель
     email: Boolean(
       process.env.SMTP_HOST &&

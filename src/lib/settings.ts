@@ -38,6 +38,9 @@ export type Settings = {
   bodyCode?: string;
   /** Ждать согласия на cookie перед вставкой произвольного кода */
   codeAfterConsent?: boolean;
+  /** Доступ к боту Telegram. Пусто — берётся из переменных хостинга */
+  telegramToken?: string;
+  telegramChat?: string;
   /** Куда слать ссылку на сброс пароля. Пусто — на адреса для заявок */
   recoveryEmail?: string;
   /** Хеш одноразовой ссылки сброса, срок её жизни и время последнего запроса */
