@@ -1,9 +1,10 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { locales, localeLabels, type Locale } from "@/i18n/routing";
 import { saveSection } from "@/app/admin/actions";
-import { useDict } from "./AdminLangProvider";
+import { useDict, useLang } from "./AdminLangProvider";
+import { fieldLabel } from "@/lib/field-labels";
 
 export type EditorField = {
   path: string;
@@ -22,16 +23,35 @@ export function FieldsForm({
   title,
   subtitle,
   groups,
+  anchor,
   children,
 }: {
   section: string;
   title: string;
   subtitle?: string;
   groups: FieldGroup[];
+  /** Якорь блока на сайте — для кнопки «Подивитись на сайті» */
+  anchor?: string;
   children?: React.ReactNode;
 }) {
   const dict = useDict();
   const [message, formAction, pending] = useActionState(saveSection, null);
+  const [allLangs, setAllLangs] = useState(false);
+  const [dirty, setDirty] = useState(false);
+
+  // правки живут только в форме: уход со страницы без сохранения их теряет
+  useEffect(() => {
+    if (!dirty) return;
+    const warn = (event: BeforeUnloadEvent) => event.preventDefault();
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [dirty]);
+
+  useEffect(() => {
+    if (message === "saved") setDirty(false);
+  }, [message]);
+
+  const shown = allLangs ? locales : ([locales[0]] as readonly Locale[]);
 
   const fields = groups.flatMap((group) => group.fields);
   const emptyCount = fields.filter((f) =>
@@ -48,10 +68,14 @@ export function FieldsForm({
           : null;
 
   return (
-    <form action={formAction} className="flex max-w-[1100px] flex-col gap-[24px]">
+    <form
+      action={formAction}
+      onChange={() => setDirty(true)}
+      className="flex max-w-[1100px] flex-col gap-[24px] pb-[80px]"
+    >
       <input type="hidden" name="__section" value={section} />
 
-      <header className="flex flex-wrap items-center justify-between gap-[16px]">
+      <header className="flex flex-wrap items-start justify-between gap-[16px]">
         <div>
           <h1 className="text-[24px]">{title}</h1>
           <p className="mt-[4px] text-[14px] text-ink/60">
@@ -66,22 +90,23 @@ export function FieldsForm({
           </p>
         </div>
 
-        <div className="flex items-center gap-[16px]">
-          {note && (
-            <span
-              className={`text-[14px] ${
-                message === "saved" ? "text-ink/60" : "text-red-700"
-              }`}
+        <div className="flex flex-wrap items-center gap-[12px]">
+          {anchor && (
+            <a
+              href={anchor}
+              target="_blank"
+              rel="noreferrer"
+              className="h-[36px] rounded-[4px] border border-line px-[16px] text-[13px] leading-[34px] transition-colors hover:bg-paper"
             >
-              {note}
-            </span>
+              {dict.section.viewOnSite}
+            </a>
           )}
           <button
-            type="submit"
-            disabled={pending}
-            className="h-[44px] rounded-[4px] bg-ink px-[28px] text-[14px] font-medium text-white disabled:opacity-60"
+            type="button"
+            onClick={() => setAllLangs((v) => !v)}
+            className="h-[36px] rounded-[4px] border border-line px-[16px] text-[13px] transition-colors hover:bg-paper"
           >
-            {pending ? dict.section.publishing : dict.section.publish}
+            {allLangs ? dict.section.onlyPrimary : dict.section.allLangs}
           </button>
         </div>
       </header>
@@ -97,29 +122,84 @@ export function FieldsForm({
           )}
 
           {group.fields.map((field) => (
-            <fieldset
-              key={field.path}
-              className="rounded-[4px] border border-line-soft bg-white px-[20px] py-[18px]"
-            >
-              <legend className="px-[6px] font-mono text-[12px] text-ink/40">
-                {field.path}
-              </legend>
-
-              <div className="grid grid-cols-1 gap-[16px] xl:grid-cols-2">
-                {locales.map((locale) => (
-                  <LocaleInput
-                    key={locale}
-                    locale={locale}
-                    path={field.path}
-                    value={field.values[locale] ?? ""}
-                  />
-                ))}
-              </div>
-            </fieldset>
+            <FieldRow key={field.path} field={field} shown={shown} />
           ))}
         </div>
       ))}
+
+      {/* кнопка едет за экраном: в длинном разделе не надо возвращаться вверх */}
+      <div className="sticky bottom-0 -mx-[20px] flex flex-wrap items-center gap-[16px] border-t border-line-soft bg-white/95 px-[20px] py-[14px] backdrop-blur-[6px]">
+        <button
+          type="submit"
+          disabled={pending}
+          className="h-[44px] rounded-[4px] bg-ink px-[28px] text-[14px] font-medium text-white disabled:opacity-60"
+        >
+          {pending ? dict.section.publishing : dict.section.publish}
+        </button>
+
+        {note && (
+          <span
+            className={`text-[14px] ${
+              message === "saved" ? "text-ink/60" : "text-red-700"
+            }`}
+          >
+            {note}
+          </span>
+        )}
+
+        {!note && dirty && (
+          <span className="text-[13px] text-ink/50">
+            {dict.section.unsaved}
+          </span>
+        )}
+      </div>
     </form>
+  );
+}
+
+function FieldRow({
+  field,
+  shown,
+}: {
+  field: EditorField;
+  shown: readonly Locale[];
+}) {
+  const lang = useLang();
+
+  return (
+    <fieldset className="rounded-[4px] border border-line-soft bg-white px-[20px] py-[18px]">
+      <legend className="px-[6px] text-[13px] text-ink/70">
+        {fieldLabel(field.path, lang)}
+      </legend>
+
+      <div
+        className={`grid grid-cols-1 gap-[16px] ${
+          shown.length > 1 ? "xl:grid-cols-2" : ""
+        }`}
+      >
+        {shown.map((locale) => (
+          <LocaleInput
+            key={locale}
+            locale={locale}
+            path={field.path}
+            value={field.values[locale] ?? ""}
+          />
+        ))}
+      </div>
+
+      {/* скрытые языки всё равно уходят на сервер: иначе сохранение
+          затёрло бы переводы, которых нет на экране */}
+      {locales
+        .filter((locale) => !shown.includes(locale))
+        .map((locale) => (
+          <input
+            key={locale}
+            type="hidden"
+            name={`${locale}::${field.path}`}
+            defaultValue={field.values[locale] ?? ""}
+          />
+        ))}
+    </fieldset>
   );
 }
 

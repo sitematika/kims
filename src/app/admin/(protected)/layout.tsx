@@ -25,7 +25,7 @@ export default async function ProtectedLayout({
   const groups = buildNav(dict);
 
   return (
-    <AdminLangProvider dict={dict}>
+    <AdminLangProvider dict={dict} lang={lang}>
       <div className="flex min-h-screen flex-col lg:flex-row">
         <aside className="shrink-0 border-b border-line-soft bg-white lg:min-h-screen lg:w-[286px] lg:border-r lg:border-b-0">
           <div className="flex items-center justify-between px-[24px] py-[20px]">

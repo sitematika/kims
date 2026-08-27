@@ -84,7 +84,7 @@ export function Stats() {
   const t = useTranslations("stats");
 
   return (
-    <section className="shell pt-[48px] md:pt-[64px] xl:pt-[80px]">
+    <section id="stats" className="shell pt-[48px] md:pt-[64px] xl:pt-[80px]">
       {/* auto-rows-fr держит ячейки одной строки одинаковыми по высоте */}
       <div className="grid auto-rows-fr grid-cols-1 [&>*]:-mr-px [&>*]:-mb-px md:grid-cols-2 xl:grid-cols-3">
         <Single

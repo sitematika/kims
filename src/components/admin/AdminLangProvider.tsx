@@ -1,23 +1,36 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import type { AdminDict } from "@/lib/admin-lang";
+import type { AdminDict, AdminLang } from "@/lib/admin-lang";
 
-const Ctx = createContext<AdminDict | null>(null);
+type Value = { dict: AdminDict; lang: AdminLang };
+
+const Ctx = createContext<Value | null>(null);
 
 export function AdminLangProvider({
   dict,
+  lang,
   children,
 }: {
   dict: AdminDict;
+  lang: AdminLang;
   children: React.ReactNode;
 }) {
-  return <Ctx.Provider value={dict}>{children}</Ctx.Provider>;
+  return <Ctx.Provider value={{ dict, lang }}>{children}</Ctx.Provider>;
+}
+
+function useCtx() {
+  const value = useContext(Ctx);
+  if (!value) throw new Error("AdminLangProvider не найден");
+  return value;
 }
 
 /** Словарь панели в клиентских компонентах */
 export function useDict(): AdminDict {
-  const dict = useContext(Ctx);
-  if (!dict) throw new Error("AdminLangProvider не найден");
-  return dict;
+  return useCtx().dict;
+}
+
+/** Текущий язык панели — нужен подписям полей */
+export function useLang(): AdminLang {
+  return useCtx().lang;
 }

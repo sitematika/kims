@@ -1,7 +1,9 @@
 import { revalidatePath } from "next/cache";
 import { isAuthorized } from "@/lib/auth";
-import { listSnapshots, restore } from "@/lib/history";
-import { getAdminDict } from "@/lib/admin-lang";
+import { changesOf, listSnapshots, restore } from "@/lib/history";
+import { getAdminDict, getAdminLang } from "@/lib/admin-lang";
+import { fieldLabel } from "@/lib/field-labels";
+import { localeLabels } from "@/i18n/routing";
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +20,20 @@ async function restoreAction(formData: FormData) {
 }
 
 export default async function HistoryPage() {
-  const [snapshots, dict] = await Promise.all([listSnapshots(), getAdminDict()]);
+  const [snapshots, dict, lang] = await Promise.all([
+    listSnapshots(),
+    getAdminDict(),
+    getAdminLang(),
+  ]);
+
+  // разбор diff недешёвый, поэтому считаем только для свежих записей
+  const diffs = new Map(
+    await Promise.all(
+      snapshots.slice(0, 8).map(
+        async (item) => [item.id, await changesOf(item.id)] as const,
+      ),
+    ),
+  );
 
   return (
     <div className="flex max-w-[860px] flex-col gap-[24px]">
@@ -51,6 +66,36 @@ export default async function HistoryPage() {
                   {new Date(item.createdAt).toLocaleString("uk-UA")}
                   {item.actor && ` · ${item.actor}`}
                 </p>
+
+                {diffs.get(item.id)?.length ? (
+                  <details className="mt-[8px]">
+                    <summary className="cursor-pointer text-[13px] text-ink/60 hover:text-ink">
+                      {dict.history.changed} {diffs.get(item.id)!.length}
+                    </summary>
+                    <ul className="mt-[8px] flex flex-col gap-[8px]">
+                      {diffs
+                        .get(item.id)!
+                        .slice(0, 20)
+                        .map((change) => (
+                          <li
+                            key={`${change.locale}-${change.path}`}
+                            className="text-[13px]"
+                          >
+                            <span className="text-ink/45">
+                              {localeLabels[change.locale]} ·{" "}
+                              {fieldLabel(change.path, lang)}
+                            </span>
+                            <span className="mt-[2px] block text-red-700/70 line-through">
+                              {change.before.slice(0, 120)}
+                            </span>
+                            <span className="block text-ink">
+                              {change.after.slice(0, 120)}
+                            </span>
+                          </li>
+                        ))}
+                    </ul>
+                  </details>
+                ) : null}
               </div>
 
               <form action={restoreAction}>

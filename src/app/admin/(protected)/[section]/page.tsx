@@ -3,6 +3,7 @@ import { getAllContent } from "@/lib/content";
 import { getAdminDict, type AdminDict } from "@/lib/admin-lang";
 import { fieldsOf } from "@/lib/admin-fields";
 import { FieldsForm } from "@/components/admin/FieldsForm";
+import { sectionAnchors } from "@/lib/section-anchors";
 
 /** Разделы, у которых есть собственная страница со своей логикой */
 const custom = new Set([
@@ -40,6 +41,7 @@ export default async function SectionPage({
       section={section}
       title={dict.sections[section as keyof AdminDict["sections"]] ?? section}
       groups={[{ fields }]}
+      anchor={sectionAnchors[section]}
     />
   );
 }

@@ -1,31 +1,8 @@
-import { readFile } from "node:fs/promises";
-import path from "node:path";
-import { dataDir } from "@/lib/paths";
+import { readLeads } from "@/lib/leads";
 import { notifyStatus } from "@/lib/notify";
 import { getAdminDict } from "@/lib/admin-lang";
 import { TestLeadButton } from "@/components/admin/TestLeadButton";
 import { LeadEmailsForm } from "@/components/admin/LeadEmailsForm";
-
-type Lead = {
-  name: string;
-  phone: string;
-  city: string;
-  locale: string;
-  createdAt: string;
-};
-
-async function readLeads(): Promise<Lead[]> {
-  try {
-    const raw = await readFile(path.join(dataDir, "leads.jsonl"), "utf8");
-    return raw
-      .split("\n")
-      .filter(Boolean)
-      .map((line) => JSON.parse(line) as Lead)
-      .reverse();
-  } catch {
-    return [];
-  }
-}
 
 export const dynamic = "force-dynamic";
 

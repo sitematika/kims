@@ -8,7 +8,7 @@ export function Footer({ socialLinks }: { socialLinks: Record<string, string> })
   const columns = t.raw("columns") as Column[];
 
   return (
-    <footer className="mt-[56px] bg-ink text-white md:mt-[80px] xl:mt-[110px]">
+    <footer id="footer" className="mt-[56px] bg-ink text-white md:mt-[80px] xl:mt-[110px]">
       <div className="shell py-[40px] md:py-[56px] xl:py-[64px]">
         <div className="flex flex-col gap-[24px] md:flex-row md:items-center md:justify-between">
           <Logo className="h-[28px] w-auto text-white md:h-[36px] xl:h-[46px]" />

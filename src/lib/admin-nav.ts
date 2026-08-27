@@ -18,6 +18,13 @@ export function buildNav(dict: AdminDict): NavGroup[] {
 
   return [
     {
+      title: dict.nav.overview,
+      links: [
+        { href: "/admin", label: dict.home.title },
+        { href: "/admin/search", label: dict.nav.search },
+      ],
+    },
+    {
       title: dict.nav.pageTexts,
       links: [
         section("hero"),

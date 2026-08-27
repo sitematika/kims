@@ -1,8 +1,9 @@
 import { copyFile, mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { locales } from "@/i18n/routing";
+import { locales, type Locale } from "@/i18n/routing";
 import { contentDir } from "./paths";
 import { currentActor } from "./auth";
+import { flattenFields, type ContentNode } from "./content";
 
 /**
  * История правок контента.
@@ -98,4 +99,63 @@ export async function restore(id: string) {
     );
   }
   return true;
+}
+
+
+/**
+ * Что изменилось между снимком и следующим за ним состоянием.
+ *
+ * Снимок делается ПЕРЕД правкой, поэтому «что поменяли» — это разница
+ * с предыдущим по времени снимком, а для самого свежего — с текущими
+ * текстами. Иначе откат приходится делать вслепую.
+ */
+export type Change = { path: string; locale: Locale; before: string; after: string };
+
+async function readTexts(dir: string) {
+  const result = {} as Record<Locale, ContentNode>;
+  for (const locale of locales) {
+    try {
+      const raw = await readFile(path.join(dir, `${locale}.json`), "utf8");
+      result[locale] = JSON.parse(raw) as ContentNode;
+    } catch {
+      result[locale] = {};
+    }
+  }
+  return result;
+}
+
+export async function changesOf(id: string): Promise<Change[]> {
+  const ids = (await readdir(historyDir).catch(() => [])).sort().reverse();
+  const index = ids.indexOf(id);
+  if (index < 0) return [];
+
+  // предыдущий по времени снимок лежит ниже в списке; для самого свежего
+  // сравниваем с тем, что на сайте прямо сейчас
+  const older = path.join(historyDir, id);
+  const newer = index === 0 ? contentDir : path.join(historyDir, ids[index - 1]);
+
+  const [before, after] = await Promise.all([
+    readTexts(older),
+    readTexts(newer),
+  ]);
+
+  const changes: Change[] = [];
+  for (const locale of locales) {
+    const beforeMap = new Map(
+      flattenFields(before[locale]).map((f) => [f.path, f.value]),
+    );
+    for (const field of flattenFields(after[locale])) {
+      const was = beforeMap.get(field.path);
+      if (was !== undefined && was !== field.value) {
+        changes.push({
+          path: field.path,
+          locale,
+          before: was,
+          after: field.value,
+        });
+      }
+    }
+  }
+
+  return changes;
 }

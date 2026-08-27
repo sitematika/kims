@@ -46,7 +46,7 @@ export function Gallery({ images }: { images: ResolvedImages }) {
   };
 
   return (
-    <section className="shell pt-[56px] md:pt-[80px] xl:pt-[104px]">
+    <section id="gallery" className="shell pt-[56px] md:pt-[80px] xl:pt-[104px]">
       <h2 className="text-[22px] leading-[1.2] tracking-[-0.5px] uppercase md:text-[28px] xl:text-[38px] xl:tracking-[-0.38px]">
         {t("titleStart")} <strong className="font-medium">{t("titleAccent")}</strong>{" "}
         {t("titleEnd")}
