@@ -10,17 +10,48 @@ type Lead = {
   phone: string;
   city: string;
   locale: string;
+  /** Поле-приманка: человек его не видит, бот заполняет */
+  website?: string;
 };
+
+/** Длиннее живых значений, но коротко настолько, чтобы не залить письмо */
+const limits = { name: 80, phone: 24, city: 80 };
 
 function isValid(body: Partial<Lead>): body is Lead {
   return (
     typeof body.name === "string" &&
     body.name.trim().length >= 2 &&
+    body.name.length <= limits.name &&
     typeof body.phone === "string" &&
+    body.phone.length <= limits.phone &&
     body.phone.replace(/\D/g, "").length >= 9 &&
     typeof body.city === "string" &&
-    body.city.trim().length >= 2
+    body.city.trim().length >= 2 &&
+    body.city.length <= limits.city
   );
+}
+
+/**
+ * Простое ограничение частоты по адресу.
+ *
+ * Память процесса, а не база: цель — остановить наивный поток, а не
+ * выстроить защиту от распределённой атаки. Переживает до перезапуска,
+ * этого достаточно.
+ */
+const recent = new Map<string, number[]>();
+const WINDOW = 10 * 60 * 1000;
+const MAX = 5;
+
+function tooOften(ip: string) {
+  const now = Date.now();
+  const hits = (recent.get(ip) ?? []).filter((t) => now - t < WINDOW);
+  hits.push(now);
+  recent.set(ip, hits);
+
+  // не даём карте расти бесконечно
+  if (recent.size > 5000) recent.clear();
+
+  return hits.length > MAX;
 }
 
 export async function POST(request: Request) {
@@ -33,6 +64,23 @@ export async function POST(request: Request) {
 
   if (!isValid(body)) {
     return Response.json({ error: "validation" }, { status: 422 });
+  }
+
+  // приманку заполняют только боты — отвечаем как при успехе,
+  // чтобы не подсказывать, что заявка не ушла
+  if (body.website) {
+    console.info("[lead] отброшено по приманке");
+    return Response.json({ ok: true });
+  }
+
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
+    request.headers.get("x-real-ip") ??
+    "unknown";
+
+  if (tooOften(ip)) {
+    console.warn("[lead] слишком часто с адреса", ip);
+    return Response.json({ error: "too_often" }, { status: 429 });
   }
 
   const lead = {

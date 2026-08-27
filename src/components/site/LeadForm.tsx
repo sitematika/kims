@@ -15,6 +15,8 @@ export function LeadForm({ presentationUrl }: { presentationUrl?: string | null 
   const locale = useLocale();
 
   const [values, setValues] = useState({ name: "", city: "" });
+  // приманка для ботов: поле спрятано от людей и всегда пустое
+  const [website, setWebsite] = useState("");
   const [iso, setIso] = useState(() => defaultIso(locale));
   const [digits, setDigits] = useState("");
   const [errors, setErrors] = useState<Errors>({});
@@ -47,7 +49,7 @@ export function LeadForm({ presentationUrl }: { presentationUrl?: string | null 
       const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ ...values, phone, locale }),
+        body: JSON.stringify({ ...values, phone, locale, website }),
       });
       if (!res.ok) throw new Error(String(res.status));
       setStatus("done");
@@ -105,6 +107,16 @@ export function LeadForm({ presentationUrl }: { presentationUrl?: string | null 
             </div>
           ) : (
             <form onSubmit={onSubmit} noValidate className="flex flex-col">
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+                className="absolute h-0 w-0 overflow-hidden opacity-0"
+              />
               <Field
                 label={t("nameLabel")}
                 placeholder={t("namePlaceholder")}
