@@ -71,9 +71,13 @@ export async function generateMetadata({
     other: parseVerificationTags(settings.verificationTags),
     alternates: {
       canonical: `/${locale}`,
-      languages: Object.fromEntries(
-        routing.locales.map((l) => [localeHtmlLang[l], `/${l}`]),
-      ),
+      languages: {
+        ...Object.fromEntries(
+          routing.locales.map((l) => [localeHtmlLang[l], `/${l}`]),
+        ),
+        // язык, который поисковик отдаёт всем остальным
+        "x-default": `/${routing.defaultLocale}`,
+      },
     },
     openGraph: {
       type: "website",

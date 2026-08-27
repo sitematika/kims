@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import type { ResolvedImages } from "@/lib/images";
+import { ShowreelVideo } from "./ShowreelVideo";
 
 export function Founder({ images }: { images: ResolvedImages }) {
   const t = useTranslations("founder");
@@ -68,16 +69,10 @@ export function Founder({ images }: { images: ResolvedImages }) {
         {/* Фоновое видео без звука. Пока оно грузится, виден кадр-постер —
             он же остаётся, если браузер запретил автозапуск */}
         <div className="relative aspect-[16/10] bg-ink md:aspect-[1240/440]">
-          <video
-            className="absolute inset-0 h-full w-full object-cover"
+          <ShowreelVideo
             src="/video/kims-showreel.mp4"
             poster={images.youtube.src}
-            aria-label={images.youtube.alt}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
+            label={images.youtube.alt}
           />
         </div>
         {/* На телефоне — компактная строка со ссылкой, как в макете;

@@ -14,9 +14,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "monthly",
     priority: locale === "uk" ? 1 : 0.8,
     alternates: {
-      languages: Object.fromEntries(
-        locales.map((l) => [localeHtmlLang[l], `${siteUrl}/${l}`]),
-      ),
+      languages: {
+        ...Object.fromEntries(
+          locales.map((l) => [localeHtmlLang[l], `${siteUrl}/${l}`]),
+        ),
+        // куда вести тех, чей язык мы не поддерживаем
+        "x-default": `${siteUrl}/uk`,
+      },
     },
   }));
 }
