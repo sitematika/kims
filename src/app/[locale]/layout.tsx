@@ -6,6 +6,9 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { localeHtmlLang, routing, type Locale } from "@/i18n/routing";
 import { getSettings } from "@/lib/settings";
 import { getMedia } from "@/lib/media";
+import { CookieBanner } from "@/components/site/CookieBanner";
+import { Analytics } from "@/components/site/Analytics";
+import { CustomCode } from "@/components/site/CustomCode";
 import { getIndexable, getSiteUrl } from "@/lib/site";
 import "../globals.css";
 
@@ -109,13 +112,26 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
 
+  // счётчики и баннер согласия живут в макете: контейнер должен грузиться
+  // на всех страницах, включая политику и 404
+  const settings = await getSettings();
+
   return (
     <html
       lang={localeHtmlLang[locale as Locale]}
       className={`${onest.variable} antialiased`}
     >
       <body>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          {children}
+          <CookieBanner />
+          <Analytics gtmId={settings.gtmId} />
+          <CustomCode
+            head={settings.headCode}
+            body={settings.bodyCode}
+            afterConsent={settings.codeAfterConsent}
+          />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

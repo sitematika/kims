@@ -1,7 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { getMedia, presentationFor } from "@/lib/media";
 import { getContent } from "@/lib/content";
-import { getSettings } from "@/lib/settings";
 import { resolveImages } from "@/lib/images";
 import type { Locale } from "@/i18n/routing";
 import { Preloader } from "@/components/site/Preloader";
@@ -20,9 +19,6 @@ import { CaseStudy } from "@/components/site/CaseStudy";
 import { Steps } from "@/components/site/Steps";
 import { LeadForm } from "@/components/site/LeadForm";
 import { Footer } from "@/components/site/Footer";
-import { CookieBanner } from "@/components/site/CookieBanner";
-import { Analytics } from "@/components/site/Analytics";
-import { CustomCode } from "@/components/site/CustomCode";
 
 // Страница статическая, но перепроверяется раз в минуту: после редеплоя
 // она подхватит тексты из CONTENT_DIR, даже если сборка их не видела.
@@ -37,7 +33,7 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [media, settings] = await Promise.all([getMedia(), getSettings()]);
+  const media = await getMedia();
   const content = await getContent(locale as Locale);
   const images = resolveImages(
     media.images,
@@ -66,13 +62,6 @@ export default async function HomePage({
         <LeadForm presentationUrl={presentationFor(media, locale)?.file} />
       </main>
       <Footer socialLinks={media.socialLinks ?? {}} />
-      <CookieBanner />
-      <Analytics gtmId={settings.gtmId} />
-      <CustomCode
-        head={settings.headCode}
-        body={settings.bodyCode}
-        afterConsent={settings.codeAfterConsent}
-      />
     </div>
   );
 }

@@ -9,6 +9,27 @@ import { countries, defaultIso, digitsInMask } from "@/lib/countries";
 
 type Errors = Partial<Record<"name" | "phone" | "city" | "form", string>>;
 
+/** Имя формы в аналитике: пригодится, когда форм станет больше одной */
+const FORM_NAME = "lead_form";
+
+/**
+ * Событие для Google Tag Manager.
+ *
+ * Отправляем только после того, как сервер подтвердил приём заявки, —
+ * не по нажатию кнопки: иначе в отчёт попадут неудачные отправки.
+ * dataLayer — обычный массив, поэтому событие переживёт и случай, когда
+ * контейнер подключится позже (посетитель согласился на cookie не сразу).
+ */
+function pushLead(locale: string) {
+  const layer = ((window as unknown as { dataLayer?: unknown[] }).dataLayer ??=
+    []);
+  layer.push({
+    event: "generate_lead",
+    form_name: FORM_NAME,
+    form_locale: locale,
+  });
+}
+
 export function LeadForm({ presentationUrl }: { presentationUrl?: string | null }) {
   const t = useTranslations("lead");
   const tCta = useTranslations("cta");
@@ -52,6 +73,10 @@ export function LeadForm({ presentationUrl }: { presentationUrl?: string | null 
         body: JSON.stringify({ ...values, phone, locale, website }),
       });
       if (!res.ok) throw new Error(String(res.status));
+
+      // ровно один раз на одну успешную отправку: дальше форма сменяется
+      // экраном благодарности и повторно отправить её нельзя
+      pushLead(locale);
       setStatus("done");
     } catch {
       setStatus("idle");
