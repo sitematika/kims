@@ -22,6 +22,7 @@ import { LeadForm } from "@/components/site/LeadForm";
 import { Footer } from "@/components/site/Footer";
 import { CookieBanner } from "@/components/site/CookieBanner";
 import { Analytics } from "@/components/site/Analytics";
+import { CustomCode } from "@/components/site/CustomCode";
 
 // Страница статическая, но перепроверяется раз в минуту: после редеплоя
 // она подхватит тексты из CONTENT_DIR, даже если сборка их не видела.
@@ -67,6 +68,11 @@ export default async function HomePage({
       <Footer socialLinks={media.socialLinks ?? {}} />
       <CookieBanner />
       <Analytics gtmId={settings.gtmId} />
+      <CustomCode
+        head={settings.headCode}
+        body={settings.bodyCode}
+        afterConsent={settings.codeAfterConsent}
+      />
     </div>
   );
 }

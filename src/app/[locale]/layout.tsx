@@ -16,6 +16,20 @@ const onest = Onest({
   display: "swap",
 });
 
+/**
+ * Разбирает вставленные мета-теги в пары «имя — значение».
+ * Их нужно отдавать в исходном HTML, поэтому скриптом их не вставить.
+ */
+function parseVerificationTags(raw?: string) {
+  if (!raw) return undefined;
+
+  const pairs: Record<string, string> = {};
+  const tag = /<meta\s+name=["']([^"']+)["']\s+content=["']([^"']+)["']/gi;
+  for (const match of raw.matchAll(tag)) pairs[match[1]] = match[2];
+
+  return Object.keys(pairs).length ? pairs : undefined;
+}
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
@@ -53,6 +67,8 @@ export async function generateMetadata({
     verification: settings.googleVerification
       ? { google: settings.googleVerification }
       : undefined,
+    // прочие подтверждения — Bing, Facebook и т.п. — вставленными тегами
+    other: parseVerificationTags(settings.verificationTags),
     alternates: {
       canonical: `/${locale}`,
       languages: Object.fromEntries(

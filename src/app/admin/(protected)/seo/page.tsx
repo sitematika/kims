@@ -31,6 +31,10 @@ export default async function SeoPage() {
         forcedByEnv={forcedByEnv}
         gtmId={settings.gtmId ?? ""}
         googleVerification={settings.googleVerification ?? ""}
+        verificationTags={settings.verificationTags ?? ""}
+        headCode={settings.headCode ?? ""}
+        bodyCode={settings.bodyCode ?? ""}
+        codeAfterConsent={settings.codeAfterConsent ?? true}
       />
 
       <SeoExtras

@@ -10,12 +10,20 @@ export function SiteSettingsForm({
   forcedByEnv,
   gtmId,
   googleVerification,
+  verificationTags,
+  headCode,
+  bodyCode,
+  codeAfterConsent,
 }: {
   siteUrl: string;
   indexing: boolean;
   forcedByEnv: boolean;
   gtmId: string;
   googleVerification: string;
+  verificationTags: string;
+  headCode: string;
+  bodyCode: string;
+  codeAfterConsent: boolean;
 }) {
   const dict = useDict();
   const [message, formAction, pending] = useActionState(updateSite, null);
@@ -107,6 +115,70 @@ export function SiteSettingsForm({
         />
         <span className="text-[13px] text-ink/60">
           {dict.settings.googleVerificationHint}
+        </span>
+      </label>
+
+      <label className="flex flex-col gap-[8px]">
+        <span className="text-[12px] tracking-[1px] text-ink/50">
+          {dict.settings.verificationTags}
+        </span>
+        <textarea
+          name="verificationTags"
+          defaultValue={verificationTags}
+          rows={2}
+          placeholder='<meta name="facebook-domain-verification" content="..." />'
+          className="w-full rounded-[4px] border border-line px-[12px] py-[10px] font-mono text-[13px] leading-[1.5] outline-none focus:border-ink"
+        />
+        <span className="text-[13px] text-ink/60">
+          {dict.settings.verificationTagsHint}
+        </span>
+      </label>
+
+      <hr className="border-line-soft" />
+
+      <div>
+        <h2 className="text-[16px]">{dict.settings.codeBlock}</h2>
+        <p className="mt-[4px] text-[13px] text-ink/60">
+          {dict.settings.codeHint}
+        </p>
+      </div>
+
+      <label className="flex flex-col gap-[8px]">
+        <span className="text-[12px] tracking-[1px] text-ink/50">
+          {dict.settings.headCode}
+        </span>
+        <textarea
+          name="headCode"
+          defaultValue={headCode}
+          rows={4}
+          className="w-full rounded-[4px] border border-line px-[12px] py-[10px] font-mono text-[13px] leading-[1.5] outline-none focus:border-ink"
+        />
+      </label>
+
+      <label className="flex flex-col gap-[8px]">
+        <span className="text-[12px] tracking-[1px] text-ink/50">
+          {dict.settings.bodyCode}
+        </span>
+        <textarea
+          name="bodyCode"
+          defaultValue={bodyCode}
+          rows={4}
+          className="w-full rounded-[4px] border border-line px-[12px] py-[10px] font-mono text-[13px] leading-[1.5] outline-none focus:border-ink"
+        />
+      </label>
+
+      <label className="flex items-start gap-[12px]">
+        <input
+          type="checkbox"
+          name="codeAfterConsent"
+          defaultChecked={codeAfterConsent}
+          className="mt-[3px] h-[18px] w-[18px] shrink-0 accent-[#1e1e1e]"
+        />
+        <span className="text-[14px]">
+          {dict.settings.codeAfterConsent}
+          <span className="mt-[4px] block text-[13px] text-ink/60">
+            {dict.settings.codeAfterConsentHint}
+          </span>
         </span>
       </label>
 

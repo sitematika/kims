@@ -31,6 +31,13 @@ export type Settings = {
   gtmId?: string;
   /** Код подтверждения прав в Search Console (метод «HTML-тег») */
   googleVerification?: string;
+  /** Мета-теги подтверждения прав: Bing, Facebook и прочие. Отдаются в HTML */
+  verificationTags?: string;
+  /** Произвольный код: в <head> и перед </body> */
+  headCode?: string;
+  bodyCode?: string;
+  /** Ждать согласия на cookie перед вставкой произвольного кода */
+  codeAfterConsent?: boolean;
   /** Куда слать ссылку на сброс пароля. Пусто — на адреса для заявок */
   recoveryEmail?: string;
   /** Хеш одноразовой ссылки сброса, срок её жизни и время последнего запроса */
@@ -48,6 +55,10 @@ const defaults: Settings = {
   leadEmails: [],
   gtmId: "",
   googleVerification: "",
+  verificationTags: "",
+  headCode: "",
+  bodyCode: "",
+  codeAfterConsent: true,
   // по умолчанию закрыто: свежий сайт не должен попасть в поиск раньше времени
   indexing: false,
 };

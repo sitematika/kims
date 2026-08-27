@@ -36,7 +36,21 @@ export async function updateSite(
     return "badGtm";
   }
 
-  await saveSettings({ siteUrl, indexing, gtmId, googleVerification });
+  const verificationTags = String(formData.get("verificationTags") ?? "").trim();
+  const headCode = String(formData.get("headCode") ?? "").trim();
+  const bodyCode = String(formData.get("bodyCode") ?? "").trim();
+  const codeAfterConsent = formData.get("codeAfterConsent") === "on";
+
+  await saveSettings({
+    siteUrl,
+    indexing,
+    gtmId,
+    googleVerification,
+    verificationTags,
+    headCode,
+    bodyCode,
+    codeAfterConsent,
+  });
   revalidatePath("/", "layout");
   revalidatePath("/admin/seo");
 
