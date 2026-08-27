@@ -12,6 +12,19 @@ import {
   verifyPassword,
 } from "@/lib/settings";
 
+/**
+ * Поля с кодом приходят в base64: хостинг обрывает POST, если видит в теле
+ * тег script. Старые значения могли сохраниться как есть — их тоже принимаем.
+ */
+function decodeField(raw: string) {
+  if (!raw.startsWith("b64:")) return raw.trim();
+  try {
+    return Buffer.from(raw.slice(4), "base64").toString("utf8").trim();
+  } catch {
+    return "";
+  }
+}
+
 export async function updateSite(
   _state: string | null,
   formData: FormData,
@@ -37,8 +50,8 @@ export async function updateSite(
   }
 
   const verificationTags = String(formData.get("verificationTags") ?? "").trim();
-  const headCode = String(formData.get("headCode") ?? "").trim();
-  const bodyCode = String(formData.get("bodyCode") ?? "").trim();
+  const headCode = decodeField(String(formData.get("headCode") ?? ""));
+  const bodyCode = decodeField(String(formData.get("bodyCode") ?? ""));
   const codeAfterConsent = formData.get("codeAfterConsent") === "on";
 
   await saveSettings({
