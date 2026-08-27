@@ -1,8 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
-import { ADMIN_LANG_COOKIE, adminLangs, type AdminLang } from "@/lib/admin-lang";
 import { currentActor, isAuthorized, destroySession } from "@/lib/auth";
 import { setUserPassword, verifyUser } from "@/lib/users";
 import {
@@ -131,19 +129,6 @@ export async function changePassword(
   return "passwordChanged";
 }
 
-export async function setAdminLang(formData: FormData) {
-  const lang = String(formData.get("lang") ?? "");
-  if (!adminLangs.includes(lang as AdminLang)) return;
-
-  const store = await cookies();
-  store.set(ADMIN_LANG_COOKIE, lang, {
-    path: "/admin",
-    maxAge: 60 * 60 * 24 * 365,
-    sameSite: "lax",
-  });
-
-  revalidatePath("/admin", "layout");
-}
 
 /** Добавить адрес, на который приходят заявки */
 export async function addLeadEmail(

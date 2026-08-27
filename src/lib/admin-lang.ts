@@ -1,14 +1,19 @@
 import { cookies } from "next/headers";
+import {
+  ADMIN_LANG_COOKIE,
+  adminLangs,
+  type AdminLang,
+} from "./admin-lang-shared";
+
+export {
+  ADMIN_LANG_COOKIE,
+  adminLangs,
+  adminLangLabels,
+  type AdminLang,
+} from "./admin-lang-shared";
 
 /** Язык интерфейса админки. Основной — украинский. */
-export const adminLangs = ["uk", "ru"] as const;
-export type AdminLang = (typeof adminLangs)[number];
-export const ADMIN_LANG_COOKIE = "kims_admin_lang";
 
-export const adminLangLabels: Record<AdminLang, string> = {
-  uk: "UA",
-  ru: "RU",
-};
 
 const uk = {
   sections: {
