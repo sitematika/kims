@@ -2,6 +2,7 @@ import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
 import { getSettings, hashPassword, saveSettings } from "./settings";
 import { leadRecipients, sendMail } from "./notify";
 import { getSiteUrl } from "./site";
+import { findByEmail, getUsers, setUserPassword } from "./users";
 
 /**
  * Восстановление доступа к админке.
@@ -44,9 +45,24 @@ export type ResetRequest =
   | { ok: true; sentTo: string[] }
   | { ok: false; reason: "noRecipients" | "tooOften" | "mailFailed" };
 
-export async function requestReset(): Promise<ResetRequest> {
+/**
+ * Просьба прислать ссылку.
+ *
+ * Пока учёток нет, письмо уходит на заранее заданный адрес — вводить его
+ * на публичной странице не нужно. Когда учётки есть, письмо уходит владельцу
+ * указанной почты; ответ при этом одинаковый, есть такая почта или нет.
+ */
+export async function requestReset(email?: string): Promise<ResetRequest> {
   const settings = await getSettings();
-  const to = await recoveryRecipients();
+  const withUsers = (await getUsers()).length > 0;
+
+  const user = withUsers && email ? await findByEmail(email) : null;
+  const to = withUsers ? (user ? [user.email] : []) : await recoveryRecipients();
+
+  if (withUsers && !user) {
+    // молчим о том, что почты нет: иначе страница подскажет чужие адреса
+    return { ok: true, sentTo: [] };
+  }
   if (!to.length) return { ok: false, reason: "noRecipients" };
 
   const since = Date.now() - (settings.resetRequestedAt ?? 0);
@@ -80,6 +96,7 @@ export async function requestReset(): Promise<ResetRequest> {
     resetHash: digest(token),
     resetExpires: Date.now() + TTL,
     resetRequestedAt: Date.now(),
+    resetUserId: user?.id,
   });
 
   return { ok: true, sentTo: to };
@@ -104,11 +121,20 @@ export async function completeReset(
   if (password.length < 10) return "passwordShort";
   if (password !== repeat) return "passwordMismatch";
 
-  // ссылка гасится вместе с паролем: второй раз ею не воспользоваться
+  const { resetUserId } = await getSettings();
+
+  if (resetUserId) {
+    await setUserPassword(resetUserId, password);
+    await clearReset();
+    return "ok";
+  }
+
+  // учёток нет — меняем общий пароль. Ссылка гасится вместе с паролем
   await saveSettings({
     ...(await hashPassword(password)),
     resetHash: undefined,
     resetExpires: undefined,
+    resetUserId: undefined,
   });
 
   return "ok";
@@ -116,5 +142,9 @@ export async function completeReset(
 
 /** Погасить ссылку — например, когда пароль сменили обычным способом */
 export async function clearReset() {
-  await saveSettings({ resetHash: undefined, resetExpires: undefined });
+  await saveSettings({
+    resetHash: undefined,
+    resetExpires: undefined,
+    resetUserId: undefined,
+  });
 }

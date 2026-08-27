@@ -49,6 +49,7 @@ export default async function HistoryPage() {
                 </p>
                 <p className="mt-[2px] text-[13px] text-ink/50">
                   {new Date(item.createdAt).toLocaleString("uk-UA")}
+                  {item.actor && ` · ${item.actor}`}
                 </p>
               </div>
 

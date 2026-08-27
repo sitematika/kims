@@ -62,6 +62,7 @@ export function buildNav(dict: AdminDict): NavGroup[] {
       links: [
         { href: "/admin/leads", label: dict.nav.leads },
         { href: "/admin/history", label: dict.nav.history },
+        { href: "/admin/users", label: dict.nav.users },
         { href: "/admin/access", label: dict.nav.access },
       ],
     },

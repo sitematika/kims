@@ -8,9 +8,14 @@ import type { AdminDict } from "@/lib/admin-lang";
 export function LoginForm({
   dict,
   passwordChanged = false,
+  usersStarted = false,
+  withEmail = false,
 }: {
   dict: AdminDict;
   passwordChanged?: boolean;
+  usersStarted?: boolean;
+  /** Учётные записи заведены — вход по почте, а не по общему паролю */
+  withEmail?: boolean;
 }) {
   const [error, formAction, pending] = useActionState(login, null);
 
@@ -27,6 +32,22 @@ export function LoginForm({
           </p>
         </div>
 
+        {withEmail && (
+          <label className="flex flex-col gap-[8px]">
+            <span className="text-[13px] tracking-[1px] text-ink/70 uppercase">
+              {dict.login.email}
+            </span>
+            <input
+              type="email"
+              name="email"
+              autoFocus
+              required
+              autoComplete="username"
+              className="border-b border-ink/20 pb-[10px] text-[16px] outline-none focus:border-ink"
+            />
+          </label>
+        )}
+
         <label className="flex flex-col gap-[8px]">
           <span className="text-[13px] tracking-[1px] text-ink/70 uppercase">
             {dict.login.password}
@@ -34,14 +55,19 @@ export function LoginForm({
           <input
             type="password"
             name="password"
-            autoFocus
+            autoFocus={!withEmail}
             required
+            autoComplete="current-password"
             className="border-b border-ink/20 pb-[10px] text-[16px] outline-none focus:border-ink"
           />
         </label>
 
         {passwordChanged && !error && (
           <p className="text-[13px] text-ink/70">{dict.msg.resetDone}</p>
+        )}
+
+        {usersStarted && !error && (
+          <p className="text-[13px] text-ink/70">{dict.msg.usersStarted}</p>
         )}
 
         {error && (

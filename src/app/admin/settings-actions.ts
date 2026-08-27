@@ -3,7 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { ADMIN_LANG_COOKIE, adminLangs, type AdminLang } from "@/lib/admin-lang";
-import { isAuthorized, destroySession } from "@/lib/auth";
+import { currentActor, isAuthorized, destroySession } from "@/lib/auth";
+import { setUserPassword, verifyUser } from "@/lib/users";
 import {
   getSettings,
   hashPassword,
@@ -67,6 +68,20 @@ export async function changePassword(
   const current = String(formData.get("current") ?? "");
   const next = String(formData.get("next") ?? "");
   const repeat = String(formData.get("repeat") ?? "");
+
+  const actor = await currentActor();
+
+  if (actor && actor.email) {
+    // у человека своя учётка — меняем пароль именно ей
+    if (!(await verifyUser(actor.email, current)).ok) return "passwordWrong";
+    if (next.length < 10) return "passwordShort";
+    if (next !== repeat) return "passwordMismatch";
+    if (next === current) return "passwordSame";
+
+    await setUserPassword(actor.id, next);
+    await destroySession();
+    return "passwordChanged";
+  }
 
   const settings = await getSettings();
   if (!(await verifyPassword(current, settings))) {

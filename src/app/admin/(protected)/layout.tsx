@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { isAuthorized } from "@/lib/auth";
+import { currentActor, isAuthorized } from "@/lib/auth";
 import { getIndexable } from "@/lib/site";
 import { buildNav } from "@/lib/admin-nav";
 import { getAdminDict, getAdminLang } from "@/lib/admin-lang";
@@ -15,10 +15,11 @@ export default async function ProtectedLayout({
 }) {
   if (!(await isAuthorized())) redirect("/admin/login");
 
-  const [indexable, dict, lang] = await Promise.all([
+  const [indexable, dict, lang, actor] = await Promise.all([
     getIndexable(),
     getAdminDict(),
     getAdminLang(),
+    currentActor(),
   ]);
 
   const groups = buildNav(dict);
@@ -31,14 +32,24 @@ export default async function ProtectedLayout({
             <Link href="/admin" className="text-[16px] tracking-[2px]">
               KIMS
             </Link>
-            <form action={logout}>
-              <button
-                type="submit"
-                className="text-[13px] text-ink/50 transition-colors hover:text-ink"
-              >
-                {dict.common.logout}
-              </button>
-            </form>
+            <div className="flex items-center gap-[12px]">
+              {actor?.name && (
+                <span
+                  title={actor.email}
+                  className="max-w-[140px] truncate text-[13px] text-ink/50"
+                >
+                  {actor.name}
+                </span>
+              )}
+              <form action={logout}>
+                <button
+                  type="submit"
+                  className="text-[13px] text-ink/50 transition-colors hover:text-ink"
+                >
+                  {dict.common.logout}
+                </button>
+              </form>
+            </div>
           </div>
 
           <div className="flex items-center justify-between px-[24px] pb-[16px]">

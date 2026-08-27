@@ -36,6 +36,8 @@ export type Settings = {
   /** Хеш одноразовой ссылки сброса, срок её жизни и время последнего запроса */
   resetHash?: string;
   resetExpires?: number;
+  /** Чей пароль меняет ссылка. Пусто — общий пароль (учёток ещё нет) */
+  resetUserId?: string;
   resetRequestedAt?: number;
 };
 

@@ -5,18 +5,31 @@ import { redirect } from "next/navigation";
 import { locales, type Locale } from "@/i18n/routing";
 import {
   checkPassword,
+  checkUser,
   createSession,
+  createUserSession,
   destroySession,
   isAuthorized,
+  usersConfigured,
 } from "@/lib/auth";
 import { getContent, saveContent, writePath } from "@/lib/content";
 import { snapshot } from "@/lib/history";
 
 export async function login(_state: string | null, formData: FormData) {
   const password = String(formData.get("password") ?? "");
-  if (!(await checkPassword(password))) return "wrongPassword";
 
-  await createSession();
+  // пока учётных записей нет, вход по общему паролю — иначе по почте
+  if (!(await usersConfigured())) {
+    if (!(await checkPassword(password))) return "wrongPassword";
+    await createSession();
+    redirect("/admin");
+  }
+
+  const email = String(formData.get("email") ?? "");
+  const user = await checkUser(email, password);
+  if (!user) return "wrongPassword";
+
+  await createUserSession(user);
   redirect("/admin");
 }
 

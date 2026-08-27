@@ -1,4 +1,5 @@
 import { getAdminDict } from "@/lib/admin-lang";
+import { usersConfigured } from "@/lib/auth";
 import {
   isResetTokenValid,
   maskEmail,
@@ -23,10 +24,14 @@ export default async function ResetPage({
     return <ResetPasswordForm dict={dict} token={token} />;
   }
 
-  const to = await recoveryRecipients();
+  const [to, withEmail] = await Promise.all([
+    recoveryRecipients(),
+    usersConfigured(),
+  ]);
   return (
     <ResetRequestForm
       dict={dict}
+      withEmail={withEmail}
       maskedTo={to.map(maskEmail).join(", ")}
       // по ссылке пришли, а токен уже не годится — так и скажем
       expired={Boolean(token)}

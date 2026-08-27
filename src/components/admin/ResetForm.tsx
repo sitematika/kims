@@ -42,15 +42,15 @@ export function ResetRequestForm({
   dict,
   maskedTo,
   expired = false,
+  withEmail = false,
 }: {
   dict: AdminDict;
   maskedTo: string;
   expired?: boolean;
+  /** Учётные записи заведены — спрашиваем, чью почту восстанавливаем */
+  withEmail?: boolean;
 }) {
-  const [message, formAction, pending] = useActionState(
-    async () => askReset(),
-    null,
-  );
+  const [message, formAction, pending] = useActionState(askReset, null);
   const done = message === "resetSent";
   const note = message
     ? (dict.msg[message as keyof typeof dict.msg] ?? message)
@@ -61,16 +61,33 @@ export function ResetRequestForm({
       dict={dict}
       title={dict.reset.title}
       hint={
-        maskedTo
-          ? `${dict.reset.willSendTo} ${maskedTo}`
-          : dict.reset.noRecipientsHint
+        withEmail
+          ? dict.reset.emailHint
+          : maskedTo
+            ? `${dict.reset.willSendTo} ${maskedTo}`
+            : dict.reset.noRecipientsHint
       }
     >
       {!done && (
-        <form action={formAction}>
+        <form action={formAction} className="flex flex-col gap-[20px]">
+          {withEmail && (
+            <label className="flex flex-col gap-[8px]">
+              <span className="text-[13px] tracking-[1px] text-ink/70 uppercase">
+                {dict.login.email}
+              </span>
+              <input
+                type="email"
+                name="email"
+                autoFocus
+                required
+                className="border-b border-ink/20 pb-[10px] text-[16px] outline-none focus:border-ink"
+              />
+            </label>
+          )}
+
           <button
             type="submit"
-            disabled={pending || !maskedTo}
+            disabled={pending || (!withEmail && !maskedTo)}
             className="h-[48px] w-full rounded-[4px] bg-ink text-[15px] font-medium text-white disabled:opacity-60"
           >
             {pending ? dict.reset.sending : dict.reset.send}

@@ -4,8 +4,12 @@ import { redirect } from "next/navigation";
 import { destroySession } from "@/lib/auth";
 import { completeReset, requestReset } from "@/lib/password-reset";
 
-export async function askReset(): Promise<string> {
-  const result = await requestReset();
+export async function askReset(
+  _state: string | null,
+  formData: FormData,
+): Promise<string> {
+  const email = String(formData.get("email") ?? "");
+  const result = await requestReset(email);
   if (result.ok) return "resetSent";
   return {
     noRecipients: "resetNoRecipients",

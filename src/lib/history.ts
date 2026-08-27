@@ -2,6 +2,7 @@ import { copyFile, mkdir, readdir, readFile, rm, writeFile } from "node:fs/promi
 import path from "node:path";
 import { locales } from "@/i18n/routing";
 import { contentDir } from "./paths";
+import { currentActor } from "./auth";
 
 /**
  * История правок контента.
@@ -15,7 +16,13 @@ const historyDir = path.join(contentDir, ".history");
 const KEEP = 30;
 const files = [...locales.map((l) => `${l}.json`), "media.json"];
 
-export type Snapshot = { id: string; label: string; createdAt: string };
+export type Snapshot = {
+  id: string;
+  label: string;
+  createdAt: string;
+  /** Кто правил. У снимков, сделанных до учётных записей, поля нет */
+  actor?: string;
+};
 
 async function readMeta(id: string): Promise<Snapshot | null> {
   try {
@@ -29,6 +36,9 @@ async function readMeta(id: string): Promise<Snapshot | null> {
 /** Снимок текущего состояния. label — что именно правили */
 export async function snapshot(label: string) {
   const createdAt = new Date().toISOString();
+  // автора берём из сессии сами: иначе его пришлось бы тащить через
+  // каждое серверное действие, и где-нибудь он бы потерялся
+  const actor = (await currentActor())?.name;
   const id = createdAt.replace(/[:.]/g, "-");
   const dir = path.join(historyDir, id);
 
@@ -41,7 +51,7 @@ export async function snapshot(label: string) {
     }
     await writeFile(
       path.join(dir, "meta.json"),
-      JSON.stringify({ id, label, createdAt }, null, 2),
+      JSON.stringify({ id, label, createdAt, actor }, null, 2),
       "utf8",
     );
   } catch {
